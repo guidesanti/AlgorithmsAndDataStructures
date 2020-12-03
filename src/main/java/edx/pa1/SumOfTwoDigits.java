@@ -1,4 +1,4 @@
-package br.com.eventhorizon.edx;
+package edx.pa1;
 
 import java.util.Scanner;
 

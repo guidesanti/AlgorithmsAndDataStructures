@@ -1,11 +1,11 @@
-package br.com.eventhorizon.edx;
+package edx.pa1;
 
+import edx.common.BaseTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.io.ByteArrayInputStream;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SumOfTwoDigitsTest extends BaseTest {
 
@@ -14,6 +14,6 @@ public class SumOfTwoDigitsTest extends BaseTest {
   public void testMain(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     SumOfTwoDigits.main(null);
-    assertEquals(expectedOutput, getActualOutput());
+    Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 }

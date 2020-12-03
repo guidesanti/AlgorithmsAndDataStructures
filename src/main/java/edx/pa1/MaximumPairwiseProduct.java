@@ -1,4 +1,6 @@
-package br.com.eventhorizon.edx;
+package edx.pa1;
+
+import edx.common.FastScanner;
 
 public class MaximumPairwiseProduct {
 

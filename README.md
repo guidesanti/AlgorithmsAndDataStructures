@@ -19,10 +19,8 @@ mvn clean verify
 
 ## Run
 ```shell script
-# HelloWorld
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar br.com.eventhorizon.edx.HelloWorld -Xmx1024m
 # SumOfTwoDigits
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar br.com.eventhorizon.edx.SumOfTwoDigits -Xmx1024m
+java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa1.SumOfTwoDigits -Xmx1024m
 # MaximumPairwiseProduct
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar br.com.eventhorizon.edx.MaximumPairwiseProduct -Xmx1024m
+java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa1.MaximumPairwiseProduct -Xmx1024m
 ```

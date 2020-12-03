@@ -1,5 +1,7 @@
-package br.com.eventhorizon.edx;
+package edx.pa1;
 
+import edx.common.BaseTest;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -20,7 +22,7 @@ public class MaximumPairwiseProductTest extends BaseTest {
   public void testMainTrivialWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MaximumPairwiseProduct.mainTrivial(null);
-    assertEquals(expectedOutput, getActualOutput());
+    Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 
   @ParameterizedTest
@@ -28,7 +30,7 @@ public class MaximumPairwiseProductTest extends BaseTest {
   public void testMainNonTrivialWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MaximumPairwiseProduct.mainNonTrivial(null);
-    assertEquals(expectedOutput, getActualOutput());
+    Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 
   @Test
@@ -38,8 +40,8 @@ public class MaximumPairwiseProductTest extends BaseTest {
       input.append("1 ");
     }
     System.setIn(new ByteArrayInputStream(input.toString().trim().getBytes()));
-    assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), () -> MaximumPairwiseProduct.mainNonTrivial(null));
-    assertEquals("40000000000", getActualOutput());
+    assertTimeout(ofMillis(BaseTest.DEFAULT_TIME_LIMIT_IN_MS), () -> MaximumPairwiseProduct.mainNonTrivial(null));
+    Assertions.assertEquals("40000000000", getActualOutput());
   }
 
   @Test

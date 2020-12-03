@@ -1,4 +1,4 @@
-package br.com.eventhorizon.edx;
+package edx.common;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,15 +12,15 @@ public class FastScanner {
 
   private StringTokenizer st;
 
-  FastScanner(InputStream stream) {
+  public FastScanner(InputStream stream) {
     try {
       br = new BufferedReader(new InputStreamReader(stream));
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
-  
-  String next() {
+
+  public String next() {
     while (st == null || !st.hasMoreTokens()) {
       try {
         st = new StringTokenizer(br.readLine());
@@ -31,7 +31,7 @@ public class FastScanner {
     return st.nextToken();
   }
 
-  int nextInt() {
+  public int nextInt() {
     return Integer.parseInt(next());
   }
 }

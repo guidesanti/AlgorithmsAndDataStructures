@@ -1,4 +1,4 @@
-package br.com.eventhorizon.edx;
+package edx.common;
 
 import org.junit.jupiter.api.extension.AfterTestExecutionCallback;
 import org.junit.jupiter.api.extension.BeforeTestExecutionCallback;
