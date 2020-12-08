@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
@@ -12,23 +13,34 @@ import java.util.logging.Logger;
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertTimeout;
 
-public class LeastCommonMultipleTest extends BaseTest {
+public class ModOfLargeFibonacciNumberTest extends BaseTest {
 
-  private static final Logger LOGGER = Logger.getLogger(LeastCommonMultipleTest.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ModOfLargeFibonacciNumberTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/least-common-multiple.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LeastCommonMultiple.trivialSolution();
+    ModOfLargeFibonacciNumber.trivialSolution();
     Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/least-common-multiple.csv", numLinesToSkip = 1)
-  public void testSolution1(String input, String expectedOutput) {
+  @CsvFileSource(resources = "/test-dataset/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LeastCommonMultiple.solution1();
+    ModOfLargeFibonacciNumber.finalSolution();
+    Assertions.assertEquals(expectedOutput, getActualOutput());
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "239 1000,161",
+    "2816213588 239,151"
+  })
+  public void testFinalSolutionWithBigDataSet(String input, String expectedOutput) {
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    ModOfLargeFibonacciNumber.finalSolution();
     Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 
@@ -36,8 +48,8 @@ public class LeastCommonMultipleTest extends BaseTest {
   public void timeLimitTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 2000000000);
-      int b = getRandomNumber(1, 2000000000);
+      int a = getRandomNumber(1, 1000000000);
+      int b = getRandomNumber(2, 100000);
 
       // Get input as string
       String input = a + " " + b;
@@ -45,7 +57,7 @@ public class LeastCommonMultipleTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), LeastCommonMultiple::solution1);
+      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), ModOfLargeFibonacciNumber::finalSolution);
     }
   }
 
@@ -53,8 +65,8 @@ public class LeastCommonMultipleTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 10000);
-      int b = getRandomNumber(1, 10000);
+      int a = getRandomNumber(1, 60);
+      int b = getRandomNumber(2, 100000);
 
       // Get input as string
       String input = a + " " + b;
@@ -62,11 +74,11 @@ public class LeastCommonMultipleTest extends BaseTest {
       // Run and compare results
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      LeastCommonMultiple.trivialSolution();
+      ModOfLargeFibonacciNumber.trivialSolution();
       String result1 = getActualOutput();
       resetOutput();
       System.setIn(new ByteArrayInputStream(input.getBytes()));
-      LeastCommonMultiple.solution1();
+      ModOfLargeFibonacciNumber.finalSolution();
       String result2 = getActualOutput();
       if (result1.equals(result2)) {
         LOGGER.info("OK");

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class GreatestCommonDivisorTest extends BaseTest {
 
-  private static final Logger LOGGER = Logger.getLogger(SmallFibonacciNumberTest.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(GreatestCommonDivisorTest.class.getName());
 
   @ParameterizedTest
   @CsvFileSource(resources = "/test-dataset/greatest-common-divisor.csv", numLinesToSkip = 1)

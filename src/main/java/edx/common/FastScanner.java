@@ -34,4 +34,8 @@ public class FastScanner {
   public int nextInt() {
     return Integer.parseInt(next());
   }
+
+  public long nextLong() {
+    return Long.parseLong(next());
+  }
 }

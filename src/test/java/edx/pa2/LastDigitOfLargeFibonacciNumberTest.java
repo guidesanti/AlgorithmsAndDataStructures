@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTimeout;
 
 public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
 
-  private static final Logger LOGGER = Logger.getLogger(SmallFibonacciNumberTest.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(LastDigitOfLargeFibonacciNumberTest.class.getName());
 
   @ParameterizedTest
   @CsvFileSource(resources = "/test-dataset/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
