@@ -1,6 +1,7 @@
 package edx.pa2;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,8 +37,8 @@ public class LeastCommonMultipleTest extends BaseTest {
   public void timeLimitTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 2000000000);
-      int b = getRandomNumber(1, 2000000000);
+      int a = getRandomInteger(1, 2000000000);
+      int b = getRandomInteger(1, 2000000000);
 
       // Get input as string
       String input = a + " " + b;
@@ -45,7 +46,7 @@ public class LeastCommonMultipleTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), LeastCommonMultiple::solution1);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), LeastCommonMultiple::solution1);
     }
   }
 
@@ -53,8 +54,8 @@ public class LeastCommonMultipleTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 10000);
-      int b = getRandomNumber(1, 10000);
+      int a = getRandomInteger(1, 10000);
+      int b = getRandomInteger(1, 10000);
 
       // Get input as string
       String input = a + " " + b;

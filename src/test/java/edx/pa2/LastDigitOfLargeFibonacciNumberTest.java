@@ -1,6 +1,7 @@
 package edx.pa2;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,7 +50,7 @@ public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), SmallFibonacciNumber::solution2);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), SmallFibonacciNumber::solution2);
     }
   }
 
@@ -57,7 +58,7 @@ public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int n = getRandomNumber(0, 90);
+      int n = getRandomInteger(0, 90);
 
       // Get input as string
       String input = "" + n;

@@ -1,6 +1,7 @@
 package edx.pa2;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -36,8 +37,8 @@ public class GreatestCommonDivisorTest extends BaseTest {
   public void timeLimitTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, Integer.MAX_VALUE);
-      int b = getRandomNumber(1, Integer.MAX_VALUE);
+      int a = getRandomInteger(1, Integer.MAX_VALUE);
+      int b = getRandomInteger(1, Integer.MAX_VALUE);
 
       // Get input as string
       String input = a + " " + b;
@@ -45,7 +46,7 @@ public class GreatestCommonDivisorTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), GreatestCommonDivisor::solution1);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), GreatestCommonDivisor::solution1);
     }
   }
 
@@ -53,8 +54,8 @@ public class GreatestCommonDivisorTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, Integer.MAX_VALUE);
-      int b = getRandomNumber(1, Integer.MAX_VALUE);
+      int a = getRandomInteger(1, Integer.MAX_VALUE);
+      int b = getRandomInteger(1, Integer.MAX_VALUE);
 
       // Get input as string
       String input = a + " " + b;

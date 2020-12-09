@@ -1,6 +1,7 @@
 package edx.pa2;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -48,8 +49,8 @@ public class ModOfLargeFibonacciNumberTest extends BaseTest {
   public void timeLimitTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 1000000000);
-      int b = getRandomNumber(2, 100000);
+      int a = getRandomInteger(1, 1000000000);
+      int b = getRandomInteger(2, 100000);
 
       // Get input as string
       String input = a + " " + b;
@@ -57,7 +58,7 @@ public class ModOfLargeFibonacciNumberTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), ModOfLargeFibonacciNumber::finalSolution);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), ModOfLargeFibonacciNumber::finalSolution);
     }
   }
 
@@ -65,8 +66,8 @@ public class ModOfLargeFibonacciNumberTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int a = getRandomNumber(1, 60);
-      int b = getRandomNumber(2, 100000);
+      int a = getRandomInteger(1, 60);
+      int b = getRandomInteger(2, 100000);
 
       // Get input as string
       String input = a + " " + b;

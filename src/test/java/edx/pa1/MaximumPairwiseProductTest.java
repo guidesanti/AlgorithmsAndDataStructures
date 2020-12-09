@@ -1,6 +1,7 @@
 package edx.pa1;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -40,7 +41,7 @@ public class MaximumPairwiseProductTest extends BaseTest {
       input.append("1 ");
     }
     System.setIn(new ByteArrayInputStream(input.toString().trim().getBytes()));
-    assertTimeout(ofMillis(BaseTest.DEFAULT_TIME_LIMIT_IN_MS), () -> MaximumPairwiseProduct.mainNonTrivial(null));
+    assertTimeout(ofMillis(TestProperties.getTimeLimit()), () -> MaximumPairwiseProduct.mainNonTrivial(null));
     Assertions.assertEquals("40000000000", getActualOutput());
   }
 
@@ -48,10 +49,10 @@ public class MaximumPairwiseProductTest extends BaseTest {
   public void stressTest() {
     for (int i = 0; i < 100; i++) {
       // Generate input
-      int n = getRandomNumber(2, 10000);
+      int n = getRandomInteger(2, 10000);
       int[] numbers = new int[n];
       for (int j = 0; j < n; j++) {
-        numbers[j] = getRandomNumber(0, 200000);
+        numbers[j] = getRandomInteger(0, 200000);
       }
 
       // Get input as string

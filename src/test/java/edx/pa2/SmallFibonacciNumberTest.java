@@ -1,13 +1,13 @@
 package edx.pa2;
 
 import edx.common.BaseTest;
+import edx.common.TestProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.io.ByteArrayInputStream;
-import java.time.Duration;
 import java.util.logging.Logger;
 
 import static java.time.Duration.ofMillis;
@@ -50,10 +50,10 @@ public class SmallFibonacciNumberTest extends BaseTest {
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), SmallFibonacciNumber::solution1);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), SmallFibonacciNumber::solution1);
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      assertTimeout(ofMillis(DEFAULT_TIME_LIMIT_IN_MS), SmallFibonacciNumber::solution2);
+      assertTimeout(ofMillis(TestProperties.getTimeLimit()), SmallFibonacciNumber::solution2);
     }
   }
 
@@ -61,7 +61,7 @@ public class SmallFibonacciNumberTest extends BaseTest {
   public void stressTest() {
     while (true) {
       // Generate input
-      int n = getRandomNumber(0, 50);
+      int n = getRandomInteger(0, 50);
 
       // Get input as string
       String input = "" + n;

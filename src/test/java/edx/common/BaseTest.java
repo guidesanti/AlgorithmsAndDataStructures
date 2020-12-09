@@ -5,11 +5,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.*;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @ExtendWith(TimingExtension.class)
 public class BaseTest {
-
-  public static final int DEFAULT_TIME_LIMIT_IN_MS = 1500;
 
   private OutputStream outputStream;
 
@@ -27,11 +26,18 @@ public class BaseTest {
     System.setOut(new PrintStream(outputStream));
   }
 
-  protected int getRandomNumber(int min, int max) {
+  protected int getRandomInteger(int min, int max) {
     if (min >= max) {
       throw new IllegalArgumentException("max must be greater than min");
     }
     Random random = new Random();
     return random.nextInt((max - min) + 1) + min;
+  }
+
+  protected long getRandomLong(long min, long max) {
+    if (min >= max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+    return ThreadLocalRandom.current().nextLong(min, max);
   }
 }
