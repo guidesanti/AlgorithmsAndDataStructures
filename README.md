@@ -10,17 +10,59 @@ Repository to store study and statements for EDX MicroMasters Program Algorithms
 mvn clean package
 ```
 
-## Test
+## Test and Run
 
-### Unit Tests
+### PA1.1: Sum of Two Digits
 ```shell script
-mvn clean verify
+# Unit Tests
+mvn clean verify -Dtest=SumOfTwoDigitsTest
 ```
 
-## Run
+### PA1.2: Maximum Pairwise Product
 ```shell script
-# SumOfTwoDigits
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa1.SumOfTwoDigits -Xmx1024m
-# MaximumPairwiseProduct
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa1.MaximumPairwiseProduct -Xmx1024m
+# Unit Tests
+mvn clean verify -Dtest=MaximumPairwiseProductTest
+```
+
+### PA2.1: Fibonacci Number
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=SmallFibonacciNumberTest
+```
+
+### PA2.2: Last Digit of a Large Fibonacci Number
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=LastDigitOfLargeFibonacciNumberTest
+```
+
+### PA2.3: Greatest Common Divisor
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=GreatestCommonDivisorTest
+```
+
+### PA2.4: Least Common Multiple
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=LeastCommonMultipleTest
+```
+
+### PA2.5: Fibonacci Number Again
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=ModOfLargeFibonacciNumberTest
+```
+
+### PA2.6: Last Digit of the Sum of Fibonacci Numbers
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=LastDigitOfTheSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
+# Run
+java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigitOfTheSumOfFibonacciNumbers -Xmx1024m
+```
+
+### PA2.7: Last Digit of the Sum of Fibonacci Numbers Again
+```shell script
+# TODO
 ```

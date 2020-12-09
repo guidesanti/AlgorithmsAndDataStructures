@@ -39,6 +39,10 @@ public class LastDigitOfTheSumOfFibonacciNumbers {
     System.out.println(fibonacciSum3(n));
   }
 
+  public static void main(String args[]) {
+    finalSolution();
+  }
+
   private static long fibonacciSumNaive(long n) {
     if (n <= 1) {
       return n;
