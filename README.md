@@ -1,5 +1,5 @@
 # EDX-AlgorithmsAndDataStructures-UCSanDiego
-Repository to store study and statements for EDX MicroMasters Program Algorithms and Data Structures from UC San Diego
+Repository to store program assignments for EDX MicroMasters Program Algorithms and Data Structures from UC San Diego
 
 ## Requirements
 * Java 1.8
@@ -64,5 +64,8 @@ java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigit
 
 ### PA2.7: Last Digit of the Sum of Fibonacci Numbers Again
 ```shell script
-# TODO
+# Unit Tests
+mvn clean verify -Dtest=LastDigitOfThePartialSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
+# Run
+java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigitOfThePartialSumOfFibonacciNumbers -Xmx1024m
 ```
