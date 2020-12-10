@@ -19,7 +19,7 @@ public class LastDigitOfThePartialSumOfFibonacciNumbersTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(LastDigitOfThePartialSumOfFibonacciNumbersTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-partial-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-partial-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfThePartialSumOfFibonacciNumbers.trivialSolution();
@@ -27,7 +27,7 @@ public class LastDigitOfThePartialSumOfFibonacciNumbersTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-partial-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-partial-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfThePartialSumOfFibonacciNumbers.finalSolution();

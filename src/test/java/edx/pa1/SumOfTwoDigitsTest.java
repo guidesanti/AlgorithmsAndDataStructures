@@ -10,7 +10,7 @@ import java.io.ByteArrayInputStream;
 public class SumOfTwoDigitsTest extends BaseTest {
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/sum-of-two-digits.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa1/sum-of-two-digits.csv", numLinesToSkip = 1)
   public void testMain(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     SumOfTwoDigits.main(null);

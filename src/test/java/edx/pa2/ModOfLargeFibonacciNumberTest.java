@@ -19,7 +19,7 @@ public class ModOfLargeFibonacciNumberTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(ModOfLargeFibonacciNumberTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     ModOfLargeFibonacciNumber.trivialSolution();
@@ -27,7 +27,7 @@ public class ModOfLargeFibonacciNumberTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/mod-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     ModOfLargeFibonacciNumber.finalSolution();

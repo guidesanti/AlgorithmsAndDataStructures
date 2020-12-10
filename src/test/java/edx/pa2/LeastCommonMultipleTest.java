@@ -18,7 +18,7 @@ public class LeastCommonMultipleTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(LeastCommonMultipleTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/least-common-multiple.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/least-common-multiple.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LeastCommonMultiple.trivialSolution();
@@ -26,7 +26,7 @@ public class LeastCommonMultipleTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/least-common-multiple.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/least-common-multiple.csv", numLinesToSkip = 1)
   public void testSolution1(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LeastCommonMultiple.solution1();

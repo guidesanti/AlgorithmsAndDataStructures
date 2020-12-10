@@ -19,7 +19,7 @@ public class LastDigitOfTheSumOfFibonacciNumbersTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(LastDigitOfTheSumOfFibonacciNumbersTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfTheSumOfFibonacciNumbers.trivialSolution();
@@ -27,7 +27,7 @@ public class LastDigitOfTheSumOfFibonacciNumbersTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testSolution1WithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfTheSumOfFibonacciNumbers.solution1();
@@ -35,7 +35,7 @@ public class LastDigitOfTheSumOfFibonacciNumbersTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testSolution2WithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfTheSumOfFibonacciNumbers.solution2();
@@ -43,7 +43,7 @@ public class LastDigitOfTheSumOfFibonacciNumbersTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-the-sum-of-fibonacci-numbers.csv", numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfTheSumOfFibonacciNumbers.finalSolution();

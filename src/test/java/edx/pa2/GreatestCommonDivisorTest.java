@@ -18,7 +18,7 @@ public class GreatestCommonDivisorTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(GreatestCommonDivisorTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/greatest-common-divisor.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/greatest-common-divisor.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     GreatestCommonDivisor.trivialSolution();
@@ -26,7 +26,7 @@ public class GreatestCommonDivisorTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/greatest-common-divisor.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/greatest-common-divisor.csv", numLinesToSkip = 1)
   public void testTrivialSolution1(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     GreatestCommonDivisor.solution1();

@@ -2,7 +2,6 @@ package edx.pa3;
 
 import edx.common.BaseTest;
 import edx.common.TestProperties;
-import edx.pa2.LastDigitOfThePartialSumOfFibonacciNumbers;
 import edx.pa2.LastDigitOfThePartialSumOfFibonacciNumbersTest;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -22,7 +21,7 @@ public class MoneyChangeTest extends BaseTest {
     LOGGER = Logger.getLogger(LastDigitOfThePartialSumOfFibonacciNumbersTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/money-change.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa3/money-change.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MoneyChange.trivialSolution();
@@ -30,7 +29,7 @@ public class MoneyChangeTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/money-change.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa3/money-change.csv", numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MoneyChange.finalSolution();

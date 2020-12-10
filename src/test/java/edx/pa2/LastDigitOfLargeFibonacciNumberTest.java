@@ -18,7 +18,7 @@ public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(LastDigitOfLargeFibonacciNumberTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfLargeFibonacciNumber.trivialSolution();
@@ -26,7 +26,7 @@ public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolution1(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfLargeFibonacciNumber.solution1();
@@ -34,7 +34,7 @@ public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolution2(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     LastDigitOfLargeFibonacciNumber.solution2();

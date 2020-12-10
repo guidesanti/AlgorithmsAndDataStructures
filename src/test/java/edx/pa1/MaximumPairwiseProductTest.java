@@ -19,7 +19,7 @@ public class MaximumPairwiseProductTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(MaximumPairwiseProductTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/maximum-pairwise-product.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa1/maximum-pairwise-product.csv", numLinesToSkip = 1)
   public void testMainTrivialWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MaximumPairwiseProduct.mainTrivial(null);
@@ -27,7 +27,7 @@ public class MaximumPairwiseProductTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/maximum-pairwise-product.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa1/maximum-pairwise-product.csv", numLinesToSkip = 1)
   public void testMainNonTrivialWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     MaximumPairwiseProduct.mainNonTrivial(null);

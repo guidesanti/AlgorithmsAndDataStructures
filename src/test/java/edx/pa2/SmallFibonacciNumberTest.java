@@ -18,7 +18,7 @@ public class SmallFibonacciNumberTest extends BaseTest {
   private static final Logger LOGGER = Logger.getLogger(SmallFibonacciNumberTest.class.getName());
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/small-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/small-fibonacci-number.csv", numLinesToSkip = 1)
   public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     SmallFibonacciNumber.trivialSolution();
@@ -26,7 +26,7 @@ public class SmallFibonacciNumberTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/small-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/small-fibonacci-number.csv", numLinesToSkip = 1)
   public void testSolution1WithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     SmallFibonacciNumber.solution1();
@@ -34,7 +34,7 @@ public class SmallFibonacciNumberTest extends BaseTest {
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/small-fibonacci-number.csv", numLinesToSkip = 1)
+  @CsvFileSource(resources = "/test-dataset/pa2/small-fibonacci-number.csv", numLinesToSkip = 1)
   public void testSolution2WithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     SmallFibonacciNumber.solution2();
