@@ -69,3 +69,11 @@ mvn clean verify -Dtest=LastDigitOfThePartialSumOfFibonacciNumbersTest -DtimeLim
 # Run
 java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigitOfThePartialSumOfFibonacciNumbers -Xmx1024m
 ```
+
+### PA3.7: Money Change
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=MoneyChangeTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
+# Run
+java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.MoneyChange -Xmx1024m
+```
