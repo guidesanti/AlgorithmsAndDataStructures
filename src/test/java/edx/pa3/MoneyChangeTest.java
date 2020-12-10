@@ -22,9 +22,9 @@ public class MoneyChangeTest extends BaseTest {
 
   @ParameterizedTest
   @CsvFileSource(resources = "/test-dataset/pa3/money-change.csv", numLinesToSkip = 1)
-  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
-    MoneyChange.trivialSolution();
+    MoneyChange.naiveSolution();
     Assertions.assertEquals(expectedOutput, getActualOutput());
   }
 
@@ -78,7 +78,7 @@ public class MoneyChangeTest extends BaseTest {
       // Run and compare results
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
-      MoneyChange.trivialSolution();
+      MoneyChange.naiveSolution();
       String result1 = getActualOutput();
       resetOutput();
       System.setIn(new ByteArrayInputStream(input.getBytes()));

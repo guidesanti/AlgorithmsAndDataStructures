@@ -8,19 +8,19 @@ public class MoneyChange {
     finalSolution();
   }
 
-  public static void trivialSolution() {
+  public static void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
-    System.out.println(moneyChangeTrivial(m));
+    System.out.println(naiveMoneyChange(m));
   }
 
   public static void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
-    System.out.println(moneyChangeGreedy(m, 10));
+    System.out.println(greedyMoneyChange(m, 10));
   }
 
-  private static int moneyChangeTrivial(int m) {
+  private static int naiveMoneyChange(int m) {
     int min = Integer.MAX_VALUE;
     for (int a = 0; a <= 1000; a++) {
       for (int b = 0; b <= 1000; b++) {
@@ -37,7 +37,7 @@ public class MoneyChange {
     return min;
   }
 
-  private static int moneyChangeGreedy(int m, int c) {
+  private static int greedyMoneyChange(int m, int c) {
     int s = m / c;
     int r = m % c;
     if (r == 0) {
@@ -48,7 +48,7 @@ public class MoneyChange {
     } else {
       c = 1;
     }
-    s += moneyChangeGreedy(r, c);
+    s += greedyMoneyChange(r, c);
     return s;
   }
 }
