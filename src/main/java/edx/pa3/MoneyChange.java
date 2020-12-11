@@ -72,7 +72,7 @@ public class MoneyChange {
   }
 
   /*
-   * Greedy algorithm by using subtraction
+   * Greedy algorithm by using division
    */
   private static int greedyMoneyChange2(int m) {
     int[] c = { 10, 5, 1 };
