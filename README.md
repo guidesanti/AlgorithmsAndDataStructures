@@ -58,22 +58,16 @@ mvn clean verify -Dtest=ModOfLargeFibonacciNumberTest
 ```shell script
 # Unit Tests
 mvn clean verify -Dtest=LastDigitOfTheSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-# Run
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigitOfTheSumOfFibonacciNumbers -Xmx1024m
 ```
 
 ### PA2.7: Last Digit of the Sum of Fibonacci Numbers Again
 ```shell script
 # Unit Tests
 mvn clean verify -Dtest=LastDigitOfThePartialSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-# Run
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.LastDigitOfThePartialSumOfFibonacciNumbers -Xmx1024m
 ```
 
-### PA3.7: Money Change
+### PA3.1: Money Change
 ```shell script
 # Unit Tests
 mvn clean verify -Dtest=MoneyChangeTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-# Run
-java -cp target/EDX-AlgorithmsAndDataStructures-UCSanDiego.jar edx.pa2.MoneyChange -Xmx1024m
 ```

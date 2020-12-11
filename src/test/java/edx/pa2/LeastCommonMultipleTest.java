@@ -1,83 +1,45 @@
 package edx.pa2;
 
-import edx.common.BaseTest;
-import edx.common.TestProperties;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import edx.common.PATest;
+import edx.common.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
-import java.util.logging.Logger;
+public class LeastCommonMultipleTest extends PATest {
 
-import static java.time.Duration.ofMillis;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/least-common-multiple.csv";
 
-public class LeastCommonMultipleTest extends BaseTest {
-
-  private static final Logger LOGGER = Logger.getLogger(LeastCommonMultipleTest.class.getName());
-
-  @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa2/least-common-multiple.csv", numLinesToSkip = 1)
-  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LeastCommonMultiple.trivialSolution();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  public LeastCommonMultipleTest() {
+    super(new LeastCommonMultiple());
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa2/least-common-multiple.csv", numLinesToSkip = 1)
-  public void testSolution1(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LeastCommonMultiple.solution1();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testNaiveSolution(input, expectedOutput);
   }
 
-  @Test
-  public void timeLimitTest() {
-    while (true) {
-      // Generate input
-      int a = getRandomInteger(1, 2000000000);
-      int b = getRandomInteger(1, 2000000000);
-
-      // Get input as string
-      String input = a + " " + b;
-      LOGGER.info("Input: " + input);
-
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      assertTimeout(ofMillis(TestProperties.getTimeLimit()), LeastCommonMultiple::solution1);
-    }
+  @ParameterizedTest
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testFinalSolution(input, expectedOutput);
   }
 
-  @Test
-  public void stressTest() {
-    while (true) {
-      // Generate input
-      int a = getRandomInteger(1, 10000);
-      int b = getRandomInteger(1, 10000);
-
-      // Get input as string
-      String input = a + " " + b;
-
-      // Run and compare results
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      LeastCommonMultiple.trivialSolution();
-      String result1 = getActualOutput();
-      resetOutput();
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      LeastCommonMultiple.solution1();
-      String result2 = getActualOutput();
-      if (result1.equals(result2)) {
-        LOGGER.info("OK");
-      } else {
-        LOGGER.info("FAILED");
-        LOGGER.info("Input: " + input);
-        LOGGER.info("Result 1:  " + result1);
-        LOGGER.info("Result 2:  " + result2);
-        throw new RuntimeException("Stress test failed");
-      }
+  @Override
+  protected String generateInput(PATestType type) {
+    int a;
+    int b;
+    switch (type) {
+      case TIME_LIMIT_TEST:
+        a = getRandomInteger(1, 2000000000);
+        b = getRandomInteger(1, 2000000000);
+        break;
+      case STRESS_TEST:
+      default:
+        a = getRandomInteger(1, 1000);
+        b = getRandomInteger(1, 1000);
+        break;
     }
+    return a + " " + b;
   }
 }

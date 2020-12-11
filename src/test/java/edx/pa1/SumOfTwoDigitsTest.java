@@ -1,19 +1,42 @@
 package edx.pa1;
 
-import edx.common.BaseTest;
-import org.junit.jupiter.api.Assertions;
+import edx.common.PATest;
+import edx.common.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
+public class SumOfTwoDigitsTest extends PATest {
 
-public class SumOfTwoDigitsTest extends BaseTest {
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/sum-of-two-digits.csv";
+
+  public SumOfTwoDigitsTest() {
+    super(new SumOfTwoDigits());
+  }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa1/sum-of-two-digits.csv", numLinesToSkip = 1)
-  public void testMain(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    SumOfTwoDigits.main(null);
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testNaiveSolution(input, expectedOutput);
+  }
+
+  @ParameterizedTest
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testFinalSolution(input, expectedOutput);
+  }
+
+  @Override
+  protected String generateInput(PATestType type) {
+    int n = getRandomInteger(0, 2);
+    int a = getRandomInteger(1, Integer.MAX_VALUE);
+    if (n > 0) {
+      a = -a;
+    }
+    n = getRandomInteger(0, 2);
+    int b = getRandomInteger(1, Integer.MAX_VALUE);
+    if (n > 0) {
+      b = -b;
+    }
+    return a + " " + b;
   }
 }

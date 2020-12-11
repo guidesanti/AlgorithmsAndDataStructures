@@ -1,31 +1,34 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class LastDigitOfLargeFibonacciNumber {
+public class LastDigitOfLargeFibonacciNumber implements PA {
 
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner in = new FastScanner(System.in);
-    int n = in.nextInt();
-    int fibonacci = 0;
+    long n = in.nextInt();
+    long fibonacci = 0;
 
     if (n <= 1) {
       fibonacci = n;
     } else {
-      int previous = 0;
-      int current = 1;
+      long previous = 0;
+      long current = 1;
       for (int i = 2; i <= n; i++) {
         fibonacci = current + previous;
         previous = current;
         current = fibonacci;
       }
     }
-    int lastFibonacciDigit = fibonacci % 10;
+    long lastFibonacciDigit = fibonacci % 10;
 
     System.out.println(lastFibonacciDigit);
   }
 
-  public static void solution1() {
+  @Override
+  public void intermediateSolution1() {
     FastScanner in = new FastScanner(System.in);
     int n = in.nextInt();
     long fibonacci = 0;
@@ -46,7 +49,8 @@ public class LastDigitOfLargeFibonacciNumber {
     System.out.println(lastFibonacciDigit);
   }
 
-  public static void solution2() {
+  @Override
+  public void finalSolution() {
     FastScanner in = new FastScanner(System.in);
     int n = in.nextInt();
     int lastFibonacciDigit = 0;

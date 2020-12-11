@@ -1,79 +1,42 @@
 package edx.pa1;
 
-import edx.common.BaseTest;
-import edx.common.TestProperties;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import edx.common.PATest;
+import edx.common.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
-import java.util.logging.Logger;
+public class MaximumPairwiseProductTest extends PATest {
 
-import static java.time.Duration.ofMillis;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/maximum-pairwise-product.csv";
 
-public class MaximumPairwiseProductTest extends BaseTest {
-
-  private static final Logger LOGGER = Logger.getLogger(MaximumPairwiseProductTest.class.getName());
-
-  @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa1/maximum-pairwise-product.csv", numLinesToSkip = 1)
-  public void testMainTrivialWithSimpleDataSet(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    MaximumPairwiseProduct.mainTrivial(null);
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  public MaximumPairwiseProductTest() {
+    super(new MaximumPairwiseProduct());
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa1/maximum-pairwise-product.csv", numLinesToSkip = 1)
-  public void testMainNonTrivialWithSimpleDataSet(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    MaximumPairwiseProduct.mainNonTrivial(null);
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testNaiveSolution(input, expectedOutput);
   }
 
-  @Test
-  public void testMainNonTrivialWithBigDataSet() {
-    StringBuilder input = new StringBuilder("200000 200000 200000 ");
-    for (long i = 2; i < 200000; i++) {
-      input.append("1 ");
-    }
-    System.setIn(new ByteArrayInputStream(input.toString().trim().getBytes()));
-    assertTimeout(ofMillis(TestProperties.getTimeLimit()), () -> MaximumPairwiseProduct.mainNonTrivial(null));
-    Assertions.assertEquals("40000000000", getActualOutput());
+  @ParameterizedTest
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testFinalSolution(input, expectedOutput);
   }
 
-  @Test
-  public void stressTest() {
-    for (int i = 0; i < 100; i++) {
-      // Generate input
-      int n = getRandomInteger(2, 10000);
-      int[] numbers = new int[n];
-      for (int j = 0; j < n; j++) {
-        numbers[j] = getRandomInteger(0, 200000);
-      }
-
-      // Get input as string
-      StringBuilder inputBuilder = new StringBuilder();
-      inputBuilder.append(n);
-      for (int j = 0; j < n; j++) {
-        inputBuilder.append(" " + numbers[j]);
-      }
-      String input = inputBuilder.toString().trim();
-      LOGGER.info("Input: " + input);
-
-      // Run and compare results
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      MaximumPairwiseProduct.mainTrivial(null);
-      String result1 = getActualOutput();
-      resetOutput();
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      MaximumPairwiseProduct.mainNonTrivial(null);
-      String result2 = getActualOutput();
-      assertEquals(result1, result2, "Wrong answer: " + result1 + ", " + result2);
+  @Override
+  protected String generateInput(PATestType type) {
+    int n = getRandomInteger(2, 10000);
+    int[] numbers = new int[n];
+    for (int j = 0; j < n; j++) {
+      numbers[j] = getRandomInteger(0, 200000);
     }
+    StringBuilder inputBuilder = new StringBuilder();
+    inputBuilder.append(n);
+    for (int j = 0; j < n; j++) {
+      inputBuilder.append(" " + numbers[j]);
+    }
+    return inputBuilder.toString().trim();
   }
 }

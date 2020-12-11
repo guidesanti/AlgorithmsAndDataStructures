@@ -6,14 +6,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import javax.naming.OperationNotSupportedException;
+public class MaximumValueOfLootTest extends PATest {
 
-public class MoneyChangeTest extends PATest {
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa3/maximum-value-of-loot.csv";
 
-  private static final String SIMPLE_DATA_SET = "/test-dataset/pa3/money-change.csv";
-
-  public MoneyChangeTest() {
-    super(new MoneyChange());
+  public MaximumValueOfLootTest() {
+    super(new MaximumValueOfLoot());
   }
 
   @ParameterizedTest
@@ -24,20 +22,13 @@ public class MoneyChangeTest extends PATest {
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testIntermediateSolution1WithSimpleDataSet(String input, String expectedOutput)
-      throws OperationNotSupportedException {
-    super.testIntermediateSolution1(input, expectedOutput);
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     super.testFinalSolution(input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvSource({
-    "28,6"
+    "1 10 500 30,166.6667"
   })
   public void testFinalSolutionWithComplexDataSet(String input, String expectedOutput) {
     super.testFinalSolution(input, expectedOutput);
@@ -45,7 +36,15 @@ public class MoneyChangeTest extends PATest {
 
   @Override
   protected String generateInput(PATestType type) {
-    int m = getRandomInteger(1, 1000);
-    return "" + m;
+    int n = getRandomInteger(1, 1000);
+    int capacity = getRandomInteger(0, 2000000);
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append(n).append(" ").append(capacity);
+    for (int i = 0; i < n; i++) {
+      int value = getRandomInteger(0, 2000000);
+      int weight = getRandomInteger(0, 2000000);
+      stringBuilder.append(" ").append(value).append(" ").append(weight);
+    }
+    return stringBuilder.toString();
   }
 }

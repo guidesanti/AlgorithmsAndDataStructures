@@ -1,0 +1,141 @@
+package edx.common;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import javax.naming.OperationNotSupportedException;
+import java.io.*;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
+
+import static java.time.Duration.ofMillis;
+import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+
+@ExtendWith(TimingExtension.class)
+public abstract class PATest {
+
+  private static final Logger LOGGER = Logger.getLogger(PATest.class.getName());
+
+  protected final PA pa;
+
+  private OutputStream outputStream;
+
+  public PATest(PA pa) {
+    this.pa = pa;
+  }
+
+  @BeforeEach
+  public void beforeEach() {
+    resetOutput();
+  }
+
+  protected void testNaiveSolution(String input, String expectedOutput) {
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    pa.naiveSolution();
+    Assertions.assertEquals(expectedOutput, getActualOutput());
+  }
+
+  protected void testIntermediateSolution1(String input, String expectedOutput)
+      throws OperationNotSupportedException {
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    pa.intermediateSolution1();
+    Assertions.assertEquals(expectedOutput, getActualOutput());
+  }
+
+  protected void testIntermediateSolution2(String input, String expectedOutput)
+      throws OperationNotSupportedException {
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    pa.intermediateSolution2();
+    Assertions.assertEquals(expectedOutput, getActualOutput());
+  }
+
+  protected void testFinalSolution(String input, String expectedOutput) {
+    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    pa.finalSolution();
+    Assertions.assertEquals(expectedOutput, getActualOutput());
+  }
+
+  @Test
+  public void timeLimitTest() {
+    LOGGER.info("Time limit test duration: " + TestProperties.getTimeLimitTestDuration());
+    long startTime = System.currentTimeMillis();
+    for (long i = 0; true; i++) {
+      String input = generateInput(PATestType.TIME_LIMIT_TEST);
+      LOGGER.info("Time limit test " + i + " input: " + input);
+
+      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      resetOutput();
+      assertTimeoutPreemptively(ofMillis(TestProperties.getTimeLimit()), pa::finalSolution);
+      LOGGER.info("Time limit test " + i + " status: PASSED");
+
+      // Check elapsed time
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      if (elapsedTime > TestProperties.getTimeLimitTestDuration()) {
+        return;
+      }
+    }
+  }
+
+  @Test
+  public void stressTest() {
+    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    long startTime = System.currentTimeMillis();
+    for (long i = 0; true; i++) {
+      String input = generateInput(PATestType.STRESS_TEST);
+      LOGGER.info("Stress test " + i + " input: " + input);
+
+      // Run and compare results
+      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      resetOutput();
+      pa.naiveSolution();
+      String result1 = getActualOutput();
+      resetOutput();
+      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      pa.finalSolution();
+      String result2 = getActualOutput();
+      if (result1.equals(result2)) {
+        LOGGER.info("Stress test " + i + " status: PASSED");
+      } else {
+        LOGGER.info("Stress test " + i + " status: FAILED");
+        LOGGER.info("Stress test " + i + " result 1:  " + result1);
+        LOGGER.info("Stress test " + i + " result 2:  " + result2);
+        throw new RuntimeException("Stress test failed");
+      }
+
+      // Check elapsed time
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      if (elapsedTime > TestProperties.getStressTestDuration()) {
+        return;
+      }
+    }
+  }
+
+  protected String getActualOutput() {
+    return outputStream.toString().trim();
+  }
+
+  protected void resetOutput() {
+    outputStream = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStream));
+  }
+
+  protected int getRandomInteger(int min, int max) {
+    if (min >= max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+    Random random = new Random();
+    return random.nextInt((max - min) + 1) + min;
+  }
+
+  protected long getRandomLong(long min, long max) {
+    if (min >= max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+    return ThreadLocalRandom.current().nextLong(min, max);
+  }
+
+  abstract protected String generateInput(PATestType type);
+}

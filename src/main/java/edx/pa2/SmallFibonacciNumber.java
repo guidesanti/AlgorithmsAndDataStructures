@@ -1,25 +1,20 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class SmallFibonacciNumber {
+public class SmallFibonacciNumber implements PA {
 
-  private static int fibonacci(int n) {
-    if (n <= 1) {
-      return n;
-    }
-
-    return fibonacci(n - 1) + fibonacci(n - 2);
-  }
-
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner in = new FastScanner(System.in);
     int n = in.nextInt();
 
     System.out.println(fibonacci(n));
   }
 
-  public static void solution1() {
+  @Override
+  public void intermediateSolution1() {
     FastScanner in = new FastScanner(System.in);
     int n = in.nextInt();
     long[] fibonacci = new long[n + 1];
@@ -35,7 +30,8 @@ public class SmallFibonacciNumber {
     System.out.println(fibonacci[n]);
   }
 
-  public static void solution2() {
+  @Override
+  public void finalSolution() {
     FastScanner in = new FastScanner(System.in);
     long n = in.nextInt();
     long fibonacci = 0;
@@ -53,5 +49,13 @@ public class SmallFibonacciNumber {
     }
 
     System.out.println(fibonacci);
+  }
+
+  private static int fibonacci(int n) {
+    if (n <= 1) {
+      return n;
+    }
+
+    return fibonacci(n - 1) + fibonacci(n - 2);
   }
 }

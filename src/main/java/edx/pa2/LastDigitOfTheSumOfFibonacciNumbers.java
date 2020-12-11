@@ -1,10 +1,12 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class LastDigitOfTheSumOfFibonacciNumbers {
+public class LastDigitOfTheSumOfFibonacciNumbers implements PA {
 
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     System.out.println(fibonacciSumNaive(n));
@@ -14,7 +16,8 @@ public class LastDigitOfTheSumOfFibonacciNumbers {
    * Solution based on continuous sum of every Fibonacci element, but storing only the last digit
    * of the sum to avoid overflow of long
    */
-  public static void solution1() {
+  @Override
+  public void intermediateSolution1() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     System.out.println(fibonacciSum1(n));
@@ -23,7 +26,7 @@ public class LastDigitOfTheSumOfFibonacciNumbers {
   /**
    * Solution based on matrix multiplication to calculate the nth Fibonacci number
    */
-  public static void solution2() {
+  public void intermediateSolution2() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     System.out.println(fibonacciSum2(n));
@@ -33,14 +36,11 @@ public class LastDigitOfTheSumOfFibonacciNumbers {
    * Solution based on matrix multiplication to calculate the nth Fibonacci number, but storing
    * only the last digit of the multiplication to avoid overflow of long
    */
-  public static void finalSolution() {
+  @Override
+  public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     System.out.println(fibonacciSum3(n));
-  }
-
-  public static void main(String args[]) {
-    finalSolution();
   }
 
   private static long fibonacciSumNaive(long n) {

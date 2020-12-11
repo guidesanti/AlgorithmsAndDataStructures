@@ -1,26 +1,26 @@
 package edx.pa3;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class MoneyChange {
+public class MoneyChange implements PA {
 
-  public static void main(String[] args) {
-    finalSolution();
-  }
-
-  public static void naiveSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     System.out.println(naiveMoneyChange(m));
   }
 
-  public static void intermediateSolution1() {
+  @Override
+  public void intermediateSolution1() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     System.out.println(greedyMoneyChange1(m));
   }
 
-  public static void finalSolution() {
+  @Override
+  public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     System.out.println(greedyMoneyChange2(m));

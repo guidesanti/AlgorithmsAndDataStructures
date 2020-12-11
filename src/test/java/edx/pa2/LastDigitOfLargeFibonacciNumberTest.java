@@ -1,86 +1,62 @@
 package edx.pa2;
 
-import edx.common.BaseTest;
-import edx.common.TestProperties;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
+import edx.common.PATest;
+import edx.common.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.junit.jupiter.params.provider.CsvSource;
 
-import java.io.ByteArrayInputStream;
-import java.util.logging.Logger;
+import javax.naming.OperationNotSupportedException;
 
-import static java.time.Duration.ofMillis;
-import static org.junit.jupiter.api.Assertions.assertTimeout;
+public class LastDigitOfLargeFibonacciNumberTest extends PATest {
 
-public class LastDigitOfLargeFibonacciNumberTest extends BaseTest {
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv";
 
-  private static final Logger LOGGER = Logger.getLogger(LastDigitOfLargeFibonacciNumberTest.class.getName());
-
-  @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
-  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LastDigitOfLargeFibonacciNumber.trivialSolution();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  public LastDigitOfLargeFibonacciNumberTest() {
+    super(new LastDigitOfLargeFibonacciNumber());
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
-  public void testTrivialSolution1(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LastDigitOfLargeFibonacciNumber.solution1();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testNaiveSolution(input, expectedOutput);
   }
 
   @ParameterizedTest
-  @CsvFileSource(resources = "/test-dataset/pa2/last-digit-of-large-fibonacci-number.csv", numLinesToSkip = 1)
-  public void testTrivialSolution2(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
-    LastDigitOfLargeFibonacciNumber.solution2();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testIntermediateSolution1WithSimpleDataSet(String input, String expectedOutput)
+      throws OperationNotSupportedException {
+    super.testIntermediateSolution1(input, expectedOutput);
   }
 
-  @Test
-  public void timeLimitTest() {
-    for (int n = 0; n < 50; n++) {
-      // Get input as string
-      String input = "" + n;
-      LOGGER.info("Input: " + input);
+  @ParameterizedTest
+  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testFinalSolution(input, expectedOutput);
+  }
 
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      assertTimeout(ofMillis(TestProperties.getTimeLimit()), SmallFibonacciNumber::solution2);
+  @ParameterizedTest
+  @CsvSource({
+      "331,9",
+      "327305,5"
+  })
+  public void testFinalSolutionWithComplexDataSet(String input, String expectedOutput) {
+    super.testFinalSolution(input, expectedOutput);
+  }
+
+  @Override
+  protected String generateInput(PATestType type) {
+    long a;
+    switch (type) {
+      case TIME_LIMIT_TEST:
+        a = getRandomLong(0, 10000000);
+        break;
+      case STRESS_TEST:
+      default:
+        a = getRandomLong(0, 50);
+        break;
     }
-  }
 
-  @Test
-  public void stressTest() {
-    while (true) {
-      // Generate input
-      int n = getRandomInteger(0, 90);
-
-      // Get input as string
-      String input = "" + n;
-
-      // Run and compare results
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      LastDigitOfLargeFibonacciNumber.solution1();
-      String result1 = getActualOutput();
-      resetOutput();
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      LastDigitOfLargeFibonacciNumber.solution2();
-      String result2 = getActualOutput();
-      if (result1.equals(result2)) {
-        LOGGER.info("OK");
-      } else {
-        LOGGER.info("FAILED");
-        LOGGER.info("Input: " + input);
-        LOGGER.info("Result 1:  " + result1);
-        LOGGER.info("Result 2:  " + result2);
-        throw new RuntimeException("Stress test failed");
-      }
-    }
+    return "" + a;
   }
 }

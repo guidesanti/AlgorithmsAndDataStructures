@@ -1,10 +1,21 @@
 package edx.pa1;
 
+import edx.common.PA;
+
 import java.util.Scanner;
 
-public class SumOfTwoDigits {
+public class SumOfTwoDigits implements PA {
 
-  public static void main(String[] args) {
+  @Override
+  public void naiveSolution() {
+    Scanner s = new Scanner(System.in);
+    int a = s.nextInt();
+    int b = s.nextInt();
+    System.out.println(a + b);
+  }
+
+  @Override
+  public void finalSolution() {
     Scanner s = new Scanner(System.in);
     int a = s.nextInt();
     int b = s.nextInt();

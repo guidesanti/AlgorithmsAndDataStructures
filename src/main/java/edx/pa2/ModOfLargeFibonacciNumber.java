@@ -1,20 +1,23 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModOfLargeFibonacciNumber {
+public class ModOfLargeFibonacciNumber implements PA {
 
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     long m = scanner.nextLong();
     System.out.println(getFibonacciModNaive(n, m));
   }
 
-  public static void finalSolution() {
+  @Override
+  public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     long m = scanner.nextLong();

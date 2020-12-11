@@ -1,10 +1,12 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class LeastCommonMultiple {
+public class LeastCommonMultiple implements PA {
 
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int a = scanner.nextInt();
     int b = scanner.nextInt();
@@ -12,7 +14,8 @@ public class LeastCommonMultiple {
     System.out.println(lcmNaive(a, b));
   }
 
-  public static void solution1() {
+  @Override
+  public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int a = scanner.nextInt();
     int b = scanner.nextInt();

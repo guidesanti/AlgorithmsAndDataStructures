@@ -1,21 +1,20 @@
 package edx.pa2;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class LastDigitOfThePartialSumOfFibonacciNumbers {
+public class LastDigitOfThePartialSumOfFibonacciNumbers implements PA {
 
-  public static void main(String[] args) {
-    finalSolution();
-  }
-
-  public static void trivialSolution() {
+  @Override
+  public void naiveSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long from = scanner.nextLong();
     long to = scanner.nextLong();
     System.out.println(fibonacciSumLastDigitNaive(from, to));
   }
 
-  public static void finalSolution() {
+  @Override
+  public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long from = scanner.nextLong();
     long to = scanner.nextLong();

@@ -1,8 +1,47 @@
 package edx.pa1;
 
 import edx.common.FastScanner;
+import edx.common.PA;
 
-public class MaximumPairwiseProduct {
+public class MaximumPairwiseProduct implements PA {
+
+  @Override
+  public void naiveSolution() {
+    FastScanner scanner = new FastScanner(System.in);
+    int n = scanner.nextInt();
+    long[] numbers = new long[n];
+    for (int i = 0; i < n; i++) {
+      numbers[i] = scanner.nextInt();
+    }
+    System.out.println(maximumPairwiseProductTrivial(numbers));
+  }
+
+  @Override
+  public void finalSolution() {
+    FastScanner scanner = new FastScanner(System.in);
+    int n = scanner.nextInt();
+    long first = scanner.nextInt();
+    long second = scanner.nextInt();
+    long max1;
+    long max2;
+    if (first > second) {
+      max1 = first;
+      max2 = second;
+    } else {
+      max1 = second;
+      max2 = first;
+    }
+    for (int i = 2; i < n; i++) {
+      long value = scanner.nextInt();
+      if (value > max1) {
+        max2 = max1;
+        max1 = value;
+      } else if (value > max2) {
+        max2 = value;
+      }
+    }
+    System.out.println(max1 * max2);
+  }
 
   private static long maximumPairwiseProductTrivial(long[] numbers) {
     long product = 0;
@@ -54,41 +93,5 @@ public class MaximumPairwiseProduct {
       }
     }
     return max1 * max2;
-  }
-
-  public static void mainTrivial(String[] args) {
-    FastScanner scanner = new FastScanner(System.in);
-    int n = scanner.nextInt();
-    long[] numbers = new long[n];
-    for (int i = 0; i < n; i++) {
-      numbers[i] = scanner.nextInt();
-    }
-    System.out.println(maximumPairwiseProductTrivial(numbers));
-  }
-
-  public static void mainNonTrivial(String[] args) {
-    FastScanner scanner = new FastScanner(System.in);
-    int n = scanner.nextInt();
-    long first = scanner.nextInt();
-    long second = scanner.nextInt();
-    long max1;
-    long max2;
-    if (first > second) {
-      max1 = first;
-      max2 = second;
-    } else {
-      max1 = second;
-      max2 = first;
-    }
-    for (int i = 2; i < n; i++) {
-      long value = scanner.nextInt();
-      if (value > max1) {
-        max2 = max1;
-        max1 = value;
-      } else if (value > max2) {
-        max2 = value;
-      }
-    }
-    System.out.println(max1 * max2);
   }
 }
