@@ -17,7 +17,7 @@ public class MoneyChange {
   public static void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
-    System.out.println(greedyMoneyChange(m, 10));
+    System.out.println(greedyMoneyChange(m));
   }
 
   private static int naiveMoneyChange(int m) {
@@ -37,18 +37,19 @@ public class MoneyChange {
     return min;
   }
 
-  private static int greedyMoneyChange(int m, int c) {
-    int s = m / c;
-    int r = m % c;
-    if (r == 0) {
-      return s;
+  private static int greedyMoneyChange(int m) {
+    int[] c = { 10, 5, 1 };
+    int s = 0;
+    int i = 0;
+    while (m > 0) {
+      if (m >= c[i]) {
+        s++;
+        m -= c[i];
+      }  else {
+        i++;
+      }
     }
-    if (c == 10) {
-      c = 5;
-    } else {
-      c = 1;
-    }
-    s += greedyMoneyChange(r, c);
+
     return s;
   }
 }
