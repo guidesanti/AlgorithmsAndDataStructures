@@ -14,10 +14,16 @@ public class MoneyChange {
     System.out.println(naiveMoneyChange(m));
   }
 
+  public static void intermediateSolution1() {
+    FastScanner scanner = new FastScanner(System.in);
+    int m = scanner.nextInt();
+    System.out.println(greedyMoneyChange1(m));
+  }
+
   public static void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
-    System.out.println(greedyMoneyChange(m));
+    System.out.println(greedyMoneyChange2(m));
   }
 
   private static int naiveMoneyChange(int m) {
@@ -37,7 +43,19 @@ public class MoneyChange {
     return min;
   }
 
-  private static int greedyMoneyChange(int m) {
+  /*
+   * Greedy algorithm
+   * Candidates: the set of coins available { 10, 5, 1} with infinity coins of each value
+   * Selection: choose the highest-value coin remaining in the set of candidates
+   * Feasible: checks whether the chosen coin does not exceed the amount to change (m)
+   * Objective: counts the number of coins used in solution
+   * Solution: checks whether the coins already taken makes a solution for the problem
+   */
+
+  /*
+   * Greedy algorithm by using subtraction
+   */
+  private static int greedyMoneyChange1(int m) {
     int[] c = { 10, 5, 1 };
     int s = 0;
     int i = 0;
@@ -48,6 +66,20 @@ public class MoneyChange {
       }  else {
         i++;
       }
+    }
+
+    return s;
+  }
+
+  /*
+   * Greedy algorithm by using subtraction
+   */
+  private static int greedyMoneyChange2(int m) {
+    int[] c = { 10, 5, 1 };
+    int s = 0;
+    for (int i = 0; i < c.length && m > 0; i++) {
+      s += m / c[i];
+      m = m % c[i];
     }
 
     return s;
