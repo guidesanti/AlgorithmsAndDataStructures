@@ -65,9 +65,15 @@ mvn clean verify -Dtest=LastDigitOfTheSumOfFibonacciNumbersTest -DtimeLimitTestD
 # Unit Tests
 mvn clean verify -Dtest=LastDigitOfThePartialSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
 ```
-
+cle
 ### PA3.1: Money Change
 ```shell script
 # Unit Tests
 mvn clean verify -Dtest=MoneyChangeTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
+```
+
+### PA3.2: Maximum Value of the Loot
+```shell script
+# Unit Tests
+mvn clean verify -Dtest=MaximumValueOfLootTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
 ```

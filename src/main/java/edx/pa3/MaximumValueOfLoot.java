@@ -16,7 +16,7 @@ public class MaximumValueOfLoot implements PA {
       values[i] = scanner.nextInt();
       weights[i] = scanner.nextInt();
     }
-    System.out.println(naiveMaximumValueOfLoot(capacity, values, weights));
+    System.out.format("%.4f", greedyMaximumValueOfLoot(capacity, values, weights));
   }
 
   @Override
@@ -30,14 +30,43 @@ public class MaximumValueOfLoot implements PA {
       values[i] = scanner.nextInt();
       weights[i] = scanner.nextInt();
     }
-    System.out.println(naiveMaximumValueOfLoot(capacity, values, weights));
+    System.out.format("%.4f", greedyMaximumValueOfLoot(capacity, values, weights));
   }
 
-  private double naiveMaximumValueOfLoot(int capacity, int[] values, int[] weights) {
-    return 0;
-  }
-
+  /*
+   * Greedy algorithm
+   * Candidates: the set of items: value of ith item / weight of ith item
+   * Selection: choose the highest-value item remaining in the set of candidates
+   * Feasible: checks whether the chosen item does not exceed the capacity of the knapsack
+   * Objective: counts the total value in solution
+   * Solution: checks whether the items already taken makes a solution for the problem
+   */
   private double greedyMaximumValueOfLoot(int capacity, int[] values, int[] weights) {
-    return 0;
+    double result = 0;
+    while (capacity > 0) {
+      int selectedItem = findMaxValuePerWeight(values, weights);
+      if (capacity >= weights[selectedItem]) {
+        result += values[selectedItem];
+        capacity -= weights[selectedItem];
+        values[selectedItem] = 0;
+      } else {
+        result += capacity * ((double) values[selectedItem] / weights[selectedItem]);
+        break;
+      }
+    }
+    return result;
+  }
+
+  private int findMaxValuePerWeight(int[] values, int[] weights) {
+    double max = 0;
+    int maxIndex = 0;
+    for (int i = 0; i < values.length; i++) {
+      double current = (double) values[i] / weights[i];
+      if (current >= max) {
+        max = current;
+        maxIndex = i;
+      }
+    }
+    return maxIndex;
   }
 }
