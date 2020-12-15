@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.naming.OperationNotSupportedException;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
@@ -61,19 +64,38 @@ public abstract class PATest {
   @Test
   public void timeLimitTest() {
     LOGGER.info("Time limit test duration: " + TestProperties.getTimeLimitTestDuration());
-    long startTime = System.currentTimeMillis();
+    long maxTime = 0;
+    long minTime = Integer.MAX_VALUE;
+    List<Long> times = new ArrayList<>();
+    long totalStartTime = System.currentTimeMillis();
     for (long i = 0; true; i++) {
       String input = generateInput(PATestType.TIME_LIMIT_TEST);
       LOGGER.info("Time limit test " + i + " input: " + input);
 
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       resetOutput();
+      long startTime = System.currentTimeMillis();
       assertTimeoutPreemptively(ofMillis(TestProperties.getTimeLimit()), pa::finalSolution);
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      times.add(elapsedTime);
+      if (elapsedTime > maxTime) {
+        maxTime = elapsedTime;
+      }
+      if (elapsedTime < minTime) {
+        minTime = elapsedTime;
+      }
       LOGGER.info("Time limit test " + i + " status: PASSED");
 
       // Check elapsed time
-      long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getTimeLimitTestDuration()) {
+      long totalElapsedTime = System.currentTimeMillis() - totalStartTime;
+      if (totalElapsedTime > TestProperties.getTimeLimitTestDuration()) {
+        LOGGER.info("Time limit test total tests executed: " + i + 1);
+        LOGGER.info("Time limit test min time: " + minTime);
+        LOGGER.info("Time limit test max time: " + maxTime);
+        Optional<Long> sum = times.stream().reduce(Long::sum);
+        if (sum.isPresent()) {
+          LOGGER.info("Time limit test average time: " + (double) sum.get() / (i + 1));
+        }
         return;
       }
     }
