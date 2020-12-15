@@ -1,0 +1,4 @@
+input,expectedOutput
+6,3%1 2 3
+8,3%1 2 5
+2,1%2
