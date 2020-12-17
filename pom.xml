@@ -4,13 +4,17 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>br.com.eventhorizon.edx</groupId>
-    <artifactId>EDX-AlgorithmsAndDataStructures-UCSanDiego</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <description>Root modulo for statements and other stuff related to EDX MicroMasters Program
-        Algorithms and Data Structures from UC San Diego
-    </description>
-    <packaging>jar</packaging>
+    <groupId>br.com.eventhorizon</groupId>
+    <artifactId>algorithms-and-data-structures</artifactId>
+    <version>1.0.0</version>
+    <description>TODO</description>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>SortingAlgorithms</module>
+        <module>Common</module>
+        <module>EDX</module>
+    </modules>
 
     <properties>
         <!--General properties -->
