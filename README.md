@@ -1,4 +1,4 @@
-# EDX-AlgorithmsAndDataStructures-UCSanDiego
+# Algorithms and Data Structures
 Repository to store study related to algorithms and data structures.
 
 ## Contents
