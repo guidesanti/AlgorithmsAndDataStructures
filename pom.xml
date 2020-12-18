@@ -11,9 +11,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>SortingAlgorithms</module>
         <module>Common</module>
         <module>EDX</module>
+        <module>SortingAlgorithms</module>
     </modules>
 
     <properties>
