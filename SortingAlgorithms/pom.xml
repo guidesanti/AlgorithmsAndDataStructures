@@ -12,6 +12,14 @@
     <artifactId>sorting-algorithms</artifactId>
     <version>1.0.0</version>
     <description>Sorting algorithms implementations and comparison</description>
-    <packaging>pom</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>br.com.eventhorizon</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+    <packaging>jar</packaging>
 
 </project>
