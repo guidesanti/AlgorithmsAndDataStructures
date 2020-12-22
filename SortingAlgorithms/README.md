@@ -9,3 +9,4 @@ instead of creating and making use of a more generic API.
 - [Insertion sort](./src/main/java/br/com/eventhorizon/sorting/InsertionSort.java)
 - [Merge sort](./src/main/java/br/com/eventhorizon/sorting/MergeSort.java)
 - [Selection sort](./src/main/java/br/com/eventhorizon/sorting/SelectionSort.java)
+- [Quick sort](./src/main/java/br/com/eventhorizon/sorting/QuickSort.java)
