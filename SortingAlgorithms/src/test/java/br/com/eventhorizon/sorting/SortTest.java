@@ -1,11 +1,15 @@
 package br.com.eventhorizon.sorting;
 
+import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.FastScanner;
+import br.com.eventhorizon.common.pa.TestProperties;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public abstract class SortTest {
 
@@ -32,5 +36,34 @@ public abstract class SortTest {
     LOGGER.info("Testing algorithm: " + sortAlgorithm.getClass());
     sortAlgorithm.sort(inputArray);
     assertArrayEquals(expectedOutputArray, inputArray);
+  }
+
+  @Test
+  public void stressTest() {
+    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    long startTime = System.currentTimeMillis();
+    for (int test = 0; true; test++) {
+      long[] a = generateInput();
+      sortAlgorithm.sort(a);
+      for (int i = 1; i < a.length; i++) {
+        assertTrue(a[i] >= a[i - 1], "Stress test " + i + " failed, a[" + i + "] is not greater than a[" + (i - 1) + "]");
+      }
+      LOGGER.info("Stress test " + test + " status: PASSED");
+
+      // Check elapsed time
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      if (elapsedTime > TestProperties.getStressTestDuration()) {
+        return;
+      }
+    }
+  }
+
+  private long[] generateInput() {
+    int n = Utils.getRandomInteger(1, 10000);
+    long[] a = new long[n];
+    for (int i = 0; i < n; i++) {
+      a[i] = Utils.getRandomInteger(1, Integer.MAX_VALUE) - (Integer.MAX_VALUE / 2);
+    }
+    return a;
   }
 }

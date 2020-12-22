@@ -12,6 +12,7 @@
     <artifactId>sorting-algorithms</artifactId>
     <version>1.0.0</version>
     <description>Sorting algorithms implementations and comparison</description>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -19,7 +20,13 @@
             <artifactId>common</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>br.com.eventhorizon</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-    <packaging>jar</packaging>
-
 </project>
