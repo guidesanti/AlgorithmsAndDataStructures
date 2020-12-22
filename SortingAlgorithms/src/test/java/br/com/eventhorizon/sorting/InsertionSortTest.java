@@ -3,7 +3,7 @@ package br.com.eventhorizon.sorting;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class InsertionSortTest extends SortTest {
+public class InsertionSortTest extends SortAlgorithmTest {
 
   private static final String DATA_SET = "/test-dataset/dataset.csv";
 

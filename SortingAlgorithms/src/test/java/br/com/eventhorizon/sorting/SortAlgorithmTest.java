@@ -11,13 +11,13 @@ import java.util.logging.Logger;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class SortTest {
+public abstract class SortAlgorithmTest {
 
-  private static final Logger LOGGER = Logger.getLogger(SortTest.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(SortAlgorithmTest.class.getName());
 
   protected final SortAlgorithm sortAlgorithm;
 
-  public SortTest(SortAlgorithm sortAlgorithm) {
+  public SortAlgorithmTest(SortAlgorithm sortAlgorithm) {
     this.sortAlgorithm = sortAlgorithm;
   }
 
