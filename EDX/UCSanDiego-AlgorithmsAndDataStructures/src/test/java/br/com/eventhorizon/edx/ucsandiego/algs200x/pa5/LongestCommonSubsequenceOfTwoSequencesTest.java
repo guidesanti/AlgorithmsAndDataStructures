@@ -5,12 +5,13 @@ import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class LongestCommonSubsequenceTest extends PATest {
+public class LongestCommonSubsequenceOfTwoSequencesTest extends PATest {
 
-  private static final String SIMPLE_DATA_SET = "/test-dataset/pa5/longest-common-subsequence.csv";
+  private static final String SIMPLE_DATA_SET =
+      "/test-dataset/pa5/longest-common-subsequence-of-two-sequences.csv";
 
-  public LongestCommonSubsequenceTest() {
-    super(new LongestCommonSubsequence());
+  public LongestCommonSubsequenceOfTwoSequencesTest() {
+    super(new LongestCommonSubsequenceOfTwoSequences());
   }
 
   @ParameterizedTest

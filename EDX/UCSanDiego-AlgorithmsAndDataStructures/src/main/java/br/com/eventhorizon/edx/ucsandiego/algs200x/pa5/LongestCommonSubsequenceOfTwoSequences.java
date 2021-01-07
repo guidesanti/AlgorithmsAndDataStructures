@@ -6,7 +6,7 @@ import br.com.eventhorizon.common.pa.PA;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LongestCommonSubsequence implements PA {
+public class LongestCommonSubsequenceOfTwoSequences implements PA {
 
   @Override
   public void naiveSolution() {
