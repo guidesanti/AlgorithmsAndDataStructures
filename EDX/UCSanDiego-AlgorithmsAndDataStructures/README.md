@@ -1,79 +1,8 @@
-# EDX-AlgorithmsAndDataStructures-UCSanDiego
-Repository to store program assignments for EDX MicroMasters Program Algorithms and Data Structures from UC San Diego
+# UCSanDiego - Algorithms And Data Structures - MicroMasters Program
+This is the root module for all courses from Algorithms and Data Structures MicroMasters program offered by UCSanDiego.
 
-## Requirements
-* Java 1.8
-* Maven 3.3.9
+See https://courses.edx.org/dashboard/programs/12459d7c-46c3-4552-8e58-a0a4e9a3b80d/
 
-## Build
-```shell script
-mvn clean package
-```
+## Contents
+- [ALGS200x - Algorithmic Design and Techniques](./ALGS200x/README.md)
 
-## Test and Run
-
-### PA1.1: Sum of Two Digits
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=SumOfTwoDigitsTest
-```
-
-### PA1.2: Maximum Pairwise Product
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=MaximumPairwiseProductTest
-```
-
-### PA2.1: Fibonacci Number
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=SmallFibonacciNumberTest
-```
-
-### PA2.2: Last Digit of a Large Fibonacci Number
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=LastDigitOfLargeFibonacciNumberTest
-```
-
-### PA2.3: Greatest Common Divisor
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=GreatestCommonDivisorTest
-```
-
-### PA2.4: Least Common Multiple
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=LeastCommonMultipleTest
-```
-
-### PA2.5: Fibonacci Number Again
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=ModOfLargeFibonacciNumberTest
-```
-
-### PA2.6: Last Digit of the Sum of Fibonacci Numbers
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=LastDigitOfTheSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-```
-
-### PA2.7: Last Digit of the Sum of Fibonacci Numbers Again
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=LastDigitOfThePartialSumOfFibonacciNumbersTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-```
-cle
-### PA3.1: Money Change
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=MoneyChangeTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-```
-
-### PA3.2: Maximum Value of the Loot
-```shell script
-# Unit Tests
-mvn clean verify -Dtest=MaximumValueOfLootTest -DtimeLimitTestDuration=10000 -DstressTestDuration=10000
-```

@@ -15,7 +15,10 @@
         Root modulo for statements and other stuff related to EDX MicroMasters Program
         Algorithms and Data Structures from UC San Diego
     </description>
-    <packaging>jar</packaging>
+    <modules>
+        <module>ALGS200x</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <dependencies>
         <dependency>
