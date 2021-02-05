@@ -16,8 +16,8 @@
         Algorithms and Data Structures from UC San Diego
     </description>
     <modules>
-        <module>ALGS200x</module>
-        <module>ALGS201x</module>
+        <module>ALGS200x-AlgorithmicDesignAndTechniques</module>
+        <module>ALGS201x-DataStructuresFundamentals</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -9,10 +9,9 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>algs200x</artifactId>
+    <artifactId>algs201x-data-structures-fundamentals</artifactId>
     <version>1.0.0</version>
     <description>
-        Module containing programing assignments for course ALGS200x Algorithmic Design and Techniques
+        Module containing programing assignments for course ALGS201x Data Structures Fundamentals
     </description>
-
 </project>
