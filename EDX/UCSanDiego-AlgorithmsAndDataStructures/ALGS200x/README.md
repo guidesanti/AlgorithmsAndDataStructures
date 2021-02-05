@@ -1,5 +1,7 @@
 # ALGS200x - Algorithmic Design and Techniques
-This module contains all programing assignments for course ALGS200x Algorithmic Design and Techniques   
+This module contains all programing assignments for course ALGS200x Algorithmic Design and Techniques
+
+See https://www.edx.org/course/algorithmic-design-and-techniques
 
 ## Requirements
 * Java 1.8
