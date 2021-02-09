@@ -5,6 +5,11 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Utils {
 
+  public static char getRandomChar() {
+    Random random = new Random();
+    return (char) (random.nextInt(95) + 32);
+  }
+
   public static int getRandomInteger(int min, int max) {
     if (min >= max) {
       throw new IllegalArgumentException("max must be greater than min");

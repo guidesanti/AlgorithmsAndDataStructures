@@ -1,0 +1,10 @@
+input,expectedOutput
+[],Success
+{}[],Success
+[()],Success
+(()),Success
+{[]}(),Success
+{,1
+{[},3
+foo(bar);,Success
+foo(bar[i);,10
