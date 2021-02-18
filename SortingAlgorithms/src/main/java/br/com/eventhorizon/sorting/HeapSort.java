@@ -10,7 +10,7 @@ public class HeapSort implements SortAlgorithm {
       return;
     }
     heapSize = a.length;
-    buildHeap(a);
+    buildMaxHeap(a);
     while (heapSize > 0) {
       heapSize--;
       swap(a, 0, heapSize);
@@ -18,7 +18,7 @@ public class HeapSort implements SortAlgorithm {
     }
   }
 
-  private void buildHeap(long[] a) {
+  private void buildMaxHeap(long[] a) {
     for (int i = a.length - 1; i >= 0; i--) {
       siftDown(a, i);
     }
@@ -43,11 +43,11 @@ public class HeapSort implements SortAlgorithm {
   }
 
   private int leftChild(int i) {
-    return (2 * i) + 1;
+    return (i << 1) + 1;
   }
 
   private int rightChild(int i) {
-    return (2 * i) + 2;
+    return (i << 1) + 2;
   }
 
   private void swap(long[] a, int i, int j) {
