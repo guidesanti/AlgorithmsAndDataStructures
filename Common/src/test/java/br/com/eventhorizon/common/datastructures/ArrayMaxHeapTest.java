@@ -185,4 +185,50 @@ public class ArrayMaxHeapTest {
     assertEquals(0, heap.size());
     assertArrayEquals(new long[0], heap.toArray());
   }
+
+  @Test
+  public void testContains() {
+    ArrayMaxHeap heap = new ArrayMaxHeap();
+    assertTrue(heap.isEmpty());
+    assertEquals(0, heap.size());
+    assertArrayEquals(new long[0], heap.toArray());
+    assertThrows(NoSuchElementException.class, heap::getMax);
+
+    heap.add(10);
+    assertFalse(heap.isEmpty());
+    assertEquals(1, heap.size());
+    assertFalse(heap.contains(9));
+    assertTrue(heap.contains(10));
+    assertFalse(heap.contains(11));
+    assertTrue(Utils.isMaxHeap(heap.toArray()));
+
+    heap.add(100);
+    assertFalse(heap.isEmpty());
+    assertEquals(2, heap.size());
+    assertFalse(heap.contains(9));
+    assertTrue(heap.contains(10));
+    assertFalse(heap.contains(11));
+    assertTrue(heap.contains(100));
+    assertFalse(heap.contains(200));
+    assertTrue(Utils.isMaxHeap(heap.toArray()));
+
+    heap.add(200);
+    assertFalse(heap.isEmpty());
+    assertEquals(3, heap.size());
+    assertFalse(heap.contains(9));
+    assertTrue(heap.contains(10));
+    assertFalse(heap.contains(11));
+    assertTrue(heap.contains(100));
+    assertTrue(heap.contains(200));
+    assertTrue(Utils.isMaxHeap(heap.toArray()));
+
+    heap.clear();
+    assertTrue(heap.isEmpty());
+    assertEquals(0, heap.size());
+    assertFalse(heap.contains(9));
+    assertFalse(heap.contains(10));
+    assertFalse(heap.contains(11));
+    assertFalse(heap.contains(100));
+    assertFalse(heap.contains(200));
+  }
 }

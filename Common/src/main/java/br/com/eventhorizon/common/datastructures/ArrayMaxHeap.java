@@ -66,6 +66,13 @@ public class ArrayMaxHeap {
     size = 0;
   }
 
+  public boolean contains(long value) {
+    if (size == 0) {
+      return false;
+    }
+    return contains(value, 0);
+  }
+
   public boolean isEmpty() {
     return size == 0;
   }
@@ -76,6 +83,22 @@ public class ArrayMaxHeap {
 
   public long[] toArray() {
     return Arrays.copyOf(values, size);
+  }
+
+  private boolean contains(long value, int i) {
+    if (i >= size) {
+      return false;
+    }
+    if (value > values[i]) {
+      return false;
+    }
+    if (value == values[i]) {
+      return true;
+    }
+    if (contains(value, leftChild(i))) {
+      return true;
+    }
+    return contains(value, rightChild(i));
   }
 
   private void buildMaxHeap() {
