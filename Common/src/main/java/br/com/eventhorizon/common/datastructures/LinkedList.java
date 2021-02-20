@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.collections.elementary;
+package br.com.eventhorizon.common.datastructures;
 
 import java.util.NoSuchElementException;
 

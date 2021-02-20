@@ -1,6 +1,4 @@
-package br.com.eventhorizon.common.collections.derived;
-
-import br.com.eventhorizon.common.collections.elementary.LinkedList;
+package br.com.eventhorizon.common.datastructures;
 
 public class Stack {
 

@@ -44,4 +44,24 @@ public class Utils {
     }
     return values;
   }
+
+  public static boolean isMinHeap(long[] a) {
+    for (int i = a.length - 1; i > 0; i--) {
+      int parent = (i - 1) / 2;
+      if (a[i] < a[parent]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  public static boolean isMaxHeap(long[] a) {
+    for (int i = a.length - 1; i > 0; i--) {
+      int parent = (i - 1) / 2;
+      if (a[i] > a[parent]) {
+        return false;
+      }
+    }
+    return true;
+  }
 }
