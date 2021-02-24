@@ -1,0 +1,9 @@
+input,expectedOutput
+aaaaa baaaaaaa,1 2 3
+aaa aaaaaaa,0 1 2 3 4
+a a,0
+DVA6RixnghJK8pMGPNqIKaJOXdczIQNaeYzVVVaZEJCeflG DVA6RixnghJK8pMGPNqIKaJOXdczIQNaeYzVVVaZEJCeflGaZEJCeflGCeflGG,0
+a b,!
+aca acacaca,0 2 4
+aba abacaba,0 4
+Test testTesttesT,4
