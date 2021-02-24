@@ -1,0 +1,4 @@
+input,expectedOutput
+5 12 add world add HellO check 4 find World find world del world check 4 del HellO add luck add GooD check 2 del good,HellO world%no%yes%HellO%GooD luck
+4 8 add test add test find test del test find test find Test add Test find Test,yes%no%no%yes
+3 12 check 0 find help add help add del add add find add find del del del find del check 0 check 1 check 2,no%yes%yes%no%%add help
