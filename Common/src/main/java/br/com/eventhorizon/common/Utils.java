@@ -60,8 +60,7 @@ public class Utils {
     if (min >= max) {
       throw new IllegalArgumentException("max must be greater than min");
     }
-    Random random = new Random();
-    return random.nextInt((max - min) + 1) + min;
+    return ThreadLocalRandom.current().nextInt(min, max < Integer.MAX_VALUE ? max + 1 : max);
   }
 
   public static int[] getRandomIntegerArray(int minLength, int maxLength, int min, int max) {
@@ -78,7 +77,7 @@ public class Utils {
     if (min >= max) {
       throw new IllegalArgumentException("max must be greater than min");
     }
-    return ThreadLocalRandom.current().nextLong(min, max);
+    return ThreadLocalRandom.current().nextLong(min, max < Long.MAX_VALUE ? max + 1 : max);
   }
 
   public static long[] getRandomLongArray(int minLength, int maxLength, long min, long max) {

@@ -2,9 +2,9 @@ package br.com.eventhorizon.common.datastructures;
 
 import java.util.NoSuchElementException;
 
-public class LinkedList {
+public class LinkedList<T> {
 
-  private final Node NULL = new Node(0);
+  private final Node<T> NULL = new Node<>(null);
 
   private int size;
 
@@ -13,19 +13,19 @@ public class LinkedList {
     NULL.next = NULL;
   }
 
-  public LinkedList(long[] values) {
+  public LinkedList(T[] values) {
     this();
-    for (int i = 0; i < values.length; i++) {
-      addLast(values[i]);
+    for (T value : values) {
+      addLast(value);
     }
   }
 
-  public void add(int index, long value) {
+  public void add(int index, T value) {
     if (index < 0 || index > size) {
       throw new IndexOutOfBoundsException();
     }
-    Node newNode = new Node(value);
-    Node current = first();
+    Node<T> newNode = new Node<>(value);
+    Node<T> current = first();
     for (int i = 0; i < index; i++) {
       current = current.next;
     }
@@ -36,105 +36,105 @@ public class LinkedList {
     size++;
   }
 
-  public void addFirst(long value) {
-    Node first = first();
-    Node newNode = new Node(value, first.previous, first);
+  public void addFirst(T value) {
+    Node<T> first = first();
+    Node<T> newNode = new Node<>(value, first.previous, first);
     first.previous.next = newNode;
     first.previous = newNode;
     size++;
   }
 
-  public void addLast(long value) {
-    Node last = last();
-    Node newNode = new Node(value, last, last.next);
+  public void addLast(T value) {
+    Node<T> last = last();
+    Node<T> newNode = new Node<T>(value, last, last.next);
     last.next.previous = newNode;
     last.next = newNode;
     size++;
   }
 
-  public long get(int index) {
+  public T get(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
-    Node current = first();
+    Node<T> current = first();
     for (int i = 0; i < index; i++) {
       current = current.next;
     }
-    return current.value;
+    return current.key;
   }
 
-  public long getFirst() {
+  public T getFirst() {
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    return first().value;
+    return first().key;
   }
 
-  public long getLast() {
+  public T getLast() {
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    return last().value;
+    return last().key;
   }
 
-  public long remove(int index) {
+  public T remove(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
-    Node current = first();
+    Node<T> current = first();
     for (int i = 0; i < index; i++) {
       current = current.next;
     }
     current.previous.next = current.next;
     current.next.previous = current.previous;
     size--;
-    return current.value;
+    return current.key;
   }
 
-  public long removeFirst() {
+  public T removeFirst() {
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    Node first = first();
+    Node<T> first = first();
     first.previous.next = first.next;
     first.next.previous = first.previous;
     size--;
-    return first.value;
+    return first.key;
   }
 
-  public long removeLast() {
+  public T removeLast() {
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    Node last = last();
+    Node<T> last = last();
     last.previous.next = last.next;
     last.next.previous = last.previous;
     size--;
-    return last.value;
+    return last.key;
   }
 
-  public void replace(int index, long value) {
+  public void replace(int index, T value) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
-    Node current = first();
+    Node<T> current = first();
     for (int i = 0; i < index; i++) {
       current = current.next;
     }
-    current.value = value;
+    current.key = value;
   }
 
-  public LinkedList subList(int fromIndex, int toIndex) {
+  public LinkedList<T> subList(int fromIndex, int toIndex) {
     if (fromIndex < 0 || toIndex > size || fromIndex > toIndex) {
       throw new IndexOutOfBoundsException();
     }
-    LinkedList newList = new LinkedList();
-    Node current = first();
+    LinkedList<T> newList = new LinkedList<>();
+    Node<T> current = first();
     for (int i = 0; i < fromIndex; i++) {
       current = current.next;
     }
     for (int i = fromIndex; i < toIndex; i++) {
-      newList.addLast(current.value);
+      newList.addLast(current.key);
       current = current.next;
     }
     return newList;
@@ -146,10 +146,10 @@ public class LinkedList {
     size = 0;
   }
 
-  public boolean contains(long value) {
+  public boolean contains(T value) {
     Node current = first();
     while (current != NULL) {
-      if (current.value == value) {
+      if (current.key == value) {
         return true;
       }
       current = current.next;
@@ -165,21 +165,21 @@ public class LinkedList {
     return size;
   }
 
-  public long[] toArray() {
-    long[] values = new long[size];
-    Node current = first();
+  public Object[] toArray() {
+    Object[] values = new Object[size];
+    Node<T> current = first();
     for (int i = 0; i < size; i++) {
-      values[i] = current.value;
+      values[i] = current.key;
       current = current.next;
     }
     return values;
   }
 
-  private Node first() {
+  private Node<T> first() {
     return NULL.next;
   }
 
-  private Node last() {
+  private Node<T> last() {
     return NULL.previous;
   }
 
@@ -187,31 +187,31 @@ public class LinkedList {
   public String toString() {
     StringBuilder str = new StringBuilder();
     str.append("DoublyLinkedList{size=").append(size).append(", values = { ");
-    Node current = first();
+    Node<T> current = first();
     while (current.next != NULL) {
-      str.append(current.value).append(", ");
+      str.append(current.key).append(", ");
       current = current.next;
     }
-    str.append(size > 0 ? current.value : "").append(" }}");
+    str.append(size > 0 ? current.key : "").append(" }}");
     return str.toString();
   }
 
-  private static class Node {
+  private static class Node<T> {
 
-    long value;
+    T key;
 
-    Node previous;
+    Node<T> previous;
 
-    Node next;
+    Node<T> next;
 
-    public Node(long value) {
-      this.value = value;
+    public Node(T key) {
+      this.key = key;
       this.previous = null;
       this.next = null;
     }
 
-    public Node(long value, Node previous, Node next) {
-      this.value = value;
+    public Node(T key, Node<T> previous, Node<T> next) {
+      this.key = key;
       this.previous = previous;
       this.next = next;
     }

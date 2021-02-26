@@ -1,8 +1,10 @@
 package br.com.eventhorizon.common.datastructures;
 
-public class Stack {
+import java.util.StringJoiner;
 
-  private LinkedList list = new LinkedList();
+public class Stack<T> {
+
+  private LinkedList<T> list = new LinkedList<>();
 
   public Stack() { }
 
@@ -18,15 +20,24 @@ public class Stack {
     return list.size();
   }
 
-  public long peek() {
+  public T peek() {
     return list.getFirst();
   }
 
-  public long pop() {
+  public T pop() {
     return list.removeFirst();
   }
 
-  public void push(long value) {
+  public void push(T value) {
     list.addFirst(value);
+  }
+
+  @Override
+  public String toString() {
+    StringJoiner str = new StringJoiner(" ", "Stack { ", " }");
+    for (int i = 0; i < list.size(); i++) {
+      str.add("" + list.get(i));
+    }
+    return str.toString();
   }
 }

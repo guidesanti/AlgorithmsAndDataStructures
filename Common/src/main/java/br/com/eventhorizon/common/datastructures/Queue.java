@@ -1,8 +1,8 @@
 package br.com.eventhorizon.common.datastructures;
 
-public class Queue {
+public class Queue<T> {
 
-  private LinkedList list = new LinkedList();
+  private LinkedList<T> list = new LinkedList<>();
 
   public Queue() { }
 
@@ -18,15 +18,15 @@ public class Queue {
     return list.size();
   }
 
-  public void enqueue(long value) {
+  public void enqueue(T value) {
     list.addLast(value);
   }
 
-  public long dequeue() {
+  public T dequeue() {
     return list.removeFirst();
   }
 
-  public long peek() {
+  public T peek() {
     return list.getFirst();
   }
 }

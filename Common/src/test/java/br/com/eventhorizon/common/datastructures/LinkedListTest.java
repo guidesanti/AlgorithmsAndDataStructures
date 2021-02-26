@@ -9,17 +9,17 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class LinkedListTest {
 
-  private static final long[] VALUES = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+  private static final Integer[] VALUES = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-  private static final long[] EMPTY_LONG_ARRAY = new long[0];
+  private static final Integer[] EMPTY_LONG_ARRAY = new Integer[0];
 
   @Test
   public void testConstructors() {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     assertNotNull(list);
     assertTrue(list.isEmpty());
     assertEquals(0, list.size());
-    list = new LinkedList(VALUES);
+    list = new LinkedList<>(VALUES);
     assertNotNull(list);
     assertFalse(list.isEmpty());
     assertEquals(VALUES.length, list.size());
@@ -28,7 +28,7 @@ public class LinkedListTest {
 
   @Test
   public void testAdd() {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     for (int i = 0; i < 10; i++) {
       list.add(i, i);
       assertEquals(i + 1, list.size());
@@ -56,13 +56,13 @@ public class LinkedListTest {
 
   @Test
   public void testAddFirst()  {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     assertTrue(list.isEmpty());
     assertEquals(0, list.size());
     int n = Utils.getRandomInteger(0, 100);
-    long[] values = new long[n];
+    Integer[] values = new Integer[n];
     for (int i = 0; i < n; i++) {
-      long value = Utils.getRandomLong(0, Long.MAX_VALUE);
+      Integer value = Utils.getRandomInteger(0, Integer.MAX_VALUE);
       values[n - i - 1] = value;
       list.addFirst(value);
       assertFalse(list.isEmpty());
@@ -75,13 +75,13 @@ public class LinkedListTest {
 
   @Test
   public void testAddLast()  {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     assertTrue(list.isEmpty());
     assertEquals(0, list.size());
     int n = Utils.getRandomInteger(0, 100);
-    long[] values = new long[n];
+    Integer[] values = new Integer[n];
     for (int i = 0; i < n; i++) {
-      long value = Utils.getRandomLong(0, Long.MAX_VALUE);
+      Integer value = Utils.getRandomInteger(0, Integer.MAX_VALUE);
       values[i] = value;
       list.addLast(value);
       assertFalse(list.isEmpty());
@@ -94,8 +94,8 @@ public class LinkedListTest {
 
   @Test
   public void testRemove() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     int size = list.size();
     assertFalse(list.isEmpty());
     assertEquals(values.length, list.size());
@@ -135,32 +135,32 @@ public class LinkedListTest {
 
   @Test
   public void testRemoveFirst() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
       assertEquals(values[i], list.removeFirst());
       assertEquals(values.length - i - 1, list.size());
     }
-    verifyValues(new long[0], list);
+    verifyValues(new Integer[0], list);
   }
 
   @Test
   public void testRemoveLast() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
       assertEquals(values[values.length - i - 1], list.removeLast());
       assertEquals(values.length - i - 1, list.size());
     }
-    verifyValues(new long[0], list);
+    verifyValues(new Integer[0], list);
   }
 
   @Test
   public void testReplace() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
       list.replace(i, i);
@@ -171,30 +171,30 @@ public class LinkedListTest {
 
   @Test
   public void testSubList() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
 
-    LinkedList subList1 = list.subList(0, 50);
-    long[] subValues1 = Arrays.copyOfRange(values, 0, 50);
+    LinkedList<Integer> subList1 = list.subList(0, 50);
+    Integer[] subValues1 = Arrays.copyOfRange(values, 0, 50);
     verifyValues(subValues1, subList1);
 
-    LinkedList subList2 = list.subList(25, 50);
-    long[] subValues2 = Arrays.copyOfRange(values, 25, 50);
+    LinkedList<Integer> subList2 = list.subList(25, 50);
+    Integer[] subValues2 = Arrays.copyOfRange(values, 25, 50);
     verifyValues(subValues2, subList2);
   }
 
   @Test
   public void testClear() {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     verifyValues(EMPTY_LONG_ARRAY, list);
     list.clear();
     verifyValues(EMPTY_LONG_ARRAY, list);
     list.addFirst(1);
     list.clear();
     verifyValues(EMPTY_LONG_ARRAY, list);
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    list = new LinkedList<>(values);
     verifyValues(values, list);
     list.clear();
     verifyValues(EMPTY_LONG_ARRAY, list);
@@ -202,13 +202,13 @@ public class LinkedListTest {
 
   @Test
   public void testToArray() {
-    LinkedList list = new LinkedList();
+    LinkedList<Integer> list = new LinkedList<>();
     assertNotNull(list.toArray());
     assertEquals(0, list.toArray().length);
     int n = Utils.getRandomInteger(0, 100);
-    long[] values = new long[n];
+    Integer[] values = new Integer[n];
     for (int i = 0; i < n; i++) {
-      long value = Utils.getRandomLong(0, Long.MAX_VALUE);
+      Integer value = Utils.getRandomInteger(0, Integer.MAX_VALUE);
       values[i] = value;
       list.add(i, value);
     }
@@ -218,8 +218,8 @@ public class LinkedListTest {
 
   @Test
   public void testToString() {
-    long[] values = Utils.getRandomLongArray(50, 100, 0, Long.MAX_VALUE);
-    LinkedList list = new LinkedList(values);
+    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
 
     StringBuilder str = new StringBuilder();
@@ -234,7 +234,7 @@ public class LinkedListTest {
     assertEquals(str.toString(), list.toString());
   }
 
-  private void verifyValues(long[] expectedValues, LinkedList list) {
+  private void verifyValues(Integer[] expectedValues, LinkedList<Integer> list) {
     assertEquals(expectedValues.length, list.size());
     assertArrayEquals(expectedValues, list.toArray());
     if (expectedValues.length == 0) {
