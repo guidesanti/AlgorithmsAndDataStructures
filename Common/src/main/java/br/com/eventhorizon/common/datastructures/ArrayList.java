@@ -1,5 +1,7 @@
 package br.com.eventhorizon.common.datastructures;
 
+import br.com.eventhorizon.common.Utils;
+
 import java.util.Arrays;
 
 public class ArrayList {
@@ -23,6 +25,14 @@ public class ArrayList {
   public ArrayList(long[] values) {
     this.values = Arrays.copyOf(values, values.length << 1);
     this.size = values.length;
+  }
+
+  public void add(long value) {
+    if (size == values.length) {
+      increaseCapacity();
+    }
+    values[size] = value;
+    size++;
   }
 
   public void add(int index, long value) {
@@ -50,11 +60,12 @@ public class ArrayList {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
+    long removingElement = values[index];
     for (int i = index; i < size - 1; i++) {
       values[i] = values[i + 1];
     }
     size--;
-    return values[index];
+    return removingElement;
   }
 
   public void replace(int index, long value) {
@@ -94,6 +105,16 @@ public class ArrayList {
 
   public long[] toArray() {
     return Arrays.copyOf(values, values.length);
+  }
+
+  public void shuffle() {
+    for (int i = 0; i < size; i++) {
+      int j = Utils.getRandomInteger(0, size - 1);
+      int k = Utils.getRandomInteger(0, size - 1);
+      long temp = values[j];
+      values[j] = values[k];
+      values[k] = temp;
+    }
   }
 
   private void increaseCapacity() {

@@ -5,16 +5,16 @@ import java.util.function.Function;
 
 public class BinarySearchTree<T extends Comparable<T>> {
 
-  private Node<T> root;
+  protected Node<T> root;
 
-  private int size;
+  protected int size;
 
   public BinarySearchTree() {
-    root = null;
-    size = 0;
+    this.root = null;
+    this.size = 0;
   }
 
-  public void add(T key) {
+  public Node<T> add(T key) {
     Node<T> parent = null;
     Node<T> current = root;
     while (current != null) {
@@ -28,29 +28,48 @@ public class BinarySearchTree<T extends Comparable<T>> {
         current = current.right;
       }
     }
+    Node<T> addedNode;
     if (parent == null) {
-      root = new Node<>(key);
+      addedNode = new Node<>(key);
+      root = addedNode;
     } else if(key.compareTo(parent.key) < 0) {
-      parent.left = new Node<>(key, parent, null, null);
+      addedNode = new Node<>(key, parent);
+      parent.left = addedNode;
     } else {
-      parent.right = new Node<>(key, parent, null, null);
+      addedNode = new Node<>(key, parent);
+      parent.right = addedNode;
     }
+    updateHeight(parent);
     size++;
+    return addedNode;
   }
 
-  public void remove(T key) {
-    Node<T> node = find(key);
-    if (node == null) {
+  public Node<T> remove(T key) {
+    Node<T> removedNode = find(key);
+    if (removedNode == null) {
       throw new NoSuchElementException();
     }
-    if (node.left == null) {
-      transplant(node.right, node);
-    } else if (node.right == null) {
-      transplant(node.left, node);
+    Node<T> aux = removedNode.parent;
+    if (removedNode.left == null) {
+      transplant(removedNode.right, removedNode);
+    } else if (removedNode.right == null) {
+      transplant(removedNode.left, removedNode);
     } else {
-      // TODO
+      Node<T> successor = removedNode.successor();
+      aux = successor;
+      if (successor != removedNode.right) {
+        aux = successor.parent;
+        transplant(successor.right, successor);
+        successor.right = removedNode.right;
+        successor.right.parent = successor;
+      }
+      transplant(successor, removedNode);
+      successor.left = removedNode.left;
+      successor.left.parent = successor;
     }
+    updateHeight(aux);
     size--;
+    return removedNode;
   }
 
   public T minimum() {
@@ -84,7 +103,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return size;
   }
 
-  private Node<T> find(T key) {
+  protected Node<T> find(T key) {
     Node<T> node = root;
     while (node != null) {
       if (key.equals(node.key)) {
@@ -99,7 +118,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return null;
   }
 
-  private void transplant(Node<T> source, Node<T> target) {
+  protected void updateHeight(Node<T> node) {
+    while (node != null) {
+      node.height = Math.max(node.left == null ? 0 : node.left.height, node.right == null ? 0 : node.right.height) + 1;
+      node = node.parent;
+    }
+  }
+
+  protected void transplant(Node<T> source, Node<T> target) {
     if (target.parent == null) {
       root = source;
     } else if (target.parent.left == target) {
@@ -112,39 +138,87 @@ public class BinarySearchTree<T extends Comparable<T>> {
     }
   }
 
+  protected void rotateLeft(Node<T> node) {
+    Node<T> parent = node.parent;
+    Node<T> right = node.right;
+    if (right == null) {
+      return;
+    }
+    Node<T> t2 = right.left;
+    node.right = t2;
+    if (t2 != null) {
+      t2.parent = node;
+    }
+    node.parent = right;
+    right.left = node;
+    right.parent = parent;
+    if (parent == null) {
+      this.root = right;
+    } else if (parent.left == node) {
+      parent.left = right;
+    } else {
+      parent.right = right;
+    }
+    updateHeight(node);
+  }
+
+  protected void rotateRight(Node<T> node) {
+    Node<T> parent = node.parent;
+    Node<T> left = node.left;
+    if (left == null) {
+      return;
+    }
+    Node<T> t2 = left.right;
+    node.left = t2;
+    if (t2 != null) {
+      t2.parent = node;
+    }
+    node.parent = left;
+    left.right = node;
+    left.parent = parent;
+    if (parent == null) {
+      this.root = left;
+    } else if (parent.left == node) {
+      parent.left = left;
+    } else {
+      parent.right = left;
+    }
+    updateHeight(node);
+  }
+
   public Traverser<T> traverser(Traverser.Type type) {
-    return new Traverser<T>(root, type);
+    return new Traverser<>(root, type);
   }
 
   public static class Node<T> {
 
-    private final T key;
+    protected final T key;
 
-    private Node<T> parent;
+    protected int height;
 
-    private Node<T> left;
+    protected Node<T> parent;
 
-    private Node<T> right;
+    protected Node<T> left;
+
+    protected Node<T> right;
 
     public Node(T key) {
       this.key = key;
+      this.height = 1;
     }
 
-    public Node(T key, Node<T> left, Node<T> right) {
+    public Node(T key, Node<T> parent) {
       this.key = key;
-      this.left = left;
-      this.right = right;
-    }
-
-    public Node(T key, Node<T> parent, Node<T> left, Node<T> right) {
-      this.key = key;
+      this.height = 1;
       this.parent = parent;
-      this.left = left;
-      this.right = right;
     }
 
     public T getKey() {
       return key;
+    }
+
+    public int getHeight() {
+      return height;
     }
 
     public Node<T> getParent() {
@@ -171,12 +245,22 @@ public class BinarySearchTree<T extends Comparable<T>> {
       this.right = right;
     }
 
+    public int balanceFactor() {
+      int leftHeight = left == null ? 0 : left.height;
+      int rightHeight = right == null ? 0 : right.height;
+      return rightHeight - leftHeight;
+    }
+
     public boolean hasParent() {
       return parent != null;
     }
 
     public  boolean hasChildren() {
       return left != null || right != null;
+    }
+
+    public boolean isLeaf() {
+      return left == null && right == null;
     }
 
     public Node<T> predecessor() {
@@ -342,15 +426,15 @@ public class BinarySearchTree<T extends Comparable<T>> {
       return !stack.isEmpty();
     }
 
-    public T next() {
-      return traverser.apply(null).key;
+    public Node<T> next() {
+      return traverser.apply(null);
     }
 
     public enum Type {
       DEPTH_FIRST_PREORDER,
       DEPTH_FIRST_INORDER,
       DEPTH_FIRST_POSTORDER,
-      BREADTH_FIRST;
+      BREADTH_FIRST
     }
   }
 }
