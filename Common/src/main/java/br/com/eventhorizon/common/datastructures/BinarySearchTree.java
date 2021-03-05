@@ -1,5 +1,6 @@
 package br.com.eventhorizon.common.datastructures;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
@@ -72,18 +73,18 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return removedNode;
   }
 
-  public T minimum() {
+  public Node<T> minimum() {
     if (root == null) {
       throw new NoSuchElementException();
     }
-    return root.minimum().key;
+    return root.minimum();
   }
 
-  public T maximum() {
+  public Node<T> maximum() {
     if (root == null) {
       throw new NoSuchElementException();
     }
-    return root.maximum().key;
+    return root.maximum();
   }
 
   public void clear() {
@@ -99,7 +100,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return size == 0;
   }
 
-  public int size() {
+  public int size() throws OperationNotSupportedException {
     return size;
   }
 

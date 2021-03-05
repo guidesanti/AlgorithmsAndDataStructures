@@ -3,6 +3,7 @@ package br.com.eventhorizon.common.datastructures;
 import br.com.eventhorizon.common.Utils;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -194,51 +195,8 @@ public class BinarySearchTreeTest {
     assertThrows(DuplicateKeyException.class, () -> tree.add(10));
   }
 
-//  @Test
-//  public void testAddAndRemove1() {
-//    BinarySearchTree<Integer> tree = new BinarySearchTree<>();
-//
-//    tree.add(8);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(4);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(12);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(2);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(6);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(10);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(14);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(1);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(3);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(5);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(7);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(9);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(11);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(13);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.add(15);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//
-//    tree.remove(1);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.remove(3);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//    tree.remove(6);
-//    assertTrue(TestUtils.isBinarySearchTree(tree));
-//  }
-
   @Test
-  public void testAddAndRemove() {
+  public void testAddAndRemove() throws OperationNotSupportedException {
     BinarySearchTree<Integer> tree = new BinarySearchTree<>();
     int n = Utils.getRandomInteger(100, 10000);
     ArrayList keys = new ArrayList(n);
@@ -254,7 +212,11 @@ public class BinarySearchTreeTest {
       count++;
       assertTrue(TestUtils.isBinarySearchTree(tree));
       assertFalse(tree.isEmpty());
-      assertEquals(count, tree.size());
+      try {
+        assertEquals(count, tree.size());
+      } catch (OperationNotSupportedException e) {
+        e.printStackTrace();
+      }
       assertTrue(tree.contains(key));
     }
 
@@ -290,8 +252,8 @@ public class BinarySearchTreeTest {
       try {
         tree.add(key);
         assertTrue(TestUtils.isBinarySearchTree(tree));
-        assertEquals(min, tree.minimum());
-        assertEquals(max, tree.maximum());
+        assertEquals(min, tree.minimum().key);
+        assertEquals(max, tree.maximum().key);
       } catch (DuplicateKeyException e) {
         // Do nothing just avoid stopping the test because of duplicates
       }
@@ -315,7 +277,7 @@ public class BinarySearchTreeTest {
   }
 
   @Test
-  public void testIsEmptyAndClear() {
+  public void testIsEmptyAndClear() throws OperationNotSupportedException {
     BinarySearchTree<Integer> tree = new BinarySearchTree<>();
     assertTrue(tree.isEmpty());
     assertEquals(0, tree.size());

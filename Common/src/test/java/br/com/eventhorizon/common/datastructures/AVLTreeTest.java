@@ -3,6 +3,7 @@ package br.com.eventhorizon.common.datastructures;
 import br.com.eventhorizon.common.Utils;
 import org.junit.jupiter.api.Test;
 
+import javax.naming.OperationNotSupportedException;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 
@@ -22,80 +23,7 @@ public class AVLTreeTest {
   }
 
   @Test
-  public void testAddAndRemove1() {
-    AVLTree<Integer> tree = new AVLTree<>();
-
-    tree.add(0);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(3);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(5);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(9);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(4);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(14);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(15);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(7);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(2);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(1);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(6);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(11);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(13);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(8);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(10);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(16);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.add(12);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-
-    tree.remove(0);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.remove(3);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.remove(5);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.remove(9);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-    tree.remove(4);
-    assertTrue(TestUtils.isBinarySearchTree(tree));
-    assertTrue(TestUtils.isAvlTree(tree));
-  }
-
-  @Test
-  public void testAddAndRemove() {
+  public void testAddAndRemove() throws OperationNotSupportedException {
     AVLTree<Integer> tree = new AVLTree<>();
     int n = Utils.getRandomInteger(100, 10000);
     ArrayList keys = new ArrayList(n);
@@ -150,8 +78,8 @@ public class AVLTreeTest {
       try {
         tree.add(key);
         assertTrue(TestUtils.isBinarySearchTree(tree));
-        assertEquals(min, tree.minimum());
-        assertEquals(max, tree.maximum());
+        assertEquals(min, tree.minimum().key);
+        assertEquals(max, tree.maximum().key);
       } catch (DuplicateKeyException e) {
         // Do nothing just avoid stopping the test because of duplicates
       }
@@ -176,7 +104,7 @@ public class AVLTreeTest {
   }
 
   @Test
-  public void testIsEmptyAndClear() {
+  public void testIsEmptyAndClear() throws OperationNotSupportedException {
     AVLTree<Integer> tree = new AVLTree<>();
     assertTrue(tree.isEmpty());
     assertEquals(0, tree.size());
