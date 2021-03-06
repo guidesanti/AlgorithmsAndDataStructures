@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.tree;
 
 import java.util.NoSuchElementException;
 
@@ -27,7 +27,7 @@ public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     } else if (removedNode.right == null) {
       transplant(removedNode.left, removedNode);
     } else {
-      Node<T> successor = removedNode.successor();
+      Node<T> successor = TreeUtils.successor(removedNode);
       aux = successor;
       if (successor != removedNode.right) {
         aux = successor.parent;

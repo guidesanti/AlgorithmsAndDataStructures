@@ -1,1 +1,4 @@
 input,expectedOutput
+15 ? 1 + 1 ? 1 + 2 s 1 2 + 1000000000 ? 1000000000 - 1000000000 ? 1000000000 s 999999999 1000000000 - 2 ? 2 - 0 + 9 s 0 9,Not found%Found%3%Found%Not found%1%Not found%10
+5 ? 0 + 0 ? 0 - 0 ? 0,Not found%Found%Not found
+5 + 491572259 ? 491572259 ? 899375874 s 310971296 877523306 + 352411209,Found%Not found%491572259

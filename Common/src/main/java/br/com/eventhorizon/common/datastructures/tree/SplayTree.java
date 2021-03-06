@@ -1,9 +1,11 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.tree;
 
 import javax.naming.OperationNotSupportedException;
 import java.util.NoSuchElementException;
 
-public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class SplayTree<T extends Comparable<T>> {
+
+  protected Node<T> root;
 
   public SplayTree() { }
 
@@ -14,7 +16,6 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
   }
 
-  @Override
   public Node<T> add(T key) {
     Node<T> addedNode = new Node<>(key);
     SplayTree<T> higherTree = split(key);
@@ -27,7 +28,6 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     return  addedNode;
   }
 
-  @Override
   public Node<T> remove(T key) {
     Node<T> removedNode = find(key);
     if (removedNode == null) {
@@ -41,24 +41,48 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     return removedNode;
   }
 
-  @Override
-  protected Node<T> find(T key) {
-    Node<T> foundNode = super.find(key);
-    splay(foundNode);
-    return foundNode;
+  public Node<T> find(T key) {
+    Node<T> last = root;
+    Node<T> node = root;
+    while (node != null) {
+      last = node;
+      if (key.compareTo(node.key) == 0) {
+        break;
+      }
+      if (key.compareTo(node.key) < 0) {
+        node = node.left;
+      } else {
+        node = node.right;
+      }
+    }
+    splay(last);
+    return node;
   }
 
-  @Override
+  public void clear() {
+    root = null;
+  }
+
+  public boolean contains(T key) {
+    return find(key) != null;
+  }
+
+  public Node<T> minimum() {
+    return TreeUtils.minimum(this.root);
+  }
+
+  public Node<T> maximum() {
+    return TreeUtils.maximum(this.root);
+  }
+
   public boolean isEmpty() {
     return root == null;
   }
 
-  @Override
   public int size() throws OperationNotSupportedException {
     throw new OperationNotSupportedException();
   }
 
-  @Override
   protected void rotateLeft(Node<T> node) {
     Node<T> parent = node.parent;
     Node<T> right = node.right;
@@ -82,7 +106,6 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     }
   }
 
-  @Override
   protected void rotateRight(Node<T> node) {
     Node<T> parent = node.parent;
     Node<T> left = node.left;
@@ -136,7 +159,6 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
   protected void join(SplayTree<T> tree) {
     if (this.root == null) {
       this.root = tree.root;
-      this.size = tree.size;
     } else {
       if (tree.root != null && this.root.key.compareTo(tree.root.key) > 0) {
         throw new RuntimeException("Trees cannot be merged");
@@ -152,8 +174,10 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
 
   protected SplayTree<T> split(T key) {
     Node<T> splitNode = null;
+    Node<T> last = null;
     Node<T> node = root;
     while (node != null) {
+      last = node;
       if (key.compareTo(node.key) >= 0) {
         splitNode = node;
       }
@@ -166,6 +190,7 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
         node = node.right;
       }
     }
+    splay(last);
     return split(splitNode);
   }
 
@@ -176,7 +201,6 @@ public class SplayTree<T extends Comparable<T>> extends BinarySearchTree<T> {
     } else {
       if (node == null) {
         higherTree = new SplayTree<>(root);
-        higherTree.size = size;
         this.clear();
       } else {
         splay(node);

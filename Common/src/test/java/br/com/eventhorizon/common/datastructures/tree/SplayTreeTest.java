@@ -1,11 +1,12 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.tree;
 
 import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.datastructures.ArrayList;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.naming.OperationNotSupportedException;
 
-import static br.com.eventhorizon.common.datastructures.BinarySearchTree.Node;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SplayTreeTest {
@@ -27,7 +28,7 @@ public class SplayTreeTest {
       int key = (int) keys.get(i);
       tree.add(key);
       count++;
-      assertTrue(TestUtils.isSplayTree(tree));
+      Assertions.assertTrue(TreeTestUtils.isSplayTree(tree));
       assertFalse(tree.isEmpty());
       assertTrue(tree.contains(key));
     }
@@ -36,7 +37,7 @@ public class SplayTreeTest {
       int key = (int) keys.remove(0);
       tree.remove(key);
       count--;
-      assertTrue(TestUtils.isSplayTree(tree));
+      assertTrue(TreeTestUtils.isSplayTree(tree));
       if (count > 0) {
         assertFalse(tree.isEmpty());
       } else {
@@ -59,7 +60,7 @@ public class SplayTreeTest {
     for (int i = 0; i < n; i++) {
       int key = (int) keys.get(i);
       tree.add(key);
-      assertTrue(TestUtils.isSplayTree(tree));
+      assertTrue(TreeTestUtils.isSplayTree(tree));
     }
 
     for (int i = 0; i < n; i++) {
@@ -73,14 +74,14 @@ public class SplayTreeTest {
 
   @Test
   public void testSplay() {
-    SplayTree<Integer> tree = TestUtils.generateSplayTree(1000);
-    assertTrue(TestUtils.isSplayTree(tree));
+    SplayTree<Integer> tree = TreeTestUtils.generateSplayTree(1000);
+    assertTrue(TreeTestUtils.isSplayTree(tree));
     for (int i = 0; i < 1000; i++) {
       int key = Utils.getRandomInteger(0, 99);
       Node<Integer> node = tree.find(key);
       assertNotNull(node);
       tree.splay(node);
-      assertTrue(TestUtils.isSplayTree(tree));
+      assertTrue(TreeTestUtils.isSplayTree(tree));
       assertEquals(node, tree.root);
     }
   }
@@ -112,8 +113,8 @@ public class SplayTreeTest {
     SplayTree<Integer> higherTree = tree.split((Node<Integer>) null);
     assertNotNull(higherTree);
     assertNotSame(tree, higherTree);
-    assertTrue(TestUtils.isSplayTree(tree));
-    assertTrue(TestUtils.isSplayTree(higherTree));
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
     assertTrue(tree.isEmpty());
     assertFalse(tree.contains(10));
     assertFalse(higherTree.isEmpty());
@@ -125,8 +126,8 @@ public class SplayTreeTest {
       higherTree = tree.split(Utils.getRandomInteger(Integer.MIN_VALUE, 9));
       assertNotNull(higherTree);
       assertNotSame(tree, higherTree);
-      assertTrue(TestUtils.isSplayTree(tree));
-      assertTrue(TestUtils.isSplayTree(higherTree));
+      assertTrue(TreeTestUtils.isSplayTree(tree));
+      assertTrue(TreeTestUtils.isSplayTree(higherTree));
       assertTrue(tree.isEmpty());
       assertFalse(tree.contains(10));
       assertFalse(higherTree.isEmpty());
@@ -138,8 +139,8 @@ public class SplayTreeTest {
     higherTree = tree.split(10);
     assertNotNull(higherTree);
     assertNotSame(tree, higherTree);
-    assertTrue(TestUtils.isSplayTree(tree));
-    assertTrue(TestUtils.isSplayTree(higherTree));
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
     assertFalse(tree.isEmpty());
     assertTrue(tree.contains(10));
     assertTrue(higherTree.isEmpty());
@@ -151,8 +152,8 @@ public class SplayTreeTest {
       higherTree = tree.split(Utils.getRandomInteger(11, Integer.MAX_VALUE));
       assertNotNull(higherTree);
       assertNotSame(tree, higherTree);
-      assertTrue(TestUtils.isSplayTree(tree));
-      assertTrue(TestUtils.isSplayTree(higherTree));
+      assertTrue(TreeTestUtils.isSplayTree(tree));
+      assertTrue(TreeTestUtils.isSplayTree(higherTree));
       assertFalse(tree.isEmpty());
       assertTrue(tree.contains(10));
       assertTrue(higherTree.isEmpty());
@@ -166,8 +167,8 @@ public class SplayTreeTest {
     SplayTree<Integer> higherTree = tree.split((Node<Integer>) null);
     assertNotNull(higherTree);
     assertNotSame(tree, higherTree);
-    assertTrue(TestUtils.isSplayTree(tree));
-    assertTrue(TestUtils.isSplayTree(higherTree));
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
     assertTrue(tree.isEmpty());
     assertFalse(higherTree.isEmpty());
     assertTrue(higherTree.contains(25));
@@ -194,8 +195,8 @@ public class SplayTreeTest {
     higherTree = tree.split(splitKey);
     assertNotNull(higherTree);
     assertNotSame(tree, higherTree);
-    assertTrue(TestUtils.isSplayTree(tree));
-    assertTrue(TestUtils.isSplayTree(higherTree));
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
     assertTrue(tree.maximum().key.compareTo(splitKey) <= 0);
     assertTrue(higherTree.minimum().key.compareTo(splitKey) > 0);
     for (int i = 0; i < lowerKeys.size(); i++) {
@@ -206,6 +207,41 @@ public class SplayTreeTest {
       assertFalse(tree.contains((int)higherKeys.get(i)));
       assertTrue(higherTree.contains((int)higherKeys.get(i)));
     }
+  }
+
+  @Test
+  public void testSplitOnNonExistingKey() {
+    SplayTree<Integer> tree = createTestTree();
+    SplayTree<Integer> higherTree = tree.split((Node<Integer>) null);
+    assertNotNull(higherTree);
+    assertNotSame(tree, higherTree);
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
+    assertTrue(tree.isEmpty());
+    assertFalse(higherTree.isEmpty());
+    assertTrue(higherTree.contains(25));
+    assertTrue(higherTree.contains(60));
+    assertTrue(higherTree.contains(10));
+    assertTrue(higherTree.contains(45));
+    assertTrue(higherTree.contains(30));
+    assertTrue(higherTree.contains(47));
+    assertTrue(higherTree.contains(46));
+    assertTrue(higherTree.contains(70));
+    assertTrue(higherTree.contains(65));
+    assertTrue(higherTree.contains(99));
+    assertTrue(higherTree.contains(80));
+    assertTrue(higherTree.contains(75));
+    assertTrue(higherTree.contains(90));
+    assertTrue(higherTree.contains(95));
+
+    tree = createTestTree();
+    higherTree = tree.split(45);
+    assertNotNull(higherTree);
+    assertNotSame(tree, higherTree);
+    assertTrue(TreeTestUtils.isSplayTree(tree));
+    assertTrue(TreeTestUtils.isSplayTree(higherTree));
+    assertTrue(tree.maximum().key.compareTo(45) <= 0);
+    assertTrue(higherTree.minimum().key.compareTo(45) > 0);
   }
 
   @Test
@@ -234,36 +270,36 @@ public class SplayTreeTest {
     Node<Integer> node90 = new Node<>(90);
     Node<Integer> node95 = new Node<>(95);
 
-    tree.root.setParent(null);
-    node25.setParent(tree.root);
-    node60.setParent(tree.root);
-    node10.setParent(node25);
-    node45.setParent(node25);
-    node70.setParent(node60);
-    node65.setParent(node70);
-    node99.setParent(node70);
-    node30.setParent(node45);
-    node47.setParent(node45);
-    node46.setParent(node47);
-    node80.setParent(node99);
-    node75.setParent(node80);
-    node90.setParent(node80);
-    node95.setParent(node90);
+    tree.root.parent = null;
+    node25.parent = tree.root;
+    node60.parent = tree.root;
+    node10.parent = node25;
+    node45.parent = node25;
+    node70.parent = node60;
+    node65.parent = node70;
+    node99.parent = node70;
+    node30.parent = node45;
+    node47.parent = node45;
+    node46.parent = node47;
+    node80.parent = node99;
+    node75.parent = node80;
+    node90.parent = node80;
+    node95.parent = node90;
 
-    tree.root.setLeft(node25);
-    tree.root.setRight(node60);
-    node25.setLeft(node10);
-    node25.setRight(node45);
-    node60.setRight(node70);
-    node70.setLeft(node65);
-    node70.setRight(node99);
-    node45.setLeft(node30);
-    node45.setRight(node47);
-    node47.setLeft(node46);
-    node80.setLeft(node75);
-    node80.setRight(node90);
-    node90.setRight(node95);
-    node99.setLeft(node80);
+    tree.root.left = node25;
+    tree.root.right = node60;
+    node25.left = node10;
+    node25.right = node45;
+    node60.right = node70;
+    node70.left = node65;
+    node70.right = node99;
+    node45.left = node30;
+    node45.right = node47;
+    node47.left = node46;
+    node80.left = node75;
+    node80.right = node90;
+    node90.right = node95;
+    node99.left = node80;
 
     return tree;
   }

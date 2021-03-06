@@ -1,6 +1,9 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.tree;
 
 import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.datastructures.ArrayList;
+import br.com.eventhorizon.common.datastructures.DuplicateKeyException;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import javax.naming.OperationNotSupportedException;
@@ -16,8 +19,6 @@ public class AVLTreeTest {
   public void testExceptions() {
     AVLTree<Integer> tree = new AVLTree<>();
     assertThrows(NoSuchElementException.class, () -> tree.remove(10));
-    assertThrows(NoSuchElementException.class, tree::minimum);
-    assertThrows(NoSuchElementException.class, tree::maximum);
     tree.add(10);
     assertThrows(DuplicateKeyException.class, () -> tree.add(10));
   }
@@ -38,8 +39,8 @@ public class AVLTreeTest {
       int key = (int) keys.get(i);
       tree.add(key);
       count++;
-      assertTrue(TestUtils.isBinarySearchTree(tree));
-      assertTrue(TestUtils.isAvlTree(tree));
+      Assertions.assertTrue(TreeTestUtils.isBinarySearchTree(tree));
+      assertTrue(TreeTestUtils.isAvlTree(tree));
       assertFalse(tree.isEmpty());
       assertEquals(count, tree.size());
       assertTrue(tree.contains(key));
@@ -49,8 +50,8 @@ public class AVLTreeTest {
       int key = (int) keys.remove(0);
       tree.remove(key);
       count--;
-      assertTrue(TestUtils.isBinarySearchTree(tree));
-      assertTrue(TestUtils.isAvlTree(tree), Arrays.toString(keysCopy.toArray()));
+      assertTrue(TreeTestUtils.isBinarySearchTree(tree));
+      assertTrue(TreeTestUtils.isAvlTree(tree), Arrays.toString(keysCopy.toArray()));
       if (count > 0) {
         assertFalse(tree.isEmpty());
       } else {
@@ -77,7 +78,7 @@ public class AVLTreeTest {
       }
       try {
         tree.add(key);
-        assertTrue(TestUtils.isBinarySearchTree(tree));
+        assertTrue(TreeTestUtils.isBinarySearchTree(tree));
         assertEquals(min, tree.minimum().key);
         assertEquals(max, tree.maximum().key);
       } catch (DuplicateKeyException e) {
@@ -94,8 +95,8 @@ public class AVLTreeTest {
       int key = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       try {
         tree.add(key);
-        assertTrue(TestUtils.isBinarySearchTree(tree));
-        assertTrue(TestUtils.isAvlTree(tree));
+        assertTrue(TreeTestUtils.isBinarySearchTree(tree));
+        assertTrue(TreeTestUtils.isAvlTree(tree));
         assertTrue(tree.contains(key));
       } catch (DuplicateKeyException e) {
         // Do nothing just avoid stopping the test because of duplicates
@@ -113,8 +114,8 @@ public class AVLTreeTest {
       int key = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       try {
         tree.add(key);
-        assertTrue(TestUtils.isBinarySearchTree(tree));
-        assertTrue(TestUtils.isAvlTree(tree));
+        assertTrue(TreeTestUtils.isBinarySearchTree(tree));
+        assertTrue(TreeTestUtils.isAvlTree(tree));
         assertFalse(tree.isEmpty());
         assertEquals(i + 1, tree.size());
       } catch (DuplicateKeyException e) {

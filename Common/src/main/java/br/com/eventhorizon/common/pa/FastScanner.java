@@ -31,6 +31,10 @@ public class FastScanner {
     return st.nextToken();
   }
 
+  public char nextChar() {
+    return next().charAt(0);
+  }
+
   public int nextInt() {
     return Integer.parseInt(next());
   }
