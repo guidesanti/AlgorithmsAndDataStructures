@@ -33,7 +33,7 @@ public class Node<T> {
     return parent != null;
   }
 
-  public  boolean hasChildren() {
+  public boolean hasChildren() {
     return left != null || right != null;
   }
 

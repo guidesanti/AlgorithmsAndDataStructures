@@ -1,0 +1,11 @@
+input,expectedOutput
+abc 1 0 0 0,abc
+abc 1 0 0 1,bac
+abc 1 0 0 2,bca
+abcdef 2 0 1 1 4 5 0,efcabd
+abcdefghijklmnopqrstuvxyz 1 0 0 0,abcdefghijklmnopqrstuvxyz
+xi 5 0 0 0 1 1 1 0 0 0 0 1 0 0 0 1,ix
+dc 5 1 1 0 0 1 0 0 1 0 0 0 1 0 0 1,cd
+ktfnrhuilp 1 0 4 2,huktfnrilp
+abcdef 2 0 1 1 4 5 0,efcabd
+hlelowrold 2 1 1 2 6 6 7,helloworld

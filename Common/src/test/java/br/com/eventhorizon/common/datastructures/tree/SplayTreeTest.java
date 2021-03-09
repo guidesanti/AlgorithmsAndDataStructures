@@ -5,8 +5,6 @@ import br.com.eventhorizon.common.datastructures.ArrayList;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import javax.naming.OperationNotSupportedException;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SplayTreeTest {
@@ -242,14 +240,6 @@ public class SplayTreeTest {
     assertTrue(TreeTestUtils.isSplayTree(higherTree));
     assertTrue(tree.maximum().key.compareTo(45) <= 0);
     assertTrue(higherTree.minimum().key.compareTo(45) > 0);
-  }
-
-  @Test
-  public void testSize() {
-    SplayTree<Integer> tree = new SplayTree<>();
-    assertThrows(OperationNotSupportedException.class, tree::size);
-    tree.add(10);
-    assertThrows(OperationNotSupportedException.class, tree::size);
   }
 
   private SplayTree<Integer> createTestTree() {

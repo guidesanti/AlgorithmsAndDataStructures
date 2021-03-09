@@ -1,8 +1,5 @@
 package br.com.eventhorizon.common.datastructures.tree;
 
-import javax.naming.OperationNotSupportedException;
-import java.util.NoSuchElementException;
-
 public class SplayTree<T extends Comparable<T>> {
 
   protected Node<T> root;
@@ -31,7 +28,7 @@ public class SplayTree<T extends Comparable<T>> {
   public Node<T> remove(T key) {
     Node<T> removedNode = find(key);
     if (removedNode == null) {
-      throw new NoSuchElementException();
+      return null;
     }
     root = removedNode.left;
     if (removedNode.left != null) {
@@ -77,10 +74,6 @@ public class SplayTree<T extends Comparable<T>> {
 
   public boolean isEmpty() {
     return root == null;
-  }
-
-  public int size() throws OperationNotSupportedException {
-    throw new OperationNotSupportedException();
   }
 
   protected void rotateLeft(Node<T> node) {
@@ -156,7 +149,7 @@ public class SplayTree<T extends Comparable<T>> {
     }
   }
 
-  protected void join(SplayTree<T> tree) {
+  public void join(SplayTree<T> tree) {
     if (this.root == null) {
       this.root = tree.root;
     } else {
@@ -172,7 +165,7 @@ public class SplayTree<T extends Comparable<T>> {
     tree.clear();
   }
 
-  protected SplayTree<T> split(T key) {
+  public SplayTree<T> split(T key) {
     Node<T> splitNode = null;
     Node<T> last = null;
     Node<T> node = root;
