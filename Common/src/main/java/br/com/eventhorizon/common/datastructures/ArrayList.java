@@ -4,30 +4,35 @@ import br.com.eventhorizon.common.Utils;
 
 import java.util.Arrays;
 
-public class ArrayList {
+public class ArrayList<T> {
 
-  private static int DEFAULT_INITIAL_CAPACITY = 1024;
+  private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
-  private long[] values;
+  private static final Object[] EMPTY_VALUES = {};
+
+  private Object[] values;
 
   private int size;
 
   public ArrayList() {
-    this.values = new long[DEFAULT_INITIAL_CAPACITY];
+    this.values = new Object[DEFAULT_INITIAL_CAPACITY];
     this.size = 0;
   }
 
   public ArrayList(int initialCapacity) {
-    this.values = new long[initialCapacity];
+    this.values = new Object[initialCapacity];
     this.size = 0;
   }
 
-  public ArrayList(long[] values) {
-    this.values = Arrays.copyOf(values, values.length << 1);
+  public ArrayList(T[] values) {
+    if (values == null) {
+      throw new IllegalArgumentException("Argument 'values' cannot be null");
+    }
+    this.values = Arrays.copyOf(values, values.length);
     this.size = values.length;
   }
 
-  public void add(long value) {
+  public void add(T value) {
     if (size == values.length) {
       increaseCapacity();
     }
@@ -35,60 +40,62 @@ public class ArrayList {
     size++;
   }
 
-  public void add(int index, long value) {
+  public void add(int index, T value) {
     if (index < 0 || index > size) {
       throw new IndexOutOfBoundsException();
     }
     if (index == values.length) {
       increaseCapacity();
     }
-    for (int i = size; i > index; i--) {
-      values[i] = values[i - 1];
-    }
+    System.arraycopy(values, index, values, index + 1, size - index);
     values[index] = value;
     size++;
   }
 
-  public long get(int index) {
+  @SuppressWarnings("unchecked")
+  public T get(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
-    return values[index];
+    return (T) values[index];
   }
 
-  public long remove(int index) {
+  @SuppressWarnings("unchecked")
+  public T remove(int index) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
-    long removingElement = values[index];
-    for (int i = index; i < size - 1; i++) {
-      values[i] = values[i + 1];
-    }
+    T removingElement = (T) values[index];
+    System.arraycopy(values, index + 1, values, index, size - 1 - index);
     size--;
     return removingElement;
   }
 
-  public void replace(int index, long value) {
+  public void replace(int index, T value) {
     if (index < 0 || index >= size) {
       throw new IndexOutOfBoundsException();
     }
     values[index] = value;
   }
 
-  public ArrayList subList(int fromIndex, int toIndex) {
+  public ArrayList<T> subList(int fromIndex, int toIndex) {
     if (fromIndex < 0 || toIndex >= size || fromIndex > toIndex) {
       throw new IndexOutOfBoundsException();
     }
-    return new ArrayList(Arrays.copyOfRange(values, fromIndex, toIndex));
+    ArrayList<T> subList = new ArrayList<>();
+    subList.values = Arrays.copyOfRange(values, fromIndex, toIndex + 1);
+    subList.size = toIndex - fromIndex + 1;
+    return subList;
   }
 
   public void clear() {
+    values = EMPTY_VALUES;
     size = 0;
   }
 
-  public boolean contains(long value) {
+  public boolean contains(T value) {
     for (int index = 0; index < size; index++) {
-      if (values[index] == value) {
+      if (values[index].equals(value)) {
         return true;
       }
     }
@@ -103,17 +110,37 @@ public class ArrayList {
     return size;
   }
 
-  public long[] toArray() {
-    return Arrays.copyOf(values, values.length);
+  public Object[] toArray() {
+    return Arrays.copyOf(values, size);
+  }
+
+  @SuppressWarnings("unchecked")
+  public T[] toArray(T[] array) {
+    if (array.length < size) {
+      return (T[]) Arrays.copyOf(values, size, array.getClass());
+    }
+    System.arraycopy(values, 0, array, 0, size);
+    if (array.length > size) {
+      array[size] = null;
+    }
+    return array;
   }
 
   public void shuffle() {
     for (int i = 0; i < size; i++) {
       int j = Utils.getRandomInteger(0, size - 1);
       int k = Utils.getRandomInteger(0, size - 1);
-      long temp = values[j];
+      Object temp = values[j];
       values[j] = values[k];
       values[k] = temp;
+    }
+  }
+
+  public void invert() {
+    for (int i = 0; i < values.length / 2; i++) {
+      Object temp = values[i];
+      values[i] = values[values.length - 1 - i];
+      values[values.length - 1 - i] = temp;
     }
   }
 

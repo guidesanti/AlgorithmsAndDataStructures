@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SplayTreeTest {
 
-  private static final long[] KEYS = { 10, 25, 30, 45, 46, 47, 60, 65, 70, 75, 80, 90, 95, 99 };
+  private static final Integer[] KEYS = { 10, 25, 30, 45, 46, 47, 60, 65, 70, 75, 80, 90, 95, 99 };
 
   @Test
   public void testAddAndRemove() {

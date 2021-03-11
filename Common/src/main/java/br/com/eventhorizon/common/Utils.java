@@ -96,6 +96,15 @@ public class Utils {
     return values;
   }
 
+  public static Object[] getRandomObjectArray(int minLength, int maxLength) {
+    int n = getRandomInteger(minLength, maxLength);
+    Object[] values = new Object[n];
+    for (int i = 0; i < n; i++) {
+      values[i] = new Object();
+    }
+    return values;
+  }
+
   public static boolean isMinHeap(long[] a) {
     for (int i = a.length - 1; i > 0; i--) {
       int parent = (i - 1) / 2;
