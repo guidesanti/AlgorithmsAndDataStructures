@@ -7,19 +7,29 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ArrayMaxHeapTest {
+public class ArrayHeapTest {
+
+  // ---------------------------------------
+  // Min heap tests
+  // ---------------------------------------
+
+  // TODO
+
+  // ---------------------------------------
+  // Max heap tests
+  // ---------------------------------------
 
   @Test
   public void testAdd() {
     for (int i = 0; i < 10; i++) {
-      ArrayMaxHeap heap = new ArrayMaxHeap();
+      ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
       assertTrue(heap.isEmpty());
       assertEquals(0, heap.size());
-      assertArrayEquals(new long[0], heap.toArray());
+      assertArrayEquals(new Object[0], heap.toArray());
 
       int n = Utils.getRandomInteger(100, 10000);
       for (int j = 0; j < n; j++) {
-        heap.add(Utils.getRandomLong(0, Long.MAX_VALUE));
+        assertEquals(j, heap.add(Utils.getRandomLong(0, Long.MAX_VALUE)));
         assertFalse(heap.isEmpty());
         assertEquals(j + 1, heap.size());
         assertTrue(Utils.isMaxHeap(heap.toArray()), "Not a max heap");
@@ -31,10 +41,10 @@ public class ArrayMaxHeapTest {
   @Test
   public void testAddWithInitialCapacity() {
     for (int i = 0; i < 10; i++) {
-      ArrayMaxHeap heap = new ArrayMaxHeap(1024);
+      ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX,1024);
       assertTrue(heap.isEmpty());
       assertEquals(0, heap.size());
-      assertArrayEquals(new long[0], heap.toArray());
+      assertArrayEquals(new Object[0], heap.toArray());
 
       int n = Utils.getRandomInteger(100, 10000);
       for (int j = 0; j < n; j++) {
@@ -50,9 +60,9 @@ public class ArrayMaxHeapTest {
   @Test
   public void testAddWithInitialArray() {
     for (int i = 0; i < 10; i++) {
-      long[] data = Utils.getRandomLongArray(100, 10000, 0, Long.MAX_VALUE);
+      Long[] data = Utils.getRandomLongArray(100, 10000, 0, Long.MAX_VALUE);
       int initialSize = data.length;
-      ArrayMaxHeap heap = new ArrayMaxHeap(data);
+      ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX, data);
       assertFalse(heap.isEmpty());
       assertEquals(data.length, heap.size());
       assertTrue(Utils.isMaxHeap(heap.toArray()), "Not a max heap");
@@ -69,77 +79,77 @@ public class ArrayMaxHeapTest {
   }
 
   @Test
-  public void testGetMax() {
-    ArrayMaxHeap heap = new ArrayMaxHeap();
+  public void testPeek() {
+    ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertArrayEquals(new long[0], heap.toArray());
-    assertThrows(NoSuchElementException.class, heap::getMax);
+    assertArrayEquals(new Object[0], heap.toArray());
+    assertThrows(NoSuchElementException.class, heap::peek);
 
     heap.add(1);
     assertFalse(heap.isEmpty());
     assertEquals(1, heap.size());
-    assertEquals(1, heap.getMax());
+    assertEquals(1, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(2);
     assertFalse(heap.isEmpty());
     assertEquals(2, heap.size());
-    assertEquals(2, heap.getMax());
+    assertEquals(2, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(1);
     assertFalse(heap.isEmpty());
     assertEquals(3, heap.size());
-    assertEquals(2, heap.getMax());
+    assertEquals(2, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(3);
     assertFalse(heap.isEmpty());
     assertEquals(4, heap.size());
-    assertEquals(3, heap.getMax());
+    assertEquals(3, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(2);
     assertFalse(heap.isEmpty());
     assertEquals(5, heap.size());
-    assertEquals(3, heap.getMax());
+    assertEquals(3, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(10);
     assertFalse(heap.isEmpty());
     assertEquals(6, heap.size());
-    assertEquals(10, heap.getMax());
+    assertEquals(10, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
   }
 
   @Test
-  public void testRemoveMax() {
-    ArrayMaxHeap heap = new ArrayMaxHeap();
+  public void testPoll() {
+    ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertArrayEquals(new long[0], heap.toArray());
-    assertThrows(NoSuchElementException.class, heap::getMax);
+    assertArrayEquals(new Object[0], heap.toArray());
+    assertThrows(NoSuchElementException.class, heap::peek);
 
     heap.add(3);
     assertFalse(heap.isEmpty());
     assertEquals(1, heap.size());
-    assertEquals(3, heap.getMax());
+    assertEquals(3, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(1);
     assertFalse(heap.isEmpty());
     assertEquals(2, heap.size());
-    assertEquals(3, heap.getMax());
+    assertEquals(3, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
     heap.add(2);
     assertFalse(heap.isEmpty());
     assertEquals(3, heap.size());
-    assertEquals(3, heap.getMax());
+    assertEquals(3, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
-    assertEquals(3, heap.removeMax());
+    assertEquals(3, heap.poll());
     assertFalse(heap.isEmpty());
     assertEquals(2, heap.size());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
@@ -147,31 +157,31 @@ public class ArrayMaxHeapTest {
     heap.add(5);
     assertFalse(heap.isEmpty());
     assertEquals(3, heap.size());
-    assertEquals(5, heap.getMax());
+    assertEquals(5, heap.peek());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
-    assertEquals(5, heap.removeMax());
+    assertEquals(5, heap.poll());
     assertFalse(heap.isEmpty());
     assertEquals(2, heap.size());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
-    assertEquals(2, heap.removeMax());
+    assertEquals(2, heap.poll());
     assertFalse(heap.isEmpty());
     assertEquals(1, heap.size());
     assertTrue(Utils.isMaxHeap(heap.toArray()));
 
-    assertEquals(1, heap.removeMax());
+    assertEquals(1, heap.poll());
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertThrows(NoSuchElementException.class, heap::removeMax);
+    assertThrows(NoSuchElementException.class, heap::poll);
   }
 
   @Test
   public void testClear() {
-    ArrayMaxHeap heap = new ArrayMaxHeap();
+    ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertArrayEquals(new long[0], heap.toArray());
+    assertArrayEquals(new Object[0], heap.toArray());
 
     int n = Utils.getRandomInteger(100, 10000);
     for (int j = 0; j < n; j++) {
@@ -183,16 +193,16 @@ public class ArrayMaxHeapTest {
     heap.clear();
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertArrayEquals(new long[0], heap.toArray());
+    assertArrayEquals(new Object[0], heap.toArray());
   }
 
   @Test
   public void testContains() {
-    ArrayMaxHeap heap = new ArrayMaxHeap();
+    ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
     assertTrue(heap.isEmpty());
     assertEquals(0, heap.size());
-    assertArrayEquals(new long[0], heap.toArray());
-    assertThrows(NoSuchElementException.class, heap::getMax);
+    assertArrayEquals(new Object[0], heap.toArray());
+    assertThrows(NoSuchElementException.class, heap::peek);
 
     heap.add(10);
     assertFalse(heap.isEmpty());

@@ -6,18 +6,6 @@ public class Queue<T> {
 
   public Queue() { }
 
-  public void clear() {
-    list.clear();
-  }
-
-  public boolean isEmpty() {
-    return list.isEmpty();
-  }
-
-  public int size() {
-    return list.size();
-  }
-
   public void enqueue(T value) {
     list.addLast(value);
   }
@@ -28,5 +16,17 @@ public class Queue<T> {
 
   public T peek() {
     return list.getFirst();
+  }
+
+  public void clear() {
+    list.clear();
+  }
+
+  public boolean isEmpty() {
+    return list.isEmpty();
+  }
+
+  public int size() {
+    return list.size();
   }
 }

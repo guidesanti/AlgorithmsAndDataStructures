@@ -4,9 +4,21 @@ import java.util.StringJoiner;
 
 public class Stack<T> {
 
-  private LinkedList<T> list = new LinkedList<>();
+  private final LinkedList<T> list = new LinkedList<>();
 
   public Stack() { }
+
+  public void push(T value) {
+    list.addFirst(value);
+  }
+
+  public T peek() {
+    return list.getFirst();
+  }
+
+  public T pop() {
+    return list.removeFirst();
+  }
 
   public void clear() {
     list.clear();
@@ -18,18 +30,6 @@ public class Stack<T> {
 
   public int size() {
     return list.size();
-  }
-
-  public T peek() {
-    return list.getFirst();
-  }
-
-  public T pop() {
-    return list.removeFirst();
-  }
-
-  public void push(T value) {
-    list.addFirst(value);
   }
 
   @Override

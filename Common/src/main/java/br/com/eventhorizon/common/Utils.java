@@ -86,9 +86,9 @@ public class Utils {
     return ThreadLocalRandom.current().nextLong(min, max < Long.MAX_VALUE ? max + 1 : max);
   }
 
-  public static long[] getRandomLongArray(int minLength, int maxLength, long min, long max) {
+  public static Long[] getRandomLongArray(int minLength, int maxLength, long min, long max) {
     int n = getRandomInteger(minLength, maxLength);
-    long[] values = new long[n];
+    Long[] values = new Long[n];
     for (int i = 0; i < n; i++) {
       long value = Utils.getRandomLong(min, max);
       values[i] = value;
@@ -105,20 +105,20 @@ public class Utils {
     return values;
   }
 
-  public static boolean isMinHeap(long[] a) {
+  public static <T extends Comparable<T>> boolean isMinHeap(Object[] a) {
     for (int i = a.length - 1; i > 0; i--) {
       int parent = (i - 1) / 2;
-      if (a[i] < a[parent]) {
+      if (((T)a[i]).compareTo((T) a[parent]) < 0) {
         return false;
       }
     }
     return true;
   }
 
-  public static boolean isMaxHeap(long[] a) {
+  public static <T extends Comparable<T>> boolean isMaxHeap(Object[] a) {
     for (int i = a.length - 1; i > 0; i--) {
       int parent = (i - 1) / 2;
-      if (a[i] > a[parent]) {
+      if (((T)a[i]).compareTo((T) a[parent]) > 0) {
         return false;
       }
     }
