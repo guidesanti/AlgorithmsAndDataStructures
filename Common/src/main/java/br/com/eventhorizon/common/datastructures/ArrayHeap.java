@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 
-public class ArrayHeap<T extends Comparable<T>> {
+public class ArrayHeap<T> {
 
   private Object[] values;
 
@@ -14,18 +14,19 @@ public class ArrayHeap<T extends Comparable<T>> {
 
   private final BiFunction<T, T, Boolean> compareDown;
 
+  @SuppressWarnings("unchecked")
   public ArrayHeap(Type type) {
     this.values = new Object[0];
     this.size = 0;
     switch (type) {
       case MIN:
-        compareUp = (a, b) -> a.compareTo(b) < 0;
-        compareDown = (a, b) -> a.compareTo(b) > 0;
+        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
+        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
         break;
       case MAX:
       default:
-        compareUp = (a, b) -> a.compareTo(b) > 0;
-        compareDown = (a, b) -> a.compareTo(b) < 0;
+        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
+        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
         break;
     }
   }
@@ -64,29 +65,43 @@ public class ArrayHeap<T extends Comparable<T>> {
     if (size == 0) {
       throw new NoSuchElementException();
     }
-    T max = (T) values[0];
+    T root = (T) values[0];
     values[0] = values[size - 1];
     size--;
     siftDown(0);
-    return max;
+    return root;
   }
 
   public T remove(T key) {
-    // TODO
-    return null;
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    int index = find(key, 0);
+    if (index == -1) {
+      throw new NoSuchElementException();
+    }
+    return remove(index);
   }
 
+  @SuppressWarnings("unchecked")
   public T remove(int index) {
-    // TODO
-    return null;
-  }
-
-  public void replace(T key, T newKey) {
-    // TODO
-  }
-
-  public void replace(int index, T key) {
-    // TODO
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException();
+    }
+    T removedKey = (T) values[index];
+    values[index] = values[size - 1];
+    values[size - 1] = null;
+    size--;
+    if (index == 0) {
+      siftDown(index);
+    } else if (index < size) {
+      if (compareUp.apply((T) values[index], (T) values[parent(index)])) {
+        siftUp(index);
+      } else {
+        siftDown(index);
+      }
+    }
+    return removedKey;
   }
 
   public void clear() {
@@ -94,11 +109,22 @@ public class ArrayHeap<T extends Comparable<T>> {
     size = 0;
   }
 
-  public boolean contains(T value) {
+  public boolean contains(T key) {
     if (size == 0) {
       return false;
     }
-    return contains(value, 0);
+    return find(key, 0) >= 0;
+  }
+
+  public int find(T key) {
+    if (size == 0) {
+      throw new NoSuchElementException();
+    }
+    int found = find(key, 0);
+    if (found >= 0) {
+      return found;
+    }
+    throw new NoSuchElementException();
   }
 
   public boolean isEmpty() {
@@ -114,20 +140,33 @@ public class ArrayHeap<T extends Comparable<T>> {
   }
 
   @SuppressWarnings("unchecked")
-  private boolean contains(T key, int i) {
-    if (i >= size) {
-      return false;
+  public T[] toArray(T[] array) {
+    if (array.length < size) {
+      return (T[]) Arrays.copyOf(values, size, array.getClass());
     }
-    if (compareUp.apply(key, (T) values[i])) {
-      return false;
+    System.arraycopy(values, 0, array, 0, size);
+    if (array.length > size) {
+      array[size] = null;
     }
-    if (key.equals(values[i])) {
-      return true;
+    return array;
+  }
+
+  @SuppressWarnings("unchecked")
+  private int find(T key, int index) {
+    if (index >= size) {
+      return -1;
     }
-    if (contains(key, leftChild(i))) {
-      return true;
+    if (compareUp.apply(key, (T) values[index])) {
+      return -1;
     }
-    return contains(key, rightChild(i));
+    if (key.equals(values[index])) {
+      return index;
+    }
+    int found = find(key, leftChild(index));
+    if (found >= 0) {
+      return found;
+    }
+    return find(key, rightChild(index));
   }
 
   private void buildHeap() {
@@ -138,10 +177,13 @@ public class ArrayHeap<T extends Comparable<T>> {
 
   @SuppressWarnings("unchecked")
   private void siftUp(int i) {
-    if (i == 0) {
+    if (i <= 0) {
       return;
     }
     int parent = parent(i);
+    if (parent < 0) {
+      return;
+    }
     if (compareUp.apply((T) values[i], (T) values[parent])) {
       swap(i, parent);
       siftUp(parent);
@@ -150,6 +192,9 @@ public class ArrayHeap<T extends Comparable<T>> {
 
   @SuppressWarnings("unchecked")
   private void siftDown(int i) {
+    if (i >= size) {
+      return;
+    }
     int leftChild = leftChild(i);
     int rightChild = rightChild(i);
     if (leftChild >= size) {

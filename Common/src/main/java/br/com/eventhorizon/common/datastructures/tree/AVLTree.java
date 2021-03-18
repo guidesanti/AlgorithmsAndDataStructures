@@ -2,7 +2,7 @@ package br.com.eventhorizon.common.datastructures.tree;
 
 import java.util.NoSuchElementException;
 
-public class AVLTree<T extends Comparable<T>> extends BinarySearchTree<T> {
+public class AVLTree<T> extends BinarySearchTree<T> {
 
   public AVLTree() {
     super();

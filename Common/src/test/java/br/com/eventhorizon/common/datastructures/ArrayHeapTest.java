@@ -177,6 +177,32 @@ public class ArrayHeapTest {
   }
 
   @Test
+  public void testRemove() {
+    for (int i = 0; i < 100; i++) {
+      Long[] values = Utils.getSortedRandomLongArray(100, 1000, 0, Long.MAX_VALUE);
+      ArrayHeap<Long> heap = new ArrayHeap<>(ArrayHeap.Type.MAX);
+      assertTrue(heap.isEmpty());
+      assertEquals(0, heap.size());
+      assertArrayEquals(new Object[0], heap.toArray());
+      for (int j = 0; j < values.length; j++) {
+        assertEquals(j, heap.add(values[j]));
+        assertEquals(values[j], heap.peek());
+        assertTrue(Utils.isMaxHeap(heap.toArray()));
+      }
+      for (Long value : values) {
+        assertTrue(heap.contains(value));
+      }
+      for (Long value : values) {
+        assertEquals(value, heap.remove(value));
+        assertTrue(Utils.isMaxHeap(heap.toArray()));
+      }
+      for (Long value : values) {
+        assertFalse(heap.contains(value));
+      }
+    }
+  }
+
+  @Test
   public void testClear() {
     ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
     assertTrue(heap.isEmpty());

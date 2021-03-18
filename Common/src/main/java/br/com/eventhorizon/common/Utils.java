@@ -1,7 +1,6 @@
 package br.com.eventhorizon.common;
 
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -93,6 +92,18 @@ public class Utils {
       long value = Utils.getRandomLong(min, max);
       values[i] = value;
     }
+    return values;
+  }
+
+  public static Long[] getSortedRandomLongArray(int minLength, int maxLength, long min, long max) {
+    int n = getRandomInteger(minLength, maxLength);
+    Long[] values = new Long[n];
+    values[0] = min;
+    for (int i = 1; i < n - 1; i++) {
+      min = Utils.getRandomLong(min, min + ((max - min) / (n - i)));
+      values[i] = min;
+    }
+    values[n - 1] = max;
     return values;
   }
 

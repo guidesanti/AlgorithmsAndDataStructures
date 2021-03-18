@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.tree;
 
-public class SplayTree<T extends Comparable<T>> {
+public class SplayTree<T> {
 
   protected Node<T> root;
 
@@ -38,15 +38,16 @@ public class SplayTree<T extends Comparable<T>> {
     return removedNode;
   }
 
+  @SuppressWarnings("unchecked")
   public Node<T> find(T key) {
     Node<T> last = root;
     Node<T> node = root;
     while (node != null) {
       last = node;
-      if (key.compareTo(node.key) == 0) {
+      if (((Comparable<? super T>)key).compareTo(node.key) == 0) {
         break;
       }
-      if (key.compareTo(node.key) < 0) {
+      if (((Comparable<? super T>)key).compareTo(node.key) < 0) {
         node = node.left;
       } else {
         node = node.right;
@@ -149,11 +150,12 @@ public class SplayTree<T extends Comparable<T>> {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void join(SplayTree<T> tree) {
     if (this.root == null) {
       this.root = tree.root;
     } else {
-      if (tree.root != null && this.root.key.compareTo(tree.root.key) > 0) {
+      if (tree.root != null && ((Comparable<? super T>)this.root.key).compareTo(tree.root.key) > 0) {
         throw new RuntimeException("Trees cannot be merged");
       }
       splay(maximum());
@@ -165,19 +167,20 @@ public class SplayTree<T extends Comparable<T>> {
     tree.clear();
   }
 
+  @SuppressWarnings("unchecked")
   public SplayTree<T> split(T key) {
     Node<T> splitNode = null;
     Node<T> last = null;
     Node<T> node = root;
     while (node != null) {
       last = node;
-      if (key.compareTo(node.key) >= 0) {
+      if (((Comparable<? super T>)key).compareTo(node.key) >= 0) {
         splitNode = node;
       }
       if (key.equals(node.key)) {
         break;
       }
-      if (key.compareTo(node.key) < 0) {
+      if (((Comparable<? super T>)key).compareTo(node.key) < 0) {
         node = node.left;
       } else {
         node = node.right;

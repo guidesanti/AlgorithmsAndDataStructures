@@ -147,7 +147,7 @@ public class LinkedList<T> {
   }
 
   public boolean contains(T value) {
-    Node current = first();
+    Node<T> current = first();
     while (current != NULL) {
       if (current.key == value) {
         return true;

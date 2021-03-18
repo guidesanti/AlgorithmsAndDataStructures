@@ -4,7 +4,7 @@ import br.com.eventhorizon.common.datastructures.DuplicateKeyException;
 
 import java.util.NoSuchElementException;
 
-public class BinarySearchTree<T extends Comparable<T>> {
+public class BinarySearchTree<T> {
 
   protected Node<T> root;
 
@@ -15,6 +15,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     this.size = 0;
   }
 
+  @SuppressWarnings("unchecked")
   public Node<T> add(T key) {
     Node<T> parent = null;
     Node<T> current = root;
@@ -23,7 +24,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
       if (key.equals(current.key)) {
         throw new DuplicateKeyException();
       }
-      if (key.compareTo(current.key) < 0) {
+      if (((Comparable<? super T>)key).compareTo(current.key) < 0) {
         current = current.left;
       } else {
         current = current.right;
@@ -33,7 +34,7 @@ public class BinarySearchTree<T extends Comparable<T>> {
     if (parent == null) {
       addedNode = new Node<>(key);
       root = addedNode;
-    } else if(key.compareTo(parent.key) < 0) {
+    } else if(((Comparable<? super T>)key).compareTo(parent.key) < 0) {
       addedNode = new Node<>(key, parent);
       parent.left = addedNode;
     } else {
@@ -98,13 +99,14 @@ public class BinarySearchTree<T extends Comparable<T>> {
     return size;
   }
 
+  @SuppressWarnings("unchecked")
   protected Node<T> find(T key) {
     Node<T> node = root;
     while (node != null) {
       if (key.equals(node.key)) {
         return node;
       }
-      if (key.compareTo(node.key) < 0) {
+      if (((Comparable<? super T>)key).compareTo(node.key) < 0) {
         node = node.left;
       } else {
         node = node.right;
