@@ -26,25 +26,23 @@ public final class TreeUtils {
     if (node.left != null) {
       return TreeUtils.maximum(node.left);
     }
-    Node<T> ancestor1 = node;
-    Node<T> ancestor2 = node.parent;
-    while (ancestor2 != null && ancestor1 == ancestor2.left) {
-      ancestor1 = ancestor2;
-      ancestor2 = ancestor2.parent;
+    Node<T> parent = node.parent;
+    while (parent != null && node == parent.left) {
+      node = parent;
+      parent = parent.parent;
     }
-    return ancestor2;
+    return parent;
   }
 
   public static <T> Node<T> successor(Node<T> node) {
     if (node.right != null) {
       return TreeUtils.minimum(node.right);
     }
-    Node<T> ancestor1 = node;
-    Node<T> ancestor2 = node.parent;
-    while (ancestor2 != null && ancestor1 == ancestor2.right) {
-      ancestor1 = ancestor2;
-      ancestor2 = ancestor2.parent;
+    Node<T> parent = node.parent;
+    while (parent != null && node == parent.right) {
+      node = parent;
+      parent = parent.parent;
     }
-    return ancestor2;
+    return parent;
   }
 }

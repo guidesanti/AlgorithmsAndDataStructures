@@ -175,6 +175,10 @@ public class LinkedList<T> {
     return values;
   }
 
+  public Iterator iterator() {
+    return new Iterator(first());
+  }
+
   private Node<T> first() {
     return NULL.next;
   }
@@ -194,6 +198,25 @@ public class LinkedList<T> {
     }
     str.append(size > 0 ? current.key : "").append(" }}");
     return str.toString();
+  }
+
+  public class Iterator {
+
+    Node<T> next;
+
+    private Iterator(Node<T> next) {
+      this.next = next;
+    }
+
+    public boolean hasNext() {
+      return next != null;
+    }
+
+    public T next() {
+      Node<T> aux = next;
+      next = next.next;
+      return aux.key;
+    }
   }
 
   private static class Node<T> {
