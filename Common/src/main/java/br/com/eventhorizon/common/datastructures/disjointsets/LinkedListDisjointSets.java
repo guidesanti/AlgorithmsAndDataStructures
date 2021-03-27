@@ -3,24 +3,8 @@ package br.com.eventhorizon.common.datastructures.disjointsets;
 /**
  * A collection of disjoint sets with implementation based on linked lists.
  * Weighted union heuristic is used to improve performance.
- *
- * @param <T> The type of objects that sets contains
  */
-public class LinkedListDisjointSets<T> {
-
-  private final Set NULL;
-
-  private int count;
-
-  /**
-   * Creates a new collection of disjoint sets.
-   */
-  public LinkedListDisjointSets() {
-    NULL = new Set();
-    NULL.next = NULL;
-    NULL.previous = NULL;
-    count = 0;
-  }
+public class LinkedListDisjointSets {
 
   /**
    * Creates a new set whose only member is object.
@@ -28,16 +12,15 @@ public class LinkedListDisjointSets<T> {
    * @param object The only member of the set to be created
    * @return The representative node of the created set
    */
-  public Node build(T object) {
+  public static <T> Node<T> build(T object) {
     if (object == null) {
       throw new IllegalArgumentException("object cannot be null");
     }
-    Set set = new Set();
-    Node node = new Node(set, object);
+    Set<T> set = new Set<>();
+    Node<T> node = new Node<>(set, object);
     set.first = node;
     set.last = node;
     set.size = 1;
-    addSet(set);
     return node;
   }
 
@@ -48,116 +31,66 @@ public class LinkedListDisjointSets<T> {
    * @param node2 Some node of the second set
    * @return The representative node of the resulting set
    */
-  public Node union(Node node1, Node node2) {
-    Set set1 = node1.set;
-    Set set2 = node2.set;
+  public static <T> Node<T> union(Node<T> node1, Node<T> node2) {
+    Set<T> set1 = node1.set;
+    Set<T> set2 = node2.set;
     if (set1.equals(set2)) {
-      throw new IllegalStateException("Nodes are already on the same set");
+      return set1.first;
     }
-    Set first = set1;
-    Set second = set2;
+    Set<T> first = set1;
+    Set<T> second = set2;
     if (set1.size < set2.size) {
       first = set2;
       second = set1;
     }
     first.last.next = second.first;
     first.last = second.last;
-    Node node = second.first;
+    Node<T> node = second.first;
     while (node != null) {
       node.set = first;
       node = node.next;
     }
     first.size += second.size;
-    removeSet(second);
     clearSet(second);
     return first.first;
   }
 
   /**
-   * Finds the representative node of the set containing object.
+   * Finds the representative node of the set containing node.
    *
-   * @param object The object to look for its set
+   * @param node The node to look for its set representative
    * @return The representative node of the set containing the object or null if not found
    */
-  public Node find(T object) {
-    if (object == null) {
+  public static <T> Node<T> find(Node<T> node) {
+    if (node == null) {
       return null;
     }
-    Set currentSet = NULL.next;
-    while (currentSet != NULL) {
-      Node node = find(currentSet, object);
-      if (node != null) {
-        return node.set.first;
-      }
-      currentSet = currentSet.next;
-    }
-    return null;
+    return node.set.first;
   }
 
-  /**
-   * Counts the current number of sets.
-   *
-   * @return The number of sets
-   */
-  public int count() {
-    return count;
-  }
-
-  private void addSet(Set set) {
-    set.next = NULL.next;
-    set.previous = NULL;
-    set.next.previous = set;
-    set.previous.next = set;
-    count++;
-  }
-
-  private void removeSet(Set set) {
-    set.next.previous = set.previous;
-    set.previous.next = set.next;
-    clearSet(set);
-    count--;
-  }
-
-  private void clearSet(Set set) {
-    set.next = null;
-    set.previous = null;
+  private static <T> void clearSet(Set<T> set) {
     set.first = null;
     set.last = null;
   }
 
-  private Node find(Set set, T object) {
-    Node currentNode = set.first;
-    while (currentNode != null) {
-      if (currentNode.object.equals(object)) {
-        return currentNode.set.first;
-      }
-      currentNode = currentNode.next;
-    }
-    return null;
+  private static class Set<T> {
+
+    protected Node<T> first;
+
+    protected Node<T> last;
+
+    protected int size;
   }
 
-  private class Set {
+  public static class Node<T> {
 
-    private Set next;
+    protected Set<T> set;
 
-    private Set previous;
-
-    private Node first;
-
-    private Node last;
-
-    private int size;
-  }
-
-  public class Node {
-
-    private Set set;
-
-    private Node next;
+    protected Node<T> next;
 
     private final T object;
 
-    private Node(Set set, T object) {
+    private Node(Set<T> set, T object) {
       this.set = set;
       this.next = null;
       this.object = object;

@@ -13,18 +13,15 @@ public class LinkedListDisjointSetsTest {
 
   @Test
   public void testBuildAndFind() {
-    LinkedListDisjointSets<Object> disjointSets = new LinkedListDisjointSets<>();
-    assertThrows(IllegalArgumentException.class, () -> disjointSets.build(null));
-    assertNull(disjointSets.find(null));
-    List<LinkedListDisjointSets<Object>.Node> setRepresentatives = new ArrayList<>();
+    assertThrows(IllegalArgumentException.class, () -> LinkedListDisjointSets.build(null));
+    assertNull(LinkedListDisjointSets.find(null));
+    List<LinkedListDisjointSets.Node<Object>> setRepresentatives = new ArrayList<>();
     Object[] objects = Utils.getRandomObjectArray(100, 1000);
 
-    // Creating sets
-    for (int i = 0; i < objects.length; i++) {
-      LinkedListDisjointSets<Object>.Node setRepresentative = disjointSets.build(objects[i]);
+    for (Object object : objects) {
+      LinkedListDisjointSets.Node<Object> setRepresentative = LinkedListDisjointSets.build(object);
       assertNotNull(setRepresentative);
-      assertEquals(i + 1, disjointSets.count());
-      LinkedListDisjointSets<Object>.Node setRepresentativeFound = disjointSets.find(objects[i]);
+      LinkedListDisjointSets.Node<Object> setRepresentativeFound = LinkedListDisjointSets.find(setRepresentative);
       assertEquals(setRepresentative, setRepresentativeFound);
       assertFalse(setRepresentatives.contains(setRepresentative));
       setRepresentatives.add(setRepresentative);
@@ -33,96 +30,114 @@ public class LinkedListDisjointSetsTest {
 
   @Test
   public void testUnionAndFind() {
-    LinkedListDisjointSets<Integer> disjointSets = new LinkedListDisjointSets<>();
-    LinkedListDisjointSets<Integer>.Node sr0 = disjointSets.build(0);
-    LinkedListDisjointSets<Integer>.Node sr1 = disjointSets.build(1);
-    LinkedListDisjointSets<Integer>.Node sr2 = disjointSets.build(2);
-    LinkedListDisjointSets<Integer>.Node sr3 = disjointSets.build(3);
-    LinkedListDisjointSets<Integer>.Node sr4 = disjointSets.build(4);
-    LinkedListDisjointSets<Integer>.Node sr5 = disjointSets.build(5);
-    LinkedListDisjointSets<Integer>.Node sr6 = disjointSets.build(6);
-    LinkedListDisjointSets<Integer>.Node sr7 = disjointSets.build(7);
-    LinkedListDisjointSets<Integer>.Node sr8 = disjointSets.build(8);
-    LinkedListDisjointSets<Integer>.Node sr9 = disjointSets.build(9);
-
-    assertEquals(10, disjointSets.count());
-    for (int i = -100; i < 0; i++) {
-      assertNull(disjointSets.find(i));
-    }
-    for (int i = 10; i < 100; i++) {
-      assertNull(disjointSets.find(i));
-    }
+    LinkedListDisjointSets.Node<Integer> sr0 = LinkedListDisjointSets.build(0);
+    LinkedListDisjointSets.Node<Integer> sr1 = LinkedListDisjointSets.build(1);
+    LinkedListDisjointSets.Node<Integer> sr2 = LinkedListDisjointSets.build(2);
+    LinkedListDisjointSets.Node<Integer> sr3 = LinkedListDisjointSets.build(3);
+    LinkedListDisjointSets.Node<Integer> sr4 = LinkedListDisjointSets.build(4);
+    LinkedListDisjointSets.Node<Integer> sr5 = LinkedListDisjointSets.build(5);
+    LinkedListDisjointSets.Node<Integer> sr6 = LinkedListDisjointSets.build(6);
+    LinkedListDisjointSets.Node<Integer> sr7 = LinkedListDisjointSets.build(7);
+    LinkedListDisjointSets.Node<Integer> sr8 = LinkedListDisjointSets.build(8);
+    LinkedListDisjointSets.Node<Integer> sr9 = LinkedListDisjointSets.build(9);
 
     // Union of 3 and 4
-    sr3 = disjointSets.union(sr3, sr4);
-    assertEquals(9, disjointSets.count());
-    assertEquals(sr3, disjointSets.find(3));
-    assertEquals(sr3, disjointSets.find(4));
-    assertEquals(3, sr3.getObject());
-    LinkedListDisjointSets<Integer>.Node finalSr = sr3;
-    assertThrows(IllegalStateException.class, () -> disjointSets.union(finalSr, sr4));
+    LinkedListDisjointSets.Node<Integer> u1 = LinkedListDisjointSets.union(sr3, sr4);
+    assertEquals(sr3, u1);
+    assertEquals(3, u1.getObject());
+    assertEquals(u1, LinkedListDisjointSets.find(sr3));
+    assertEquals(u1, LinkedListDisjointSets.find(sr4));
+    assertEquals(u1, LinkedListDisjointSets.union(sr3, sr4));
+    assertEquals(sr3.set, sr4.set);
 
     // Union of 3, 4 and 8
-    sr3 = disjointSets.union(sr3, sr8);
-    assertEquals(8, disjointSets.count());
-    assertEquals(sr3, disjointSets.find(3));
-    assertEquals(sr3, disjointSets.find(4));
-    assertEquals(sr3, disjointSets.find(8));
-    assertEquals(3, sr3.getObject());
-    assertThrows(IllegalStateException.class, () -> disjointSets.union(finalSr, sr8));
+    LinkedListDisjointSets.Node<Integer> u2 = LinkedListDisjointSets.union(sr3, sr8);
+    assertEquals(sr3, u2);
+    assertEquals(3, u2.getObject());
+    assertEquals(u2, LinkedListDisjointSets.find(sr3));
+    assertEquals(u2, LinkedListDisjointSets.find(sr4));
+    assertEquals(u2, LinkedListDisjointSets.find(sr8));
+    assertEquals(u2, LinkedListDisjointSets.union(sr3, sr4));
+    assertEquals(u2, LinkedListDisjointSets.union(sr4, sr8));
+    assertEquals(sr3.set, sr4.set);
+    assertEquals(sr3.set, sr8.set);
 
     // Union of 5 and 9
-    sr5 = disjointSets.union(sr5, sr9);
-    assertEquals(7, disjointSets.count());
-    assertEquals(sr5, disjointSets.find(5));
-    assertEquals(sr5, disjointSets.find(9));
-    assertEquals(5, sr5.getObject());
-    LinkedListDisjointSets<Integer>.Node finalSr1 = sr5;
-    assertThrows(IllegalStateException.class, () -> disjointSets.union(finalSr1, sr9));
+    LinkedListDisjointSets.Node<Integer> u3 = LinkedListDisjointSets.union(sr9, sr5);
+    assertEquals(sr9, u3);
+    assertEquals(9, u3.getObject());
+    assertEquals(u3, LinkedListDisjointSets.find(sr5));
+    assertEquals(u3, LinkedListDisjointSets.find(sr9));
+    assertEquals(u3, LinkedListDisjointSets.union(sr5, sr9));
+    assertEquals(sr5.set, sr9.set);
 
     // Union of 5, 9 and 7
-    sr5 = disjointSets.union(sr7, sr5);
-    assertEquals(6, disjointSets.count());
-    assertEquals(sr5, disjointSets.find(5));
-    assertEquals(sr5, disjointSets.find(9));
-    assertEquals(sr5, disjointSets.find(7));
-    assertEquals(5, sr5.getObject());
-    LinkedListDisjointSets<Integer>.Node finalSr2 = sr5;
-    assertThrows(IllegalStateException.class, () -> disjointSets.union(finalSr2, sr7));
+    LinkedListDisjointSets.Node<Integer> u4 = LinkedListDisjointSets.union(sr7, sr5);
+    assertEquals(sr9, u4);
+    assertEquals(9, u4.getObject());
+    assertEquals(u4, LinkedListDisjointSets.find(sr5));
+    assertEquals(u4, LinkedListDisjointSets.find(sr9));
+    assertEquals(u4, LinkedListDisjointSets.find(sr7));
+    assertEquals(u4, LinkedListDisjointSets.union(sr5, sr7));
+    assertEquals(u4, LinkedListDisjointSets.union(sr7, sr9));
+    assertEquals(sr5.set, sr7.set);
+    assertEquals(sr5.set, sr9.set);
 
     // Union of 0, 1, 2 and 6
-    sr0 = disjointSets.union(sr0, sr1);
-    sr0 = disjointSets.union(sr0, sr2);
-    sr0 = disjointSets.union(sr0, sr6);
-    assertEquals(3, disjointSets.count());
-    assertEquals(sr0, disjointSets.find(0));
-    assertEquals(sr0, disjointSets.find(1));
-    assertEquals(sr0, disjointSets.find(2));
-    assertEquals(sr0, disjointSets.find(6));
-    assertEquals(0, sr0.getObject());
+    LinkedListDisjointSets.union(sr0, sr1);
+    LinkedListDisjointSets.union(sr2, sr1);
+    LinkedListDisjointSets.Node<Integer> u5 = LinkedListDisjointSets.union(sr1, sr6);
+    assertEquals(sr0, u5);
+    assertEquals(0, u5.getObject());
+    assertEquals(u5, LinkedListDisjointSets.find(sr0));
+    assertEquals(u5, LinkedListDisjointSets.find(sr1));
+    assertEquals(u5, LinkedListDisjointSets.find(sr2));
+    assertEquals(u5, LinkedListDisjointSets.find(sr6));
+    assertEquals(u5, LinkedListDisjointSets.union(sr0, sr1));
+    assertEquals(u5, LinkedListDisjointSets.union(sr2, sr1));
+    assertEquals(u5, LinkedListDisjointSets.union(sr2, sr6));
+    assertEquals(sr0.set, sr1.set);
+    assertEquals(sr0.set, sr2.set);
+    assertEquals(sr0.set, sr6.set);
 
     // Union of all remaining
-    sr0 = disjointSets.union(sr0, sr3);
-    assertEquals(2, disjointSets.count());
-    assertEquals(sr0, disjointSets.find(0));
-    assertEquals(sr0, disjointSets.find(1));
-    assertEquals(sr0, disjointSets.find(2));
-    assertEquals(sr0, disjointSets.find(3));
-    assertEquals(sr0, disjointSets.find(4));
-    assertEquals(sr0, disjointSets.find(6));
-    assertEquals(sr0, disjointSets.find(8));
-    assertEquals(0, sr0.getObject());
-    sr0 = disjointSets.union(sr5, sr0);
-    assertEquals(sr0, disjointSets.find(0));
-    assertEquals(sr0, disjointSets.find(1));
-    assertEquals(sr0, disjointSets.find(2));
-    assertEquals(sr0, disjointSets.find(3));
-    assertEquals(sr0, disjointSets.find(4));
-    assertEquals(sr0, disjointSets.find(5));
-    assertEquals(sr0, disjointSets.find(6));
-    assertEquals(sr0, disjointSets.find(7));
-    assertEquals(sr0, disjointSets.find(8));
-    assertEquals(sr0, disjointSets.find(9));
-    assertEquals(0, sr0.getObject());
+    LinkedListDisjointSets.Node<Integer> u6 = LinkedListDisjointSets.union(sr0, sr3);
+    assertEquals(sr0, u6);
+    assertEquals(0, u6.getObject());
+    assertEquals(u6, LinkedListDisjointSets.find(sr0));
+    assertEquals(u6, LinkedListDisjointSets.find(sr1));
+    assertEquals(u6, LinkedListDisjointSets.find(sr2));
+    assertEquals(u6, LinkedListDisjointSets.find(sr3));
+    assertEquals(u6, LinkedListDisjointSets.find(sr4));
+    assertEquals(u6, LinkedListDisjointSets.find(sr6));
+    assertEquals(u6, LinkedListDisjointSets.find(sr8));
+    LinkedListDisjointSets.Node<Integer> u7 = LinkedListDisjointSets.union(sr5, sr4);
+    assertEquals(sr0, u7);
+    assertEquals(0, u7.getObject());
+    assertEquals(sr0.set, sr1.set);
+    assertEquals(sr0.set, sr2.set);
+    assertEquals(sr0.set, sr3.set);
+    assertEquals(sr0.set, sr4.set);
+    assertEquals(sr0.set, sr6.set);
+    assertEquals(sr0.set, sr8.set);
+    assertEquals(u7, LinkedListDisjointSets.find(sr0));
+    assertEquals(u7, LinkedListDisjointSets.find(sr1));
+    assertEquals(u7, LinkedListDisjointSets.find(sr2));
+    assertEquals(u7, LinkedListDisjointSets.find(sr3));
+    assertEquals(u7, LinkedListDisjointSets.find(sr4));
+    assertEquals(u7, LinkedListDisjointSets.find(sr5));
+    assertEquals(u7, LinkedListDisjointSets.find(sr6));
+    assertEquals(u7, LinkedListDisjointSets.find(sr7));
+    assertEquals(u7, LinkedListDisjointSets.find(sr8));
+    assertEquals(u7, LinkedListDisjointSets.find(sr9));
+    assertEquals(sr0.set, sr1.set);
+    assertEquals(sr0.set, sr2.set);
+    assertEquals(sr0.set, sr3.set);
+    assertEquals(sr0.set, sr4.set);
+    assertEquals(sr0.set, sr5.set);
+    assertEquals(sr0.set, sr6.set);
+    assertEquals(sr0.set, sr7.set);
+    assertEquals(sr0.set, sr8.set);
+    assertEquals(sr0.set, sr9.set);
   }
 }
