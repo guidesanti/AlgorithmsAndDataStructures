@@ -2,6 +2,7 @@ package br.com.eventhorizon.common.datastructures.disjointsets;
 
 /**
  * A collection of disjoint sets with implementation based on linked lists.
+ * Weighted union heuristic is used to improve performance.
  *
  * @param <T> The type of objects that sets contains
  */
@@ -9,7 +10,7 @@ public class LinkedListDisjointSets<T> {
 
   private final Set NULL;
 
-  private int count = 0;
+  private int count;
 
   /**
    * Creates a new collection of disjoint sets.
@@ -18,13 +19,14 @@ public class LinkedListDisjointSets<T> {
     NULL = new Set();
     NULL.next = NULL;
     NULL.previous = NULL;
+    count = 0;
   }
 
   /**
    * Creates a new set whose only member is object.
    *
    * @param object The only member of the set to be created
-   * @return The created set
+   * @return The representative node of the created set
    */
   public Node build(T object) {
     if (object == null) {
@@ -92,6 +94,11 @@ public class LinkedListDisjointSets<T> {
     return null;
   }
 
+  /**
+   * Counts the current number of sets.
+   *
+   * @return The number of sets
+   */
   public int count() {
     return count;
   }

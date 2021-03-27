@@ -32,7 +32,7 @@ public class LinkedListDisjointSetsTest {
   }
 
   @Test
-  public void testMergeAndFind() {
+  public void testUnionAndFind() {
     LinkedListDisjointSets<Integer> disjointSets = new LinkedListDisjointSets<>();
     LinkedListDisjointSets<Integer>.Node sr0 = disjointSets.build(0);
     LinkedListDisjointSets<Integer>.Node sr1 = disjointSets.build(1);
