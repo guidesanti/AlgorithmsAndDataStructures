@@ -18,6 +18,7 @@
     <modules>
         <module>ALGS200x-AlgorithmicDesignAndTechniques</module>
         <module>ALGS201x-DataStructuresFundamentals</module>
+        <module>ALGS202x-GraphAlgorithms</module>
     </modules>
     <packaging>pom</packaging>
 
