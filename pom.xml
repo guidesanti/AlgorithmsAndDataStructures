@@ -13,7 +13,7 @@
     <modules>
         <module>Common</module>
         <module>EDX</module>
-        <module>SortingAlgorithms</module>
+        <module>Algorithms</module>
     </modules>
 
     <properties>

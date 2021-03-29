@@ -1,6 +1,7 @@
 package br.com.eventhorizon.common;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -48,11 +49,7 @@ public class Utils {
 
   public static String getRandomString(CharType type, int minLength, int maxLength) {
     int length = getRandomInteger(minLength, maxLength);
-    StringBuilder string = new StringBuilder();
-    for (int i = 0; i < length; i++) {
-      string.append(getRandomChar(type));
-    }
-    return string.toString();
+    return getRandomString(type, length);
   }
 
   public static int getRandomInteger(int min, int max) {
@@ -114,6 +111,22 @@ public class Utils {
       values[i] = new Object();
     }
     return values;
+  }
+
+  public static int[] listOfIntegersToArray(List<Integer> list) {
+    int[] shifts = new int[list.size()];
+    for (int i = 0; i < shifts.length; i++) {
+      shifts[i] = list.get(i);
+    }
+    return shifts;
+  }
+
+  public static long[] listOfLongsToArray(List<Long> list) {
+    long[] shifts = new long[list.size()];
+    for (int i = 0; i < shifts.length; i++) {
+      shifts[i] = list.get(i);
+    }
+    return shifts;
   }
 
   public static <T extends Comparable<T>> boolean isMinHeap(Object[] a) {
