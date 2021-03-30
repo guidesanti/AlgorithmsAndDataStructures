@@ -8,6 +8,8 @@ import java.util.function.Function;
 
 public class TreeTraverser<T extends Comparable<T>> {
 
+  private final Type type;
+
   private final Function<Void, Node<T>> traverser;
 
   private final Stack<Node<T>> stack;
@@ -16,7 +18,8 @@ public class TreeTraverser<T extends Comparable<T>> {
 
   private Node<T> lastVisited;
 
-  public TreeTraverser(Node<T> root, TreeTraverser.Type type) {
+  public TreeTraverser(Node<T> root, Type type) {
+    this.type = type;
     switch (type) {
       case DEPTH_FIRST_PREORDER:
         this.traverser = unused -> depthFirstPreOrder();
@@ -118,7 +121,13 @@ public class TreeTraverser<T extends Comparable<T>> {
   }
 
   public boolean hasNext() {
-    return !stack.isEmpty();
+    if (type == Type.DEPTH_FIRST_PREORDER ||
+        type == Type.DEPTH_FIRST_INORDER ||
+        type == Type.DEPTH_FIRST_POSTORDER) {
+        return !stack.isEmpty();
+    } else {
+      return !queue.isEmpty();
+    }
   }
 
   public Node<T> next() {

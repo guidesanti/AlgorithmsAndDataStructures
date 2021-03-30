@@ -70,5 +70,6 @@ public class TreeTraverserTest {
       assertTrue(traverser.hasNext());
       assertEquals(TreeTestUtils.TREE_BREADTH_FIRST[i], traverser.next().key);
     }
+    assertFalse(traverser.hasNext());
   }
 }
