@@ -85,7 +85,7 @@ public class GraphTraverser {
     }
   }
 
-  public Object next() {
+  public Integer next() {
     return traverser.apply(null);
   }
 
