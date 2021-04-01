@@ -3,14 +3,16 @@ package br.com.eventhorizon.common.datastructures.graphs;
 import br.com.eventhorizon.common.datastructures.LinkedList;
 
 /**
- * Data structure to represent an undirected graph.
+ * Data structure to represent a directed graph.
  * The implementation uses adjacency lists to represent the graph,
  * so for each vertex in the graph a list of its respective adjacent vertices is created and stored.
+ * Note that for each vertex v its respective adjacency list contains all the vertices that could be
+ * reached from the respective vertex v.
  *
  * The number of vertices in the graph is fixed by the time of its creation and cannot be changed
  * later, so only edges can be added to the graph after its constructor is executed.
  */
-public class Graph {
+public class DirectedGraph {
 
   private final int numberOfVertices;
 
@@ -18,14 +20,12 @@ public class Graph {
 
   private final LinkedList<Integer>[] adjacencies;
 
-  private int maxDegree;
-
   /**
    * Creates a graph with vertices and no edges.
    *
    * @param numberOfVertices The number of vertices in the graph
    */
-  public Graph(int numberOfVertices) {
+  public DirectedGraph(int numberOfVertices) {
     this.numberOfVertices = numberOfVertices;
     this.adjacencies = new LinkedList[numberOfVertices];
     for (int i = 0; i < numberOfVertices; i++) {
@@ -36,17 +36,15 @@ public class Graph {
   /**
    * Adds a new edge to the graph.
    *
-   * @param vertex1 The vertex on one side of the edge
-   * @param vertex2 The vertex on the other side of the edge
+   * @param fromVertex The vertex on one side of the edge
+   * @param toVertex The vertex on the other side of the edge
    */
-  public void addEdge(int vertex1, int vertex2) {
-    if (vertex1 < 0 || vertex1 >= numberOfVertices ||
-        vertex2 < 0 || vertex2 >= numberOfVertices) {
+  public void addEdge(int fromVertex, int toVertex) {
+    if (fromVertex < 0 || fromVertex >= numberOfVertices ||
+        toVertex < 0 || toVertex >= numberOfVertices) {
       throw new IndexOutOfBoundsException();
     }
-    adjacencies[vertex1].addLast(vertex2);
-    adjacencies[vertex2].addLast(vertex1);
-    maxDegree = Math.max(maxDegree, Math.max(adjacencies[vertex1].size(), adjacencies[vertex2].size()));
+    adjacencies[fromVertex].addLast(toVertex);
     numberOfEdges++;
   }
 
@@ -69,12 +67,13 @@ public class Graph {
   }
 
   /**
-   * Get the degree of a specific vertex, that is the number of adjacent vertices.
+   * Get the output degree of a specific vertex,
+   * that is the number of vertices that can be reached from the specified vertex.
    *
-   * @param vertex The vertex to look for its degree
-   * @return The number of vertices adjacent to the respective vertex
+   * @param vertex The vertex to look for its output degree
+   * @return The number of vertices that can be reached from vertex <code>vertex</code>
    */
-  public int degree(int vertex) {
+  public int outDegree(int vertex) {
     if (vertex < 0 || vertex >= numberOfVertices) {
       throw new IndexOutOfBoundsException();
     }
@@ -82,24 +81,32 @@ public class Graph {
   }
 
   /**
-   * Gets the maximum degree in the graph.
-   *
-   * @return The maximum degree in the graph
-   */
-  public int maxDegree() {
-    return maxDegree;
-  }
-
-  /**
-   * Gets the list of adjacencies of a specific vertex.
+   * Gets the list of vertices that can be reached from a specific vertex.
    *
    * @param vertex The vertex to look for its respective adjacecies
-   * @return The list of adjacencies of the specific vertex
+   * @return The list of vertices that can be reached from vertex <code>vertex</code>
    */
   public LinkedList<Integer> adjacencies(int vertex) {
     if (vertex < 0 || vertex >= numberOfVertices) {
       throw new IndexOutOfBoundsException();
     }
     return adjacencies[vertex];
+  }
+
+  /**
+   * Creates a new graph that is the reverse of this graph, that is all the edges with
+   * its respective directions reversed.
+   *
+   * @return The respective reverse graph of this
+   */
+  public DirectedGraph reverse() {
+    DirectedGraph graph = new DirectedGraph(numberOfVertices);
+    for (int i = 0; i < numberOfVertices; i++) {
+      LinkedList<Integer> adjacencies = this.adjacencies[i];
+      for (int j = 0; j < adjacencies.size(); j++) {
+        graph.addEdge(adjacencies.get(j), i);
+      }
+    }
+    return graph;
   }
 }

@@ -43,6 +43,7 @@
         <maven.jar.version>3.2.0</maven.jar.version>
         <maven.site.version>3.9.1</maven.site.version>
         <jbehave.version>4.7</jbehave.version>
+        <opencsv.version>5.4</opencsv.version>
 
         <!-- Dependency Versions -->
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
@@ -225,6 +226,14 @@
                 <artifactId>junit-jupiter-engine</artifactId>
                 <version>${junit.jupiter.version}</version>
                 <scope>test</scope>
+            </dependency>
+
+            <!-- OpenCSV -->
+            <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
+            <dependency>
+                <groupId>com.opencsv</groupId>
+                <artifactId>opencsv</artifactId>
+                <version>${opencsv.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -14,4 +14,11 @@
     <description>Sorting algorithms implementations and comparison</description>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+    </dependencies>
+
 </project>

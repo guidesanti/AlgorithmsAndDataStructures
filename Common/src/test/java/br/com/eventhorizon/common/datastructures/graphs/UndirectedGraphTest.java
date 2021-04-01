@@ -2,40 +2,14 @@ package br.com.eventhorizon.common.datastructures.graphs;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.NoSuchElementException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-public class GraphTraverserTest {
-
-  private static final Integer[] DEPTH_FIRST = { 0, 6, 5, 4, 2, 7, 3, 1 };
-
-  private static final Integer[] BREADTH_FIRST = { 0, 1, 2, 5, 6, 3, 7, 4 };
+public class UndirectedGraphTest {
 
   @Test
-  public void testDepthFirstTraverse() {
-    Graph graph = buildGraph();
-    GraphTraverser traverser = new GraphTraverser(graph, 0, GraphTraverser.Type.DEPTH_FIRST);
-    int i = 0;
-    while (traverser.hasNext()) {
-      assertEquals(DEPTH_FIRST[i++], traverser.next());
-    }
-    assertThrows(NoSuchElementException.class, traverser::next);
-  }
-
-  @Test
-  public void testBreadthFirstTraverse() {
-    Graph graph = buildGraph();
-    GraphTraverser traverser = new GraphTraverser(graph, 0, GraphTraverser.Type.BREADTH_FIRST);
-    int i = 0;
-    while (traverser.hasNext()) {
-      assertEquals(BREADTH_FIRST[i++], traverser.next());
-    }
-    assertThrows(NoSuchElementException.class, traverser::next);
-  }
-
-  private Graph buildGraph() {
-    Graph graph = new Graph(8);
+  public void testGraph() {
+    UndirectedGraph graph = new UndirectedGraph(8);
     assertEquals(8, graph.numberOfVertices());
     assertEquals(0, graph.numberOfEdges());
     for (int i = 0; i < 8; i++) {
@@ -78,7 +52,5 @@ public class GraphTraverserTest {
     assertEquals(8, graph.numberOfVertices());
     assertEquals(7, graph.numberOfEdges());
     assertEquals(4, graph.maxDegree());
-
-    return graph;
   }
 }
