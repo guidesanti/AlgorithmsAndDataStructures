@@ -5,6 +5,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,6 +15,8 @@ public class UndirectedUndirectedGraphTraverserTest {
   private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-acyclic-single-component-graph.csv";
 
   private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_TRAVERSE = "/graphs/undirected-acyclic-single-component-graph-traverse.csv";
+
+  private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_PATH = "/graphs/undirected-acyclic-single-component-graph-path.csv";
 
   private static final String UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-acyclic-multi-component-graph.csv";
 
@@ -29,7 +32,7 @@ public class UndirectedUndirectedGraphTraverserTest {
 
   @ParameterizedTest
   @CsvFileSource(resources = UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_TRAVERSE, numLinesToSkip = 1)
-  public void testUndirectedAcyclicSingleComponentGraph(
+  public void testUndirectedAcyclicSingleComponentGraphTraverse(
       UndirectedGraphTraverser.Type type,
       int sourceVertex,
       @ConvertWith(StringToIntegerArrayConverter.class) int[] expectedOrder) {
@@ -48,6 +51,28 @@ public class UndirectedUndirectedGraphTraverserTest {
   }
 
   @ParameterizedTest
+  @CsvFileSource(resources = UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_PATH, numLinesToSkip = 1)
+  public void testUndirectedAcyclicSingleComponentGraphPath(
+      UndirectedGraphTraverser.Type type,
+      int sourceVertex,
+      int destinationVertex,
+      @ConvertWith(StringToIntegerArrayConverter.class) int[] expectedPath) {
+    UndirectedGraph graph = GraphUtils.readUndirectedGraphFromCsvFile(UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH);
+    UndirectedGraphTraverser traverser = new UndirectedGraphTraverser(graph, sourceVertex, type);
+    while (traverser.hasNext()) {
+      if (traverser.next() == destinationVertex) {
+        break;
+      }
+    }
+    assertTrue(traverser.hasPathTo(destinationVertex));
+    int i = 0;
+    Iterator<Integer> actualPath = traverser.pathTo(destinationVertex).iterator();
+    for (int vertex : traverser.pathTo(destinationVertex)) {
+      assertEquals(vertex, expectedPath[i++]);
+    }
+  }
+
+  @ParameterizedTest
   @CsvFileSource(resources = UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH_TRAVERSE, numLinesToSkip = 1)
   public void testUndirectedAcyclicMultiComponentGraph(
       UndirectedGraphTraverser.Type type,
@@ -63,6 +88,9 @@ public class UndirectedUndirectedGraphTraverserTest {
     assertArrayEquals(expectedOrder, actualOrder);
     assertThrows(NoSuchElementException.class, traverser::next);
     assertEquals(traverser.markedCount(), actualOrder.length);
+    for (int vertex : actualOrder) {
+      assertTrue(traverser.hasPathTo(vertex));
+    }
   }
 
   @ParameterizedTest

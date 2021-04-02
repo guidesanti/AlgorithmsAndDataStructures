@@ -4,12 +4,15 @@ import br.com.eventhorizon.common.datastructures.LinkedList;
 import br.com.eventhorizon.common.datastructures.Queue;
 import br.com.eventhorizon.common.datastructures.Stack;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 
 public class UndirectedGraphTraverser {
 
   private final UndirectedGraph graph;
+
+  private final int sourceVertex;
 
   private final Type type;
 
@@ -19,14 +22,15 @@ public class UndirectedGraphTraverser {
 
   private final Queue<Integer> queue;
 
-  private int[] edgeTo;
+  private final int[] edgeTo;
 
   private final boolean[] marked;
 
   private int markedCount;
 
-  public UndirectedGraphTraverser(UndirectedGraph graph, int vertex, Type type) {
+  public UndirectedGraphTraverser(UndirectedGraph graph, int sourceVertex, Type type) {
     this.graph = graph;
+    this.sourceVertex = sourceVertex;
     this.type = type;
     switch (type) {
       case DEPTH_FIRST_PREORDER:
@@ -42,12 +46,12 @@ public class UndirectedGraphTraverser {
         throw new IllegalArgumentException("Unknown type");
     }
     this.stack = new Stack<>();
-    this.stack.push(vertex);
+    this.stack.push(sourceVertex);
     this.queue = new Queue<>();
-    this.queue.enqueue(vertex);
+    this.queue.enqueue(sourceVertex);
     this.edgeTo = new int[graph.numberOfVertices()];
     this.marked = new boolean[graph.numberOfVertices()];
-    this.marked[vertex] = true;
+    this.marked[sourceVertex] = true;
     this.markedCount++;
   }
 
@@ -129,6 +133,28 @@ public class UndirectedGraphTraverser {
 
   public int markedCount() {
     return markedCount;
+  }
+
+  public boolean hasPathTo(int destinationVertex) {
+    if (destinationVertex < 0 || destinationVertex >= graph.numberOfVertices()) {
+      throw new IndexOutOfBoundsException();
+    }
+    return marked[destinationVertex];
+  }
+
+  public Iterable<Integer> pathTo(int destinationVertex) {
+    if (destinationVertex < 0 || destinationVertex >= graph.numberOfVertices()) {
+      throw new IndexOutOfBoundsException();
+    }
+    if (!hasPathTo(destinationVertex)) {
+      return null;
+    }
+    LinkedList<Integer> path = new LinkedList<>();
+    for (int vertex = destinationVertex; vertex != sourceVertex; vertex = edgeTo[vertex]) {
+      path.addFirst(vertex);
+    }
+    path.addFirst(sourceVertex);
+    return path;
   }
 
   public enum Type {

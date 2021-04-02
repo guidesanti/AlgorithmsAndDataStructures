@@ -1,8 +1,9 @@
 package br.com.eventhorizon.common.datastructures;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class LinkedList<T> {
+public class LinkedList<T> implements Iterable<T> {
 
   private final Node<T> NULL = new Node<>(null);
 
@@ -175,8 +176,9 @@ public class LinkedList<T> {
     return values;
   }
 
-  public Iterator iterator() {
-    return new Iterator(first());
+  @Override
+  public Iterator<T> iterator() {
+    return new LinkedListIterator(first());
   }
 
   private Node<T> first() {
@@ -200,18 +202,20 @@ public class LinkedList<T> {
     return str.toString();
   }
 
-  public class Iterator {
+  public class LinkedListIterator implements Iterator<T> {
 
     Node<T> next;
 
-    private Iterator(Node<T> next) {
+    private LinkedListIterator(Node<T> next) {
       this.next = next;
     }
 
+    @Override
     public boolean hasNext() {
-      return next != null;
+      return next != NULL;
     }
 
+    @Override
     public T next() {
       Node<T> aux = next;
       next = next.next;
