@@ -19,7 +19,11 @@ public class UndirectedGraphTraverser {
 
   private final Queue<Integer> queue;
 
+  private int[] edgeTo;
+
   private final boolean[] marked;
+
+  private int markedCount;
 
   public UndirectedGraphTraverser(UndirectedGraph graph, int vertex, Type type) {
     this.graph = graph;
@@ -41,8 +45,10 @@ public class UndirectedGraphTraverser {
     this.stack.push(vertex);
     this.queue = new Queue<>();
     this.queue.enqueue(vertex);
-    marked = new boolean[graph.numberOfVertices()];
-    marked[vertex] = true;
+    this.edgeTo = new int[graph.numberOfVertices()];
+    this.marked = new boolean[graph.numberOfVertices()];
+    this.marked[vertex] = true;
+    this.markedCount++;
   }
 
   private Integer depthFirstPreorder() {
@@ -55,7 +61,9 @@ public class UndirectedGraphTraverser {
       int adjVertex = adjVertices.get(i);
       if (!marked[adjVertex]) {
         stack.push(adjVertex);
+        edgeTo[adjVertex] = vertex;
         marked[adjVertex] = true;
+        markedCount++;
       }
     }
     return vertex;
@@ -73,7 +81,9 @@ public class UndirectedGraphTraverser {
         int adjVertex = adjVertices.get(i);
         if (!marked[adjVertex]) {
           stack.push(adjVertex);
+          edgeTo[adjVertex] = vertex;
           marked[adjVertex] = true;
+          markedCount++;
           stop = false;
         }
       }
@@ -96,7 +106,9 @@ public class UndirectedGraphTraverser {
       int adjVertex = adjVertices.get(i);
       if (!marked[adjVertex]) {
         queue.enqueue(adjVertices.get(i));
+        edgeTo[adjVertex] = vertex;
         marked[adjVertex] = true;
+        markedCount++;
       }
     }
     return vertex;
@@ -115,8 +127,8 @@ public class UndirectedGraphTraverser {
     return traverser.apply(null);
   }
 
-  public boolean[] marked() {
-    return marked;
+  public int markedCount() {
+    return markedCount;
   }
 
   public enum Type {
