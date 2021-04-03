@@ -7,11 +7,17 @@ public class StringToIntegerArrayConverter extends SimpleArgumentConverter {
 
   @Override
   protected Object convert(Object object, Class<?> targetType) throws ArgumentConversionException {
+    if (object == null) {
+      return null;
+    }
     if (!(object instanceof String)) {
       throw new IllegalArgumentException("object must be a String");
     }
     if (!int[].class.isAssignableFrom(targetType)) {
       throw new IllegalArgumentException("targetType must be int[]");
+    }
+    if (((String) object).isEmpty()) {
+      return null;
     }
     String[] strings = ((String) object).split(" ");
     int[] integers = new int[strings.length];
