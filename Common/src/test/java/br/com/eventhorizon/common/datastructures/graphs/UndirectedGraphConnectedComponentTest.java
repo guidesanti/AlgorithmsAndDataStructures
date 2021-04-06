@@ -11,7 +11,7 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class UndirectedGraphConnectedComponentText {
+public class UndirectedGraphConnectedComponentTest {
 
   private static final String UNDIRECTED_GRAPH_COMPONENTS = "/graphs/undirected-graph-components.csv";
 
