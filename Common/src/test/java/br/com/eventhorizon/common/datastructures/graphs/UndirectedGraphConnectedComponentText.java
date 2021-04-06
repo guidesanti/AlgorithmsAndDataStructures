@@ -21,10 +21,12 @@ public class UndirectedGraphConnectedComponentText {
       String graphFileName,
       int sourceVertex,
       int connectedComponentSize,
+      boolean hasCycle,
       @ConvertWith(StringToIntegerArrayConverter.class) int[] vertices) {
     UndirectedGraph graph = GraphUtils.readUndirectedGraphFromCsvFile("src/test/resources/graphs/" + graphFileName);
     UndirectedGraphConnectedComponent connectedComponent = new UndirectedGraphConnectedComponent(graph, sourceVertex);
     assertEquals(connectedComponentSize, connectedComponent.size());
+    assertEquals(hasCycle, connectedComponent.hasCycle());
     Set<Integer> verticesNotInConnectedComponent = new HashSet<>();
     for (int i = 0; i < graph.numberOfVertices(); i++) {
       verticesNotInConnectedComponent.add(i);

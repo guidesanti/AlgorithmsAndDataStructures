@@ -1,0 +1,15 @@
+# First line contains number of vertices and number of edges
+# Following lines contains all edges
+12,12
+0,1
+0,2
+0,3
+3,10
+2,4
+2,5
+2,6
+5,7
+5,8
+5,9
+9,10
+10,11

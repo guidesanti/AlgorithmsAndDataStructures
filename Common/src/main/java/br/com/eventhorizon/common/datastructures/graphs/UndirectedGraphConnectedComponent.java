@@ -14,6 +14,8 @@ public class UndirectedGraphConnectedComponent {
 
   private int size;
 
+  private boolean hasCycle;
+
   /**
    * Creates a connected component with all vertices in the connected component of the source vertex.
    *
@@ -53,22 +55,43 @@ public class UndirectedGraphConnectedComponent {
     return size;
   }
 
+  /**
+   * Verifies if this connected component has a cycle.
+   *
+   * @return True if this connected component has a cycle, other wise returns false;
+   */
+  public boolean hasCycle() {
+    return hasCycle;
+  }
+
   private void depthFirstSearch(UndirectedGraph graph, int sourceVertex) {
     Stack<Integer> stack = new Stack<>();
     stack.push(sourceVertex);
     marked[sourceVertex] = true;
     size++;
+    int lastVisited = sourceVertex;
     while (!stack.isEmpty()) {
       Integer vertex = stack.pop();
       LinkedList<Integer> adjVertices = graph.adjacencies(vertex);
+      boolean foundAlreadyMarkedVertex = false;
+      boolean isLastVisitedAdjacent = false;
       for (int i = 0; i < adjVertices.size(); i++) {
         int adjVertex = adjVertices.get(i);
         if (!marked[adjVertex]) {
           stack.push(adjVertex);
           marked[adjVertex] = true;
           size++;
+        } else if (adjVertex != lastVisited) {
+          foundAlreadyMarkedVertex = true;
+        }
+        if (adjVertex == lastVisited) {
+          isLastVisitedAdjacent = true;
         }
       }
+      if (isLastVisitedAdjacent && foundAlreadyMarkedVertex) {
+        hasCycle = true;
+      }
+      lastVisited = vertex;
     }
   }
 }

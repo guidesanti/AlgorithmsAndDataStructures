@@ -192,7 +192,7 @@ public class LinkedList<T> implements Iterable<T> {
   @Override
   public String toString() {
     StringBuilder str = new StringBuilder();
-    str.append("DoublyLinkedList{size=").append(size).append(", values = { ");
+    str.append("LinkedList{size=").append(size).append(", values = { ");
     Node<T> current = first();
     while (current.next != NULL) {
       str.append(current.key).append(", ");

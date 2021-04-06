@@ -1,0 +1,6 @@
+graph,hasCycle
+directed-graph-0.csv,false
+directed-graph-1.csv,true
+directed-graph-2.csv,false
+directed-graph-3.csv,false
+directed-graph-4.csv,true
