@@ -11,23 +11,23 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class UndirectedUndirectedGraphTraverserTest {
 
-  private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-acyclic-single-component-graph.csv";
+  private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-graph-0.csv";
 
   private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_TRAVERSE = "/graphs/undirected-acyclic-single-component-graph-traverse.csv";
 
   private static final String UNDIRECTED_ACYCLIC_SINGLE_COMPONENT_GRAPH_PATH = "/graphs/undirected-acyclic-single-component-graph-path.csv";
 
-  private static final String UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-acyclic-multi-component-graph.csv";
+  private static final String UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-graph-1.csv";
 
   private static final String UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH_TRAVERSE = "/graphs/undirected-acyclic-multi-component-graph-traverse.csv";
 
   private static final String UNDIRECTED_ACYCLIC_MULTI_COMPONENT_GRAPH_PATH = "/graphs/undirected-acyclic-multi-component-graph-path.csv";
 
-  private static final String UNDIRECTED_CYCLIC_SINGLE_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-cyclic-single-component-graph.csv";
+  private static final String UNDIRECTED_CYCLIC_SINGLE_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-graph-2.csv";
 
   private static final String UNDIRECTED_CYCLIC_SINGLE_COMPONENT_GRAPH_TRAVERSE = "/graphs/undirected-cyclic-single-component-graph-traverse.csv";
 
-  private static final String UNDIRECTED_CYCLIC_MULTI_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-cyclic-multi-component-graph.csv";
+  private static final String UNDIRECTED_CYCLIC_MULTI_COMPONENT_GRAPH = "src/test/resources/graphs/undirected-graph-3.csv";
 
   private static final String UNDIRECTED_CYCLIC_MULTI_COMPONENT_GRAPH_TRAVERSE = "/graphs/undirected-cyclic-multi-component-graph-traverse.csv";
 

@@ -83,7 +83,6 @@ public class StackTest {
         assertFalse(stack.isEmpty());
         assertEquals(count, stack.size());
         assertEquals(objects[j], stack.peek());
-        assertEquals(count, stack.size());
       }
       count = objects.length - 1;
       for (Object object : stack) {

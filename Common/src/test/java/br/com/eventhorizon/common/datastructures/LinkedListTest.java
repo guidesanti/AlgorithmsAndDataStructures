@@ -223,7 +223,7 @@ public class LinkedListTest {
     verifyValues(values, list);
 
     StringBuilder str = new StringBuilder();
-    str.append("DoublyLinkedList{size=").append(values.length).append(", values = { ");
+    str.append("LinkedList{size=").append(values.length).append(", values = { ");
     for (int i = 0; i < values.length; i++) {
       str.append(values[i]);
       if (i < values.length - 1) {

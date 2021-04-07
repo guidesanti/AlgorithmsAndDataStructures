@@ -1,36 +1,36 @@
 graph,sourceVertex,connectedComponentSize,hasCycle,vertices
-undirected-graph-0.csv,0,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,1,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,2,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,3,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,4,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,5,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,6,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,7,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,16,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,17,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,18,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,23,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,24,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,25,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,29,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,30,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
-undirected-graph-0.csv,13,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,14,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,15,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,19,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,20,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,21,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,22,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,26,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,27,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,28,10,false,13 14 15 19 20 21 22 26 27 28
-undirected-graph-0.csv,31,3,true,31 32 33
-undirected-graph-0.csv,32,3,true,31 32 33
-undirected-graph-0.csv,33,3,true,31 32 33
-undirected-graph-0.csv,8,3,false,8 9 34
-undirected-graph-0.csv,9,3,false,8 9 34
-undirected-graph-0.csv,34,3,false,8 9 34
-undirected-graph-0.csv,10,1,false,10
-undirected-graph-0.csv,11,1,false,11
-undirected-graph-0.csv,12,1,false,12
+undirected-graph-4.csv,0,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,1,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,2,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,3,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,4,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,5,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,6,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,7,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,16,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,17,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,18,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,23,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,24,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,25,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,29,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,30,16,true,0 1 2 3 4 5 6 7 16 17 18 23 24 25 29 30
+undirected-graph-4.csv,13,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,14,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,15,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,19,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,20,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,21,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,22,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,26,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,27,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,28,10,false,13 14 15 19 20 21 22 26 27 28
+undirected-graph-4.csv,31,3,true,31 32 33
+undirected-graph-4.csv,32,3,true,31 32 33
+undirected-graph-4.csv,33,3,true,31 32 33
+undirected-graph-4.csv,8,3,false,8 9 34
+undirected-graph-4.csv,9,3,false,8 9 34
+undirected-graph-4.csv,34,3,false,8 9 34
+undirected-graph-4.csv,10,1,false,10
+undirected-graph-4.csv,11,1,false,11
+undirected-graph-4.csv,12,1,false,12

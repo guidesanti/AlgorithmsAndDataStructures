@@ -48,6 +48,11 @@ public class Stack<T> implements Iterable<T> {
   }
 
   @Override
+  public Iterator<T> iterator() {
+    return new StackIterator(top);
+  }
+
+  @Override
   public String toString() {
     StringJoiner str = new StringJoiner(", ", "Stack {", "}");
     Node node = top;
@@ -56,11 +61,6 @@ public class Stack<T> implements Iterable<T> {
       node = node.next;
     }
     return str.toString();
-  }
-
-  @Override
-  public Iterator<T> iterator() {
-    return new StackIterator(top);
   }
 
   public class StackIterator implements Iterator<T> {
@@ -78,6 +78,9 @@ public class Stack<T> implements Iterable<T> {
 
     @Override
     public T next() {
+      if (next == null) {
+        throw new NoSuchElementException();
+      }
       T data = next.data;
       next = next.next;
       return data;
@@ -86,9 +89,9 @@ public class Stack<T> implements Iterable<T> {
 
   private class Node {
 
-    private T data;
+    private final T data;
 
-    private Node next;
+    private final Node next;
 
     public Node(T data, Node next) {
       this.data = data;
