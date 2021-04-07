@@ -4,6 +4,7 @@ import br.com.eventhorizon.common.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
+import java.util.StringJoiner;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,6 +66,49 @@ public class StackTest {
       stack.clear();
       assertTrue(stack.isEmpty());
       assertEquals(0, stack.size());
+    }
+  }
+
+  @Test
+  public void testIterator() {
+    for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+      Stack<Object> stack = new Stack<>();
+      assertTrue(stack.isEmpty());
+      assertEquals(0, stack.size());
+      Object[] objects = Utils.getRandomObjectArray(100, 1000);
+      int count = 0;
+      for (int j = 0; j < objects.length; j++) {
+        stack.push(objects[j]);
+        count++;
+        assertFalse(stack.isEmpty());
+        assertEquals(count, stack.size());
+        assertEquals(objects[j], stack.peek());
+        assertEquals(count, stack.size());
+      }
+      count = objects.length - 1;
+      for (Object object : stack) {
+        assertEquals(objects[count--], object);
+      }
+    }
+  }
+
+  @Test
+  public void testToString() {
+    for (int i = 0; i < NUMBER_OF_TESTS; i++) {
+      Stack<Object> stack = new Stack<>();
+      assertTrue(stack.isEmpty());
+      assertEquals(0, stack.size());
+      Object[] objects = Utils.getRandomObjectArray(100, 1000);
+      for (Object object : objects) {
+        stack.push(object);
+      }
+      String str = stack.toString();
+      StringJoiner expectedStr = new StringJoiner(", ", "Stack {", "}");
+      int j = objects.length - 1;
+      while (j >= 0) {
+        expectedStr.add("" + objects[j--]);
+      }
+      assertEquals(expectedStr.toString(), str);
     }
   }
 }
