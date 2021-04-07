@@ -9,7 +9,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UndirectedGraphTraverseTypeTest {
+public class UndirectedGraphTraverseOrderTest {
 
   private static final String UNDIRECTED_GRAPH_TRAVERSE_ORDER = "/graphs/undirected-graph-traverse-order.csv";
 

@@ -6,12 +6,9 @@ import br.com.eventhorizon.common.datastructures.Stack;
 
 public class UndirectedGraphTraverseOrder {
 
-  private final boolean[] marked;
-
   private final Iterable<Integer> order;
 
   public UndirectedGraphTraverseOrder(UndirectedGraph graph, Type type) {
-    marked = new boolean[graph.numberOfVertices()];
     switch (type) {
       case DEPTH_FIRST_PREORDER:
         this.order = depthFirstPreorder(graph);
@@ -35,6 +32,7 @@ public class UndirectedGraphTraverseOrder {
   }
 
   private Iterable<Integer> depthFirstPreorder(UndirectedGraph graph) {
+    boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
     for (int i = 0; i < graph.numberOfVertices(); i++) {
@@ -58,6 +56,7 @@ public class UndirectedGraphTraverseOrder {
   }
 
   private Iterable<Integer> depthFirstPostorder(UndirectedGraph graph) {
+    boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
     for (int i = 0; i < graph.numberOfVertices(); i++) {
@@ -74,6 +73,7 @@ public class UndirectedGraphTraverseOrder {
                 stack.push(adjVertex);
                 marked[adjVertex] = true;
                 stop = false;
+                break;
               }
             }
             if (stop) {
@@ -88,6 +88,7 @@ public class UndirectedGraphTraverseOrder {
   }
 
   private Iterable<Integer> depthFirstReversePostorder(UndirectedGraph graph) {
+    boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
     for (int i = 0; i < graph.numberOfVertices(); i++) {
@@ -104,6 +105,7 @@ public class UndirectedGraphTraverseOrder {
                 stack.push(adjVertex);
                 marked[adjVertex] = true;
                 stop = false;
+                break;
               }
             }
             if (stop) {
@@ -118,6 +120,7 @@ public class UndirectedGraphTraverseOrder {
   }
 
   private Iterable<Integer> breadthFirst(UndirectedGraph graph) {
+    boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Queue<Integer> queue = new Queue<>();
     for (int i = 0; i < graph.numberOfVertices(); i++) {
