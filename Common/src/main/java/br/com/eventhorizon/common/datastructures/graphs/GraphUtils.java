@@ -3,6 +3,10 @@ package br.com.eventhorizon.common.datastructures.graphs;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public final class GraphUtils {
 
@@ -49,4 +53,24 @@ public final class GraphUtils {
       throw new RuntimeException("Failed to read graph from CSV file", exception);
     }
   }
+
+//  public static Map<Integer, List<Integer>> readDirectedGraphStronglyConnectedComponentsFromCsvFile(String file) {
+//    try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
+//      Map<Integer, List<Integer>> components = new HashMap<>();
+//      csvReader.skip(1);
+//      String[] values;
+//      while ((values = csvReader.readNext()) != null) {
+//        int id = Integer.parseInt(values[0]);
+//        String[] verticesStr = values[1].split(" ");
+//        List<Integer> vertices = new ArrayList<>();
+//        for (String vertexStr : verticesStr) {
+//          vertices.add(Integer.valueOf(vertexStr));
+//        }
+//        components.put(id, vertices);
+//      }
+//      return components;
+//    } catch (Exception exception) {
+//      throw new RuntimeException("Failed to read graph from CSV file", exception);
+//    }
+//  }
 }
