@@ -24,10 +24,22 @@ public abstract class PATest {
 
   protected final PA pa;
 
+  private final boolean skipTimeLimitTest;
+
+  private final boolean skipStressTest;
+
   private OutputStream outputStream;
 
   public PATest(PA pa) {
     this.pa = pa;
+    this.skipTimeLimitTest = false;
+    this.skipStressTest = false;
+  }
+
+  public PATest(PA pa, boolean skipTimeLimitTest, boolean skipStressTest) {
+    this.pa = pa;
+    this.skipTimeLimitTest = skipTimeLimitTest;
+    this.skipStressTest = skipStressTest;
   }
 
   @BeforeEach
@@ -63,6 +75,10 @@ public abstract class PATest {
 
   @Test
   public void timeLimitTest() {
+    if (skipTimeLimitTest) {
+      LOGGER.warning("Time limit test skipped");
+      return;
+    }
     LOGGER.info("Time limit test duration: " + TestProperties.getTimeLimitTestDuration());
     long maxTime = 0;
     long minTime = Integer.MAX_VALUE;
@@ -103,6 +119,10 @@ public abstract class PATest {
 
   @Test
   public void stressTest() {
+    if (skipStressTest) {
+      LOGGER.warning("Stress limit test skipped");
+      return;
+    }
     LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
     long startTime = System.currentTimeMillis();
     for (long i = 0; true; i++) {
