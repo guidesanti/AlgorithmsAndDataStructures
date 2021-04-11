@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.queues;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;

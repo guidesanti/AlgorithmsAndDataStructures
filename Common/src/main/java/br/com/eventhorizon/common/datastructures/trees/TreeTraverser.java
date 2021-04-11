@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.trees;
 
-import br.com.eventhorizon.common.datastructures.Queue;
+import br.com.eventhorizon.common.datastructures.queues.Queue;
 import br.com.eventhorizon.common.datastructures.Stack;
 
 import java.util.NoSuchElementException;

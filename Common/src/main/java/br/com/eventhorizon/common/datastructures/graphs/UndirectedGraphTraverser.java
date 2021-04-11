@@ -1,10 +1,9 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
 import br.com.eventhorizon.common.datastructures.LinkedList;
-import br.com.eventhorizon.common.datastructures.Queue;
+import br.com.eventhorizon.common.datastructures.queues.Queue;
 import br.com.eventhorizon.common.datastructures.Stack;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.function.Function;
 

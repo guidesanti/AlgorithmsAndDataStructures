@@ -1,7 +1,7 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
 import br.com.eventhorizon.common.datastructures.LinkedList;
-import br.com.eventhorizon.common.datastructures.Queue;
+import br.com.eventhorizon.common.datastructures.queues.Queue;
 import br.com.eventhorizon.common.datastructures.Stack;
 
 public class UndirectedGraphTraverseOrder {

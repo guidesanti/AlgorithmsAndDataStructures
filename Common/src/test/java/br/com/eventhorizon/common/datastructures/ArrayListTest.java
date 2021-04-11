@@ -310,7 +310,7 @@ public class ArrayListTest {
   @Test
   public void testToArrayTyped() {
     for (int i = 0; i < 1000; i++) {
-      int[] values = Utils.getRandomIntegerArray(1, 100, Integer.MIN_VALUE, Integer.MAX_VALUE);
+      Integer[] values = Utils.getRandomIntegerArray(1, 100, Integer.MIN_VALUE, Integer.MAX_VALUE);
       Integer[] integers = new Integer[values.length];
       for (int j = 0; j < values.length; j++) {
         integers[j] = values[j];

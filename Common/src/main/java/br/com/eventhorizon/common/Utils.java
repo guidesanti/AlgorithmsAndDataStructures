@@ -62,9 +62,9 @@ public class Utils {
     return ThreadLocalRandom.current().nextInt(min, max < Integer.MAX_VALUE ? max + 1 : max);
   }
 
-  public static int[] getRandomIntegerArray(int minLength, int maxLength, int min, int max) {
+  public static Integer[] getRandomIntegerArray(int minLength, int maxLength, int min, int max) {
     int n = getRandomInteger(minLength, maxLength);
-    int[] values = new int[n];
+    Integer[] values = new Integer[n];
     for (int i = 0; i < n; i++) {
       int value = Utils.getRandomInteger(min, max);
       values[i] = value;

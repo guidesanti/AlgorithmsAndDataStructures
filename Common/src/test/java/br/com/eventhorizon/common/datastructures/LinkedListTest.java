@@ -94,7 +94,7 @@ public class LinkedListTest {
 
   @Test
   public void testRemove() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     int size = list.size();
     assertFalse(list.isEmpty());
@@ -135,7 +135,7 @@ public class LinkedListTest {
 
   @Test
   public void testRemoveFirst() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
@@ -147,7 +147,7 @@ public class LinkedListTest {
 
   @Test
   public void testRemoveLast() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
@@ -159,7 +159,7 @@ public class LinkedListTest {
 
   @Test
   public void testReplace() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
     for (int i = 0; i < values.length; i++) {
@@ -171,7 +171,7 @@ public class LinkedListTest {
 
   @Test
   public void testSubList() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
 
@@ -193,7 +193,7 @@ public class LinkedListTest {
     list.addFirst(1);
     list.clear();
     verifyValues(EMPTY_LONG_ARRAY, list);
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     list = new LinkedList<>(values);
     verifyValues(values, list);
     list.clear();
@@ -218,7 +218,7 @@ public class LinkedListTest {
 
   @Test
   public void testToString() {
-    Integer[] values = Arrays.stream(Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE)).boxed().toArray(Integer[]::new);
+    Integer[] values = Utils.getRandomIntegerArray(50, 100, 0, Integer.MAX_VALUE);
     LinkedList<Integer> list = new LinkedList<>(values);
     verifyValues(values, list);
 
