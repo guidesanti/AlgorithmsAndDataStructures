@@ -72,6 +72,18 @@ public class Utils {
     return values;
   }
 
+  public static Integer[] getSortedRandomIntegerArray(int minLength, int maxLength, int min, int max) {
+    int n = getRandomInteger(minLength, maxLength);
+    Integer[] values = new Integer[n];
+    values[0] = min;
+    for (int i = 1; i < n - 1; i++) {
+      min = Utils.getRandomInteger(min, min + ((max - min) / (n - i)));
+      values[i] = min;
+    }
+    values[n - 1] = max;
+    return values;
+  }
+
   public static long getRandomLong(long min, long max) {
     if (min == max) {
       return min;
