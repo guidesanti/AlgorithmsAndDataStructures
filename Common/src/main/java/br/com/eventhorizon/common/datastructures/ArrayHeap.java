@@ -1,10 +1,15 @@
 package br.com.eventhorizon.common.datastructures;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.NoSuchElementException;
 import java.util.function.BiFunction;
 
 public class ArrayHeap<T> {
+
+  private final Type type;
+
+  private final Comparator<? super T> comparator;
 
   private Object[] values;
 
@@ -16,6 +21,8 @@ public class ArrayHeap<T> {
 
   @SuppressWarnings("unchecked")
   public ArrayHeap(Type type) {
+    this.type = type;
+    this.comparator = null;
     this.values = new Object[0];
     this.size = 0;
     switch (type) {
@@ -31,6 +38,29 @@ public class ArrayHeap<T> {
     }
   }
 
+  public ArrayHeap(Type type, Comparator<? super T> comparator) {
+    this.type = type;
+    this.comparator = comparator;
+    this.values = new Object[0];
+    this.size = 0;
+    switch (type) {
+      case MIN:
+        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
+        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
+        break;
+      case MAX:
+      default:
+        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
+        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
+        break;
+    }
+  }
+
+  public ArrayHeap(Type type, int initialCapacity, Comparator<? super T> comparator) {
+    this(type, comparator);
+    this.values = new Object[initialCapacity];
+  }
+
   public ArrayHeap(Type type, int initialCapacity) {
     this(type);
     this.values = new Object[initialCapacity];
@@ -38,6 +68,13 @@ public class ArrayHeap<T> {
 
   public ArrayHeap(Type type, T[] values) {
     this(type);
+    this.values = Arrays.copyOf(values, values.length << 1);
+    this.size = values.length;
+    buildHeap();
+  }
+
+  public ArrayHeap(Type type, T[] values, Comparator<? super T> comparator) {
+    this(type, comparator);
     this.values = Arrays.copyOf(values, values.length << 1);
     this.size = values.length;
     buildHeap();
@@ -102,6 +139,33 @@ public class ArrayHeap<T> {
       }
     }
     return removedKey;
+  }
+
+  public void replace(T oldValue, T newValue) {
+    replace(find(oldValue), newValue);
+  }
+
+  public void replace(int index, T value) {
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException();
+    }
+    values[index] = value;
+    if (index == 0) {
+      return;
+    }
+    if (type == Type.MIN) {
+      if (compare(value, (T) values[parent(index)]) < 0) {
+        siftUp(index);
+      } else {
+        siftDown(index);
+      }
+    } else {
+      if (compare(value, (T) values[parent(index)]) > 0) {
+        siftUp(index);
+      } else {
+        siftDown(index);
+      }
+    }
   }
 
   public void clear() {
@@ -233,6 +297,14 @@ public class ArrayHeap<T> {
   private void increaseCapacity() {
     int newCapacity = values.length == 0 ? 1 : values.length << 1;
     this.values = Arrays.copyOf(values, newCapacity);
+  }
+
+  @SuppressWarnings("unchecked")
+  private int compare(T key1, T key2) {
+    if (comparator != null) {
+      return comparator.compare(key1, key2);
+    }
+    return ((Comparable<? super T>)key1).compareTo(key2);
   }
 
   public enum Type {

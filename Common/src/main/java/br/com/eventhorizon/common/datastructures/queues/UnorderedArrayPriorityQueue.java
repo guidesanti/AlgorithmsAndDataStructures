@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-public class ArrayPriorityQueue<T> {
+public class UnorderedArrayPriorityQueue<T> {
 
   private final Type type;
 
@@ -14,45 +14,45 @@ public class ArrayPriorityQueue<T> {
 
   private int size;
 
-  public ArrayPriorityQueue(Type type) {
+  public UnorderedArrayPriorityQueue(Type type) {
     this.type = type;
     this.comparator = null;
     this.values = new Object[0];
   }
 
-  public ArrayPriorityQueue(Type type, Comparator<? super T> comparator) {
+  public UnorderedArrayPriorityQueue(Type type, Comparator<? super T> comparator) {
     this.type = type;
     this.comparator = comparator;
     values = new Object[0];
   }
 
-  public ArrayPriorityQueue(Type type, int initialCapacity) {
+  public UnorderedArrayPriorityQueue(Type type, int initialCapacity) {
     this.type = type;
     this.comparator = null;
     this.values = new Object[initialCapacity];
   }
 
-  public ArrayPriorityQueue(Type type, int initialCapacity, Comparator<? super T> comparator) {
+  public UnorderedArrayPriorityQueue(Type type, int initialCapacity, Comparator<? super T> comparator) {
     this.type = type;
     this.comparator = comparator;
     this.values = new Object[initialCapacity];
   }
 
-  public ArrayPriorityQueue(Type type, T[] values) {
+  public UnorderedArrayPriorityQueue(Type type, T[] values) {
     this.type = type;
     this.comparator = null;
     this.values = Arrays.copyOf(values, values.length);
     this.size = values.length;
   }
 
-  public ArrayPriorityQueue(Type type, T[] values, Comparator<? super T> comparator) {
+  public UnorderedArrayPriorityQueue(Type type, T[] values, Comparator<? super T> comparator) {
     this.type = type;
     this.comparator = comparator;
     this.values = Arrays.copyOf(values, values.length);
     this.size = values.length;
   }
 
-  public void enqueue(T value) {
+  public void add(T value) {
     if (size == values.length) {
       increaseCapacity();
     }
@@ -60,7 +60,15 @@ public class ArrayPriorityQueue<T> {
   }
 
   @SuppressWarnings("unchecked")
-  public T dequeue() {
+  public T peek() {
+    if (size == 0 ) {
+      throw new NoSuchElementException("Queue is empty");
+    }
+    return (T) values[type == Type.MIN ? findMin() : findMax()];
+  }
+
+  @SuppressWarnings("unchecked")
+  public T poll() {
     if (size == 0 ) {
       throw new NoSuchElementException("Queue is empty");
     }
@@ -72,11 +80,26 @@ public class ArrayPriorityQueue<T> {
   }
 
   @SuppressWarnings("unchecked")
-  public T peek() {
-    if (size == 0 ) {
-      throw new NoSuchElementException("Queue is empty");
+  public T remove(int index) {
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException();
     }
-    return (T) values[type == Type.MIN ? findMin() : findMax()];
+    T result = (T) values[index];
+    System.arraycopy(values, index + 1, values, index, size - 1 - index);
+    size--;
+    return result;
+  }
+
+  @SuppressWarnings("unchecked")
+  public T remove(T value) {
+    int index = find(value);
+    if (index == -1) {
+      throw new NoSuchElementException();
+    }
+    T result = (T) values[index];
+    System.arraycopy(values, index + 1, values, index, size - 1 - index);
+    size--;
+    return result;
   }
 
   public void replace(T oldValue, T newValue) {
@@ -86,6 +109,13 @@ public class ArrayPriorityQueue<T> {
     } else {
       throw new NoSuchElementException("oldValue is not in the queue");
     }
+  }
+
+  public void replace(int index, T value) {
+    if (index < 0 || index >= size) {
+      throw new IndexOutOfBoundsException();
+    }
+    values[index] = value;
   }
 
   public boolean contains(T value) {
@@ -99,6 +129,19 @@ public class ArrayPriorityQueue<T> {
       }
     }
     return -1;
+  }
+
+  public void clear() {
+    values = new Object[0];
+    size = 0;
+  }
+
+  public boolean isEmpty() {
+    return size == 0;
+  }
+
+  public int size() {
+    return size;
   }
 
   @SuppressWarnings("unchecked")
@@ -133,19 +176,6 @@ public class ArrayPriorityQueue<T> {
       }
     }
     return maxIndex;
-  }
-
-  public void clear() {
-    values = new Object[0];
-    size = 0;
-  }
-
-  public boolean isEmpty() {
-    return size == 0;
-  }
-
-  public int size() {
-    return size;
   }
 
   private void increaseCapacity() {

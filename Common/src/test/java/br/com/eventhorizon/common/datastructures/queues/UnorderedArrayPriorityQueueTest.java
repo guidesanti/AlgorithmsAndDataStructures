@@ -7,15 +7,16 @@ import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ArrayPriorityQueueTest {
+public class UnorderedArrayPriorityQueueTest {
 
   @Test
   public void testMinArrayPriorityQueue() {
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MIN);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MIN);
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
@@ -27,7 +28,7 @@ public class ArrayPriorityQueueTest {
       if (value < minValue) {
         minValue = value;
       }
-      queue.enqueue(value);
+      queue.add(value);
       assertEquals(count, queue.size());
       assertFalse(queue.isEmpty());
       assertEquals(minValue, queue.peek());
@@ -39,7 +40,7 @@ public class ArrayPriorityQueueTest {
     for (int i = 0; i < n; i++) {
       int currentSize = queue.size();
       int index = Utils.getRandomInteger(0, values.length - 1);
-      int oldValue = values[index];
+      Integer oldValue = values[index];
       values[index] = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       queue.replace(oldValue, values[index]);
       assertEquals(currentSize, queue.size());
@@ -54,7 +55,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue >= lastValue);
       assertEquals(findAndRemoveMin(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -68,11 +69,12 @@ public class ArrayPriorityQueueTest {
 
   @Test
   public void testMaxArrayPriorityQueue() {
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MAX);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MAX);
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
@@ -84,7 +86,7 @@ public class ArrayPriorityQueueTest {
       if (value > maxValue) {
         maxValue = value;
       }
-      queue.enqueue(value);
+      queue.add(value);
       assertEquals(count, queue.size());
       assertFalse(queue.isEmpty());
       assertEquals(maxValue, queue.peek());
@@ -95,7 +97,7 @@ public class ArrayPriorityQueueTest {
     for (int i = 0; i < n; i++) {
       int currentSize = queue.size();
       int index = Utils.getRandomInteger(0, values.length - 1);
-      int oldValue = values[index];
+      Integer oldValue = values[index];
       values[index] = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       queue.replace(oldValue, values[index]);
       assertEquals(currentSize, queue.size());
@@ -110,7 +112,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue <= lastValue);
       assertEquals(findAndRemoveMax(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -124,11 +126,12 @@ public class ArrayPriorityQueueTest {
 
   @Test
   public void testMinArrayPriorityQueueWitInitialCapacity() {
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MIN, 100);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MIN, 100);
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
@@ -140,7 +143,7 @@ public class ArrayPriorityQueueTest {
       if (value < minValue) {
         minValue = value;
       }
-      queue.enqueue(value);
+      queue.add(value);
       assertEquals(count, queue.size());
       assertFalse(queue.isEmpty());
       assertEquals(minValue, queue.peek());
@@ -152,7 +155,7 @@ public class ArrayPriorityQueueTest {
     for (int i = 0; i < n; i++) {
       int currentSize = queue.size();
       int index = Utils.getRandomInteger(0, values.length - 1);
-      int oldValue = values[index];
+      Integer oldValue = values[index];
       values[index] = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       queue.replace(oldValue, values[index]);
       assertEquals(currentSize, queue.size());
@@ -167,7 +170,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue >= lastValue);
       assertEquals(findAndRemoveMin(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -181,11 +184,12 @@ public class ArrayPriorityQueueTest {
 
   @Test
   public void testMaxArrayPriorityQueueWithInitialCapacity() {
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MAX, 100);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MAX, 100);
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
@@ -197,7 +201,7 @@ public class ArrayPriorityQueueTest {
       if (value > maxValue) {
         maxValue = value;
       }
-      queue.enqueue(value);
+      queue.add(value);
       assertEquals(count, queue.size());
       assertFalse(queue.isEmpty());
       assertEquals(maxValue, queue.peek());
@@ -208,7 +212,7 @@ public class ArrayPriorityQueueTest {
     for (int i = 0; i < n; i++) {
       int currentSize = queue.size();
       int index = Utils.getRandomInteger(0, values.length - 1);
-      int oldValue = values[index];
+      Integer oldValue = values[index];
       values[index] = Utils.getRandomInteger(Integer.MIN_VALUE, Integer.MAX_VALUE);
       queue.replace(oldValue, values[index]);
       assertEquals(currentSize, queue.size());
@@ -223,7 +227,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue <= lastValue);
       assertEquals(findAndRemoveMax(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -238,7 +242,8 @@ public class ArrayPriorityQueueTest {
   @Test
   public void testMinArrayPriorityQueueFromArray() {
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MIN, values);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MIN, values);
     assertEquals(values.length, queue.size());
     assertFalse(queue.isEmpty());
 
@@ -250,7 +255,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue >= lastValue);
       assertEquals(findAndRemoveMin(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -265,7 +270,8 @@ public class ArrayPriorityQueueTest {
   @Test
   public void testMaxArrayPriorityQueueFromArray() {
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MAX, values);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MAX, values);
     assertEquals(values.length, queue.size());
     assertFalse(queue.isEmpty());
 
@@ -277,7 +283,7 @@ public class ArrayPriorityQueueTest {
       int currValue = queue.peek();
       assertTrue(currValue <= lastValue);
       assertEquals(findAndRemoveMax(values), currValue);
-      assertEquals(currValue, queue.dequeue());
+      assertEquals(currValue, queue.poll());
       lastValue = currValue;
       count--;
       assertEquals(count, queue.size());
@@ -291,16 +297,17 @@ public class ArrayPriorityQueueTest {
 
   @Test
   public void testClear() {
-    ArrayPriorityQueue<Integer> queue = new ArrayPriorityQueue<>(ArrayPriorityQueue.Type.MIN);
+    UnorderedArrayPriorityQueue<Integer>
+        queue = new UnorderedArrayPriorityQueue<>(UnorderedArrayPriorityQueue.Type.MIN);
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
     for (int value : values) {
-      queue.enqueue(value);
+      queue.add(value);
     }
     assertEquals(values.length, queue.size());
     assertFalse(queue.isEmpty());
@@ -308,7 +315,7 @@ public class ArrayPriorityQueueTest {
     assertEquals(0, queue.size());
     assertTrue(queue.isEmpty());
     assertThrows(NoSuchElementException.class, queue::peek);
-    assertThrows(NoSuchElementException.class, queue::dequeue);
+    assertThrows(NoSuchElementException.class, queue::poll);
   }
 
   private int findAndRemoveMin(Integer[] array) {
