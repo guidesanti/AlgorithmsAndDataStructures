@@ -22,8 +22,10 @@ public class ArraySet<T> implements Iterable<T> {
   }
 
   public ArraySet(T[] keys) {
-    this.keys = Arrays.copyOf(keys, keys.length);
-    size = keys.length;
+    this.keys = new Object[keys.length];
+    for (T key : keys) {
+      add(key);
+    }
   }
 
   public boolean add(T key) {

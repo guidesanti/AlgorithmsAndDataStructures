@@ -20,14 +20,6 @@ public class IndexedHeapPriorityQueue<T> {
   }
 
   @SuppressWarnings("unchecked")
-  public IndexedHeapPriorityQueue(Type type, int maxIndex, int initialCapacity) {
-    nodes = new IndexedHeapPriorityQueue.Node[maxIndex];
-    heap = type == Type.MIN ?
-        new ArrayHeap<>(ArrayHeap.Type.MIN, initialCapacity) :
-        new ArrayHeap<>(ArrayHeap.Type.MAX, initialCapacity);
-  }
-
-  @SuppressWarnings("unchecked")
   public IndexedHeapPriorityQueue(Type type, T[] keys) {
     nodes = new IndexedHeapPriorityQueue.Node[keys.length];
     for (int i = 0; i < keys.length; i++) {
@@ -39,6 +31,9 @@ public class IndexedHeapPriorityQueue<T> {
   }
 
   public void add(int index, T key) {
+    if (index < 0 || index >= nodes.length) {
+      throw new IndexOutOfBoundsException();
+    }
     if (nodes[index] != null) {
       throw new IllegalArgumentException("index is already added");
     }
@@ -58,6 +53,9 @@ public class IndexedHeapPriorityQueue<T> {
   }
 
   public void replace(int index, T key) {
+    if (index < 0 || index >= nodes.length) {
+      throw new IndexOutOfBoundsException();
+    }
     if (nodes[index] == null) {
       throw new NoSuchElementException();
     }
