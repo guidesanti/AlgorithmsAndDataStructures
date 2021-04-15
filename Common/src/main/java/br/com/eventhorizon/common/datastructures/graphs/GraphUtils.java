@@ -54,23 +54,25 @@ public final class GraphUtils {
     }
   }
 
-//  public static Map<Integer, List<Integer>> readDirectedGraphStronglyConnectedComponentsFromCsvFile(String file) {
-//    try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
-//      Map<Integer, List<Integer>> components = new HashMap<>();
-//      csvReader.skip(1);
-//      String[] values;
-//      while ((values = csvReader.readNext()) != null) {
-//        int id = Integer.parseInt(values[0]);
-//        String[] verticesStr = values[1].split(" ");
-//        List<Integer> vertices = new ArrayList<>();
-//        for (String vertexStr : verticesStr) {
-//          vertices.add(Integer.valueOf(vertexStr));
-//        }
-//        components.put(id, vertices);
-//      }
-//      return components;
-//    } catch (Exception exception) {
-//      throw new RuntimeException("Failed to read graph from CSV file", exception);
-//    }
-//  }
+  public static WeightedDirectedGraph readWeightedDirectedGraphFromCsvFile(String file) {
+    try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
+      csvReader.skip(2);
+      String[] values = csvReader.readNext();
+      int numberOfVertices = Integer.parseInt(values[0]);
+      int numberOfEdges = Integer.parseInt(values[1]);
+      WeightedDirectedGraph graph = new WeightedDirectedGraph(numberOfVertices);
+      while ((values = csvReader.readNext()) != null) {
+        if (values.length != 3) {
+          throw new RuntimeException("Invalid CSV graph file, each line should have 3 values");
+        }
+        graph.addEdge(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+      }
+      if (graph.numberOfEdges() != numberOfEdges) {
+        throw new RuntimeException("Invalid CSV graph file, number of edges on first line does not match the provided edges");
+      }
+      return graph;
+    } catch (Exception exception) {
+      throw new RuntimeException("Failed to read graph from CSV file", exception);
+    }
+  }
 }

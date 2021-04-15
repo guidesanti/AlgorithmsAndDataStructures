@@ -3,7 +3,7 @@ package br.com.eventhorizon.common.utils;
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.SimpleArgumentConverter;
 
-public class StringToIntegerArrayConverter extends SimpleArgumentConverter {
+public class StringToDoubleConverter extends SimpleArgumentConverter {
 
   @Override
   protected Object convert(Object object, Class<?> targetType) throws ArgumentConversionException {
@@ -14,17 +14,19 @@ public class StringToIntegerArrayConverter extends SimpleArgumentConverter {
       throw new IllegalArgumentException("object must be a String");
     }
     String string = (String) object;
-    if (string.isEmpty() || string.equalsIgnoreCase("null")) {
+    if (string.isEmpty()) {
       return null;
     }
-    if (!int[].class.isAssignableFrom(targetType)) {
-      throw new IllegalArgumentException("targetType must be int[]");
+    if (string.equals("infinity")) {
+      return Double.POSITIVE_INFINITY;
     }
-    String[] strings = string.split(" ");
-    int[] integers = new int[strings.length];
-    for (int i = 0; i < strings.length; i++) {
-      integers[i] = Integer.parseInt(strings[i]);
+    if (string.equals("-infinity")) {
+      return Double.NEGATIVE_INFINITY;
     }
-    return integers;
+    if (!Double.class.isAssignableFrom(targetType) &&
+        !double.class.isAssignableFrom(targetType)) {
+      throw new IllegalArgumentException("targetType must be double");
+    }
+    return Double.valueOf(string);
   }
 }

@@ -22,14 +22,16 @@ public class ArrayHeapTest {
   @Test
   public void testAdd() {
     for (int i = 0; i < 10; i++) {
-      ArrayHeap heap = new ArrayHeap(ArrayHeap.Type.MAX);
+      ArrayHeap<Long> heap = new ArrayHeap<>(ArrayHeap.Type.MAX);
       assertTrue(heap.isEmpty());
       assertEquals(0, heap.size());
       assertArrayEquals(new Object[0], heap.toArray());
 
       int n = Utils.getRandomInteger(100, 10000);
       for (int j = 0; j < n; j++) {
-        assertEquals(j, heap.add(Utils.getRandomLong(0, Long.MAX_VALUE)));
+        Long key = Utils.getRandomLong(0, Long.MAX_VALUE);
+        heap.add(key);
+        assertTrue(heap.contains(key));
         assertFalse(heap.isEmpty());
         assertEquals(j + 1, heap.size());
         assertTrue(Utils.isMaxHeap(heap.toArray()), "Not a max heap");
@@ -185,7 +187,7 @@ public class ArrayHeapTest {
       assertEquals(0, heap.size());
       assertArrayEquals(new Object[0], heap.toArray());
       for (int j = 0; j < values.length; j++) {
-        assertEquals(j, heap.add(values[j]));
+        heap.add(values[j]);
         assertEquals(values[j], heap.peek());
         assertTrue(Utils.isMaxHeap(heap.toArray()));
       }

@@ -9,8 +9,6 @@ public class ArrayHeap<T> {
 
   private final Type type;
 
-  private final Comparator<? super T> comparator;
-
   private Object[] values;
 
   private int size;
@@ -22,7 +20,6 @@ public class ArrayHeap<T> {
   @SuppressWarnings("unchecked")
   public ArrayHeap(Type type) {
     this.type = type;
-    this.comparator = null;
     this.values = new Object[0];
     this.size = 0;
     switch (type) {
@@ -36,29 +33,6 @@ public class ArrayHeap<T> {
         compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
         break;
     }
-  }
-
-  public ArrayHeap(Type type, Comparator<? super T> comparator) {
-    this.type = type;
-    this.comparator = comparator;
-    this.values = new Object[0];
-    this.size = 0;
-    switch (type) {
-      case MIN:
-        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
-        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
-        break;
-      case MAX:
-      default:
-        compareUp = (a, b) -> ((Comparable<? super T>)a).compareTo(b) > 0;
-        compareDown = (a, b) -> ((Comparable<? super T>)a).compareTo(b) < 0;
-        break;
-    }
-  }
-
-  public ArrayHeap(Type type, int initialCapacity, Comparator<? super T> comparator) {
-    this(type, comparator);
-    this.values = new Object[initialCapacity];
   }
 
   public ArrayHeap(Type type, int initialCapacity) {
@@ -73,20 +47,13 @@ public class ArrayHeap<T> {
     buildHeap();
   }
 
-  public ArrayHeap(Type type, T[] values, Comparator<? super T> comparator) {
-    this(type, comparator);
-    this.values = Arrays.copyOf(values, values.length << 1);
-    this.size = values.length;
-    buildHeap();
-  }
-
-  public int add(T key) {
+  public void add(T key) {
     if (size == values.length) {
       increaseCapacity();
     }
     values[size] = key;
     siftUp(size);
-    return size++;
+    size++;
   }
 
   @SuppressWarnings("unchecked")
@@ -109,6 +76,7 @@ public class ArrayHeap<T> {
     return root;
   }
 
+  @SuppressWarnings("unchecked")
   public T remove(T key) {
     if (size == 0) {
       throw new NoSuchElementException();
@@ -116,14 +84,6 @@ public class ArrayHeap<T> {
     int index = find(key, 0);
     if (index == -1) {
       throw new NoSuchElementException();
-    }
-    return remove(index);
-  }
-
-  @SuppressWarnings("unchecked")
-  public T remove(int index) {
-    if (index < 0 || index >= size) {
-      throw new IndexOutOfBoundsException();
     }
     T removedKey = (T) values[index];
     values[index] = values[size - 1];
@@ -141,29 +101,28 @@ public class ArrayHeap<T> {
     return removedKey;
   }
 
+  @SuppressWarnings("unchecked")
   public void replace(T oldValue, T newValue) {
-    replace(find(oldValue), newValue);
-  }
-
-  public void replace(int index, T value) {
-    if (index < 0 || index >= size) {
-      throw new IndexOutOfBoundsException();
+    int index = find(oldValue);
+    if (index < 0) {
+      throw new NoSuchElementException();
     }
-    values[index] = value;
+    values[index] = newValue;
     if (index == 0) {
-      return;
-    }
-    if (type == Type.MIN) {
-      if (compare(value, (T) values[parent(index)]) < 0) {
-        siftUp(index);
-      } else {
-        siftDown(index);
-      }
+      siftDown(index);
     } else {
-      if (compare(value, (T) values[parent(index)]) > 0) {
-        siftUp(index);
+      if (type == Type.MIN) {
+        if (compare(newValue, (T) values[parent(index)]) < 0) {
+          siftUp(index);
+        } else {
+          siftDown(index);
+        }
       } else {
-        siftDown(index);
+        if (compare(newValue, (T) values[parent(index)]) > 0) {
+          siftUp(index);
+        } else {
+          siftDown(index);
+        }
       }
     }
   }
@@ -223,7 +182,7 @@ public class ArrayHeap<T> {
     if (compareUp.apply(key, (T) values[index])) {
       return -1;
     }
-    if (key.equals(values[index])) {
+    if (compare(key, (T) values[index]) == 0) {
       return index;
     }
     int found = find(key, leftChild(index));
@@ -301,9 +260,6 @@ public class ArrayHeap<T> {
 
   @SuppressWarnings("unchecked")
   private int compare(T key1, T key2) {
-    if (comparator != null) {
-      return comparator.compare(key1, key2);
-    }
     return ((Comparable<? super T>)key1).compareTo(key2);
   }
 

@@ -20,7 +20,7 @@ public class HeapPriorityQueueTest {
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    // Enqueue and peek
+    // Add and peek
     int count = 0;
     int minValue = Integer.MAX_VALUE;
     for (int value : values) {
@@ -47,7 +47,7 @@ public class HeapPriorityQueueTest {
       assertTrue(queue.contains(values[index]));
     }
 
-    // Dequeue and peek
+    // Peek and poll
     int lastValue = Integer.MIN_VALUE;
     while (!queue.isEmpty()) {
       assertEquals(count, queue.size());
@@ -78,7 +78,7 @@ public class HeapPriorityQueueTest {
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    // Enqueue and peek
+    // Add and peek
     int count = 0;
     int maxValue = Integer.MIN_VALUE;
     for (int value : values) {
@@ -104,7 +104,7 @@ public class HeapPriorityQueueTest {
       assertTrue(queue.contains(values[index]));
     }
 
-    // Dequeue and peek
+    // Peek and poll
     int lastValue = Integer.MAX_VALUE;
     while (!queue.isEmpty()) {
       assertEquals(count, queue.size());
@@ -135,7 +135,7 @@ public class HeapPriorityQueueTest {
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    // Enqueue and peek
+    // Add and peek
     int count = 0;
     int minValue = Integer.MAX_VALUE;
     for (int value : values) {
@@ -162,7 +162,7 @@ public class HeapPriorityQueueTest {
       assertTrue(queue.contains(values[index]));
     }
 
-    // Dequeue and peek
+    // Peek and poll
     int lastValue = Integer.MIN_VALUE;
     while (!queue.isEmpty()) {
       assertEquals(count, queue.size());
@@ -193,7 +193,7 @@ public class HeapPriorityQueueTest {
 
     Integer[] values = Utils.getRandomIntegerArray(100, 10000, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
-    // Enqueue and peek
+    // Add and peek
     int count = 0;
     int maxValue = Integer.MIN_VALUE;
     for (int value : values) {
@@ -219,7 +219,7 @@ public class HeapPriorityQueueTest {
       assertTrue(queue.contains(values[index]));
     }
 
-    // Dequeue and peek
+    // Peek and poll
     int lastValue = Integer.MAX_VALUE;
     while (!queue.isEmpty()) {
       assertEquals(count, queue.size());

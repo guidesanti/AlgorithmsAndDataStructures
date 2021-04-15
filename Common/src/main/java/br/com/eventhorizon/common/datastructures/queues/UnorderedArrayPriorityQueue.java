@@ -1,14 +1,11 @@
 package br.com.eventhorizon.common.datastructures.queues;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 public class UnorderedArrayPriorityQueue<T> {
 
   private final Type type;
-
-  private final Comparator<? super T> comparator;
 
   private Object[] values;
 
@@ -16,38 +13,16 @@ public class UnorderedArrayPriorityQueue<T> {
 
   public UnorderedArrayPriorityQueue(Type type) {
     this.type = type;
-    this.comparator = null;
     this.values = new Object[0];
-  }
-
-  public UnorderedArrayPriorityQueue(Type type, Comparator<? super T> comparator) {
-    this.type = type;
-    this.comparator = comparator;
-    values = new Object[0];
   }
 
   public UnorderedArrayPriorityQueue(Type type, int initialCapacity) {
     this.type = type;
-    this.comparator = null;
-    this.values = new Object[initialCapacity];
-  }
-
-  public UnorderedArrayPriorityQueue(Type type, int initialCapacity, Comparator<? super T> comparator) {
-    this.type = type;
-    this.comparator = comparator;
     this.values = new Object[initialCapacity];
   }
 
   public UnorderedArrayPriorityQueue(Type type, T[] values) {
     this.type = type;
-    this.comparator = null;
-    this.values = Arrays.copyOf(values, values.length);
-    this.size = values.length;
-  }
-
-  public UnorderedArrayPriorityQueue(Type type, T[] values, Comparator<? super T> comparator) {
-    this.type = type;
-    this.comparator = comparator;
     this.values = Arrays.copyOf(values, values.length);
     this.size = values.length;
   }
@@ -80,17 +55,6 @@ public class UnorderedArrayPriorityQueue<T> {
   }
 
   @SuppressWarnings("unchecked")
-  public T remove(int index) {
-    if (index < 0 || index >= size) {
-      throw new IndexOutOfBoundsException();
-    }
-    T result = (T) values[index];
-    System.arraycopy(values, index + 1, values, index, size - 1 - index);
-    size--;
-    return result;
-  }
-
-  @SuppressWarnings("unchecked")
   public T remove(T value) {
     int index = find(value);
     if (index == -1) {
@@ -109,13 +73,6 @@ public class UnorderedArrayPriorityQueue<T> {
     } else {
       throw new NoSuchElementException("oldValue is not in the queue");
     }
-  }
-
-  public void replace(int index, T value) {
-    if (index < 0 || index >= size) {
-      throw new IndexOutOfBoundsException();
-    }
-    values[index] = value;
   }
 
   public boolean contains(T value) {
@@ -148,13 +105,7 @@ public class UnorderedArrayPriorityQueue<T> {
   private int findMin() {
     int minIndex = 0;
     for (int i = 1; i < size; i++) {
-      int compareResult;
-      if (comparator != null) {
-        compareResult = comparator.compare((T) values[i], (T) values[minIndex]);
-      } else {
-        compareResult = ((Comparable<? super T>)values[i]).compareTo((T) values[minIndex]);
-      }
-      if (compareResult < 0) {
+      if (((Comparable<? super T>)values[i]).compareTo((T) values[minIndex]) < 0) {
         minIndex = i;
       }
     }
@@ -165,13 +116,7 @@ public class UnorderedArrayPriorityQueue<T> {
   private int findMax() {
     int maxIndex = 0;
     for (int i = 1; i < size; i++) {
-      int compareResult;
-      if (comparator != null) {
-        compareResult = comparator.compare((T) values[i], (T) values[maxIndex]);
-      } else {
-        compareResult = ((Comparable<? super T>)values[i]).compareTo((T) values[maxIndex]);
-      }
-      if (compareResult > 0) {
+      if (((Comparable<? super T>)values[i]).compareTo((T) values[maxIndex]) > 0) {
         maxIndex = i;
       }
     }

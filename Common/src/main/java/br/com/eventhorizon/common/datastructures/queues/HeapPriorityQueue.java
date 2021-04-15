@@ -9,51 +9,21 @@ public class HeapPriorityQueue<T> {
   private final ArrayHeap<T> heap;
 
   public HeapPriorityQueue(Type type) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX);
-    }
-  }
-
-  public HeapPriorityQueue(Type type, Comparator<? super T> comparator) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN, comparator);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX, comparator);
-    }
+    heap = type == Type.MIN ?
+        new ArrayHeap<>(ArrayHeap.Type.MIN) :
+        new ArrayHeap<>(ArrayHeap.Type.MAX);
   }
 
   public HeapPriorityQueue(Type type, int initialCapacity) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN, initialCapacity);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX, initialCapacity);
-    }
-  }
-
-  public HeapPriorityQueue(Type type, int initialCapacity, Comparator<? super T> comparator) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN, initialCapacity, comparator);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX, initialCapacity, comparator);
-    }
+    heap = type == Type.MIN ?
+        new ArrayHeap<>(ArrayHeap.Type.MIN, initialCapacity) :
+        new ArrayHeap<>(ArrayHeap.Type.MAX, initialCapacity);
   }
 
   public HeapPriorityQueue(Type type, T[] values) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN, values);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX, values);
-    }
-  }
-
-  public HeapPriorityQueue(Type type, T[] values, Comparator<? super T> comparator) {
-    if (type == Type.MIN) {
-      heap = new ArrayHeap(ArrayHeap.Type.MIN, values, comparator);
-    } else {
-      heap = new ArrayHeap(ArrayHeap.Type.MAX, values, comparator);
-    }
+    heap = type == Type.MIN ?
+        new ArrayHeap<>(ArrayHeap.Type.MIN, values) :
+        new ArrayHeap<>(ArrayHeap.Type.MAX, values);
   }
 
   public void add(T value) {
@@ -68,20 +38,12 @@ public class HeapPriorityQueue<T> {
     return heap.poll();
   }
 
-  public T remove(int index) {
-    return heap.remove(index);
-  }
-
   public T remove(T value) {
     return heap.remove(value);
   }
 
   public void replace(T oldValue, T newValue) {
     heap.replace(oldValue, newValue);
-  }
-
-  public void replace(int index, T value) {
-    heap.replace(index, value);
   }
 
   public boolean contains(T value) {
