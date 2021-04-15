@@ -6,7 +6,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import javax.print.attribute.IntegerSyntax;
 import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
