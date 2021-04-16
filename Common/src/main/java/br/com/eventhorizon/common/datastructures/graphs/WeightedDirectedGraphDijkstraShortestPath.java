@@ -10,7 +10,7 @@ import java.util.Arrays;
  * vertex to all reachable vertices from this source vertex using the Dijkstra's algorithm.
  * Dijkstra's algorithm is applicable only to graphs that do not have any negative weights.
  */
-public class WeightedDirectedGraphShortestPath {
+public class WeightedDirectedGraphDijkstraShortestPath {
 
   private final int sourceVertex;
 
@@ -20,7 +20,7 @@ public class WeightedDirectedGraphShortestPath {
 
   private final double[] distanceTo;
 
-  public WeightedDirectedGraphShortestPath(WeightedDirectedGraph graph, int sourceVertex) {
+  public WeightedDirectedGraphDijkstraShortestPath(WeightedDirectedGraph graph, int sourceVertex) {
     this.sourceVertex = sourceVertex;
     this.graph = graph;
     this.edgeTo = new WeightedDirectedGraph.WeightedDirectEdge[graph.numberOfVertices()];

@@ -10,7 +10,7 @@ import java.util.Iterator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WeightedDirectedGraphShortestPathTest {
+public class WeightedDirectedGraphDijkstraShortestPathTest {
 
   private static final String WEIGHTED_DIRECTED_GRAPH_SHORTEST_PATHS = "/graphs/weighted-directed-graph-shortest-paths.csv";
 
@@ -23,10 +23,11 @@ public class WeightedDirectedGraphShortestPathTest {
       @ConvertWith(StringToDoubleConverter.class) double distance,
       @ConvertWith(StringToIntegerArrayConverter.class) int[] path) {
     WeightedDirectedGraph graph = GraphUtils.readWeightedDirectedGraphFromCsvFile("src/test/resources/graphs/" + graphFileName);
-    WeightedDirectedGraphShortestPath weightedDirectedGraphShortestPath = new WeightedDirectedGraphShortestPath(graph, sourceVertex);
+    WeightedDirectedGraphDijkstraShortestPath
+        weightedDirectedGraphDijkstraShortestPath = new WeightedDirectedGraphDijkstraShortestPath(graph, sourceVertex);
     if (distance < Double.POSITIVE_INFINITY) {
-      assertTrue(weightedDirectedGraphShortestPath.hasPathTo(destinationVertex));
-      Iterator<WeightedDirectedGraph.WeightedDirectEdge> iterator = weightedDirectedGraphShortestPath.pathTo(destinationVertex).iterator();
+      assertTrue(weightedDirectedGraphDijkstraShortestPath.hasPathTo(destinationVertex));
+      Iterator<WeightedDirectedGraph.WeightedDirectEdge> iterator = weightedDirectedGraphDijkstraShortestPath.pathTo(destinationVertex).iterator();
       int index = 0;
       int last = 0;
       double calculatedDistance = 0.0;
@@ -40,9 +41,9 @@ public class WeightedDirectedGraphShortestPathTest {
       assertEquals(path[index], last);
       assertEquals(distance, calculatedDistance);
     } else {
-      assertFalse(weightedDirectedGraphShortestPath.hasPathTo(destinationVertex));
-      assertNull(weightedDirectedGraphShortestPath.pathTo(destinationVertex));
+      assertFalse(weightedDirectedGraphDijkstraShortestPath.hasPathTo(destinationVertex));
+      assertNull(weightedDirectedGraphDijkstraShortestPath.pathTo(destinationVertex));
     }
-    assertEquals(distance, weightedDirectedGraphShortestPath.distanceTo(destinationVertex));
+    assertEquals(distance, weightedDirectedGraphDijkstraShortestPath.distanceTo(destinationVertex));
   }
 }
