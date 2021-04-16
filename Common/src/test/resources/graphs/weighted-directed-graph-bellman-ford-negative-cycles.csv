@@ -1,0 +1,9 @@
+graph,sourceVertex,hasNegativeCycle,cycle
+weighted-directed-graph-0.csv,0,false,null
+weighted-directed-graph-0.csv,1,false,null
+weighted-directed-graph-0.csv,2,false,null
+weighted-directed-graph-0.csv,3,false,null
+weighted-directed-graph-0.csv,4,false,null
+weighted-directed-graph-0.csv,1,false,null
+weighted-directed-graph-1.csv,0,true,0 1 3 4 0
+weighted-directed-graph-2.csv,0,true,0 2 3 4 0

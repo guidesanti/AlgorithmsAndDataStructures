@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WeightedDirectedGraphDijkstraShortestPathTest {
 
-  private static final String WEIGHTED_DIRECTED_GRAPH_SHORTEST_PATHS = "/graphs/weighted-directed-graph-shortest-paths.csv";
+  private static final String WEIGHTED_DIRECTED_GRAPH_SHORTEST_PATHS = "/graphs/weighted-directed-graph-dijkstra-shortest-paths.csv";
 
   @ParameterizedTest
   @CsvFileSource(resources = WEIGHTED_DIRECTED_GRAPH_SHORTEST_PATHS, numLinesToSkip = 1)
