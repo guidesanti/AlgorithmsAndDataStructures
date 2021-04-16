@@ -8,6 +8,7 @@ import java.util.Arrays;
 /**
  * This weighted directed graph processing class computes the shortest paths from a given source
  * vertex to all reachable vertices from this source vertex using the Dijkstra's algorithm.
+ * Dijkstra's algorithm is applicable only to graphs that do not have any negative weights.
  */
 public class WeightedDirectedGraphShortestPath {
 
