@@ -1,8 +1,6 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
-import br.com.eventhorizon.common.datastructures.LinkedList;
 import br.com.eventhorizon.common.datastructures.Stack;
-import br.com.eventhorizon.common.datastructures.queues.IndexedHeapPriorityQueue;
 import br.com.eventhorizon.common.datastructures.queues.Queue;
 
 import java.util.Arrays;
