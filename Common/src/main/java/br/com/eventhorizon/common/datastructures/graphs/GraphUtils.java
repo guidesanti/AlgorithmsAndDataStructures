@@ -54,6 +54,28 @@ public final class GraphUtils {
     }
   }
 
+  public static WeightedUndirectedGraph readWeightedUndirectedGraphFromCsvFile(String file) {
+    try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
+      csvReader.skip(2);
+      String[] values = csvReader.readNext();
+      int numberOfVertices = Integer.parseInt(values[0]);
+      int numberOfEdges = Integer.parseInt(values[1]);
+      WeightedUndirectedGraph graph = new WeightedUndirectedGraph(numberOfVertices);
+      while ((values = csvReader.readNext()) != null) {
+        if (values.length != 3) {
+          throw new RuntimeException("Invalid CSV graph file, each line should have 3 values");
+        }
+        graph.addEdge(Integer.parseInt(values[0]), Integer.parseInt(values[1]), Double.parseDouble(values[2]));
+      }
+      if (graph.numberOfEdges() != numberOfEdges) {
+        throw new RuntimeException("Invalid CSV graph file, number of edges on first line does not match the provided edges");
+      }
+      return graph;
+    } catch (Exception exception) {
+      throw new RuntimeException("Failed to read graph from CSV file", exception);
+    }
+  }
+
   public static WeightedDirectedGraph readWeightedDirectedGraphFromCsvFile(String file) {
     try (CSVReader csvReader = new CSVReader(new FileReader(file))) {
       csvReader.skip(2);

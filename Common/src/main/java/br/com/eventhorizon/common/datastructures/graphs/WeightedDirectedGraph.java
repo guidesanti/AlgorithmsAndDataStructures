@@ -91,7 +91,7 @@ public class WeightedDirectedGraph {
     return edges;
   }
 
-  public class WeightedDirectEdge {
+  public static class WeightedDirectEdge {
 
     private final int from;
 
