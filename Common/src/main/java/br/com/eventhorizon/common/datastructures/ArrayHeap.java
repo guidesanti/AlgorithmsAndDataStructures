@@ -182,7 +182,7 @@ public class ArrayHeap<T> {
     if (compareUp.apply(key, (T) values[index])) {
       return -1;
     }
-    if (compare(key, (T) values[index]) == 0) {
+    if (key.equals(values[index])) {
       return index;
     }
     int found = find(key, leftChild(index));

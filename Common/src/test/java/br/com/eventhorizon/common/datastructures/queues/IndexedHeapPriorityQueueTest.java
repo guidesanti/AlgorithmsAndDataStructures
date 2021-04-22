@@ -95,6 +95,85 @@ public class IndexedHeapPriorityQueueTest {
   }
 
   @Test
+  public void testMinIndexedHeapPriorityQueueDuplicateKeys() {
+    IndexedHeapPriorityQueue<Integer> queue = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MIN, 10);
+    assertTrue(queue.isEmpty());
+    assertEquals(0, queue.size());
+
+    queue.add(0, 10);
+    assertEquals(0, queue.peek().index());
+    assertEquals(10, queue.peek().key());
+    assertTrue(queue.contains(0));
+    assertTrue(queue.contains((Integer)10));
+
+    queue.add(1, 9);
+    assertEquals(1, queue.peek().index());
+    assertEquals(9, queue.peek().key());
+    assertTrue(queue.contains(1));
+    assertTrue(queue.contains((Integer)9));
+
+    queue.add(2, 8);
+    assertEquals(2, queue.peek().index());
+    assertEquals(8, queue.peek().key());
+    assertTrue(queue.contains(2));
+    assertTrue(queue.contains((Integer)8));
+
+    queue.add(3, 7);
+    assertEquals(3, queue.peek().index());
+    assertEquals(7, queue.peek().key());
+    assertTrue(queue.contains(3));
+    assertTrue(queue.contains((Integer)7));
+
+    queue.add(4, 6);
+    assertEquals(4, queue.peek().index());
+    assertEquals(6, queue.peek().key());
+    assertTrue(queue.contains(4));
+    assertTrue(queue.contains((Integer)6));
+
+    queue.add(5, 5);
+    assertEquals(5, queue.peek().index());
+    assertEquals(5, queue.peek().key());
+    assertTrue(queue.contains(5));
+    assertTrue(queue.contains((Integer)5));
+
+    queue.add(6, 9);
+    assertEquals(5, queue.peek().index());
+    assertEquals(5, queue.peek().key());
+    assertTrue(queue.contains(6));
+    assertTrue(queue.contains((Integer)9));
+
+    queue.add(7, 9);
+    assertEquals(5, queue.peek().index());
+    assertEquals(5, queue.peek().key());
+    assertTrue(queue.contains(7));
+    assertTrue(queue.contains((Integer)9));
+
+    queue.add(8, 4);
+    assertEquals(8, queue.peek().index());
+    assertEquals(4, queue.peek().key());
+    assertTrue(queue.contains(8));
+    assertTrue(queue.contains((Integer)4));
+
+    queue.add(9, 3);
+    assertEquals(9, queue.peek().index());
+    assertEquals(3, queue.peek().key());
+    assertTrue(queue.contains(9));
+    assertTrue(queue.contains((Integer)3));
+
+    queue.replace(1, 1);
+    assertEquals(1, queue.peek().index());
+    assertEquals(1, queue.peek().key());
+
+    queue.replace(6, 0);
+    assertEquals(6, queue.peek().index());
+    assertEquals(0, queue.peek().key());
+
+    queue.replace(7, -1);
+    assertEquals(7, queue.peek().index());
+    assertEquals(-1, queue.peek().key());
+  }
+
+  @Test
   public void testMaxIndexedHeapPriorityQueue() {
     Integer[] keys = generateData();
     ArraySet<Integer> keySet = new ArraySet<>(keys);
