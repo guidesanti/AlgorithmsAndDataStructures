@@ -1,0 +1,3 @@
+satCnfFileName,satisfiable
+sat-0.cnf,true
+sat-1.cnf,false

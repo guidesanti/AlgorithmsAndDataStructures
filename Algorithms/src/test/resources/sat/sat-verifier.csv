@@ -1,0 +1,9 @@
+satCnfFileName,satisfies,solution
+sat-0.cnf,false,0 -1 -2
+sat-0.cnf,true,0 -1 2
+sat-0.cnf,false,0 1 -2
+sat-0.cnf,true,0 1 2
+sat-1.cnf,false,0 1 2
+sat-1.cnf,false,0 1 -2
+sat-1.cnf,false,0 -1 2
+sat-1.cnf,false,0 -1 -2
