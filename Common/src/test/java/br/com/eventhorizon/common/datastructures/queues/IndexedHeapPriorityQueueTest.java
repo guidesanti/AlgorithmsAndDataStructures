@@ -4,6 +4,8 @@ import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.datastructures.sets.ArraySet;
 import org.junit.jupiter.api.Test;
 
+import java.util.NoSuchElementException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class IndexedHeapPriorityQueueTest {
@@ -260,6 +262,84 @@ public class IndexedHeapPriorityQueueTest {
   }
 
   @Test
+  public void testReplace() {
+    IndexedHeapPriorityQueue<Integer> queue = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MIN, 10);
+    assertTrue(queue.isEmpty());
+    assertEquals(0, queue.size());
+
+    queue.add(0, -10);
+    assertEquals(0, queue.peek().index());
+    assertEquals(-10, queue.peek().key());
+    assertTrue(queue.contains(0));
+    assertTrue(queue.contains((Integer)(-10)));
+
+    queue.add(1, 10);
+    assertEquals(0, queue.peek().index());
+    assertEquals(-10, queue.peek().key());
+    assertTrue(queue.contains(1));
+    assertTrue(queue.contains((Integer)10));
+
+    queue.replace(1, -20);
+    assertEquals(1, queue.peek().index());
+    assertEquals(-20, queue.peek().key());
+    assertTrue(queue.contains(1));
+    assertFalse(queue.contains((Integer)10));
+    assertTrue(queue.contains((Integer)(-20)));
+
+    assertThrows(NoSuchElementException.class, () -> queue.replace(2, 20));
+
+    queue.replace(1, 20);
+    assertEquals(0, queue.peek().index());
+    assertEquals(-10, queue.peek().key());
+    assertTrue(queue.contains(1));
+    assertFalse(queue.contains((Integer)(-20)));
+    assertTrue(queue.contains((Integer)20));
+  }
+
+  @Test
+  public void testEmptyQueue() {
+    IndexedHeapPriorityQueue<Integer> queue1 = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MIN, 10);
+    assertTrue(queue1.isEmpty());
+    assertEquals(0, queue1.size());
+    assertThrows(NoSuchElementException.class, queue1::peek);
+    assertThrows(NoSuchElementException.class, queue1::poll);
+    for (int i = 0; i < 10; i++) {
+      assertFalse(queue1.contains(i));
+      assertFalse(queue1.contains((Integer)i));
+    }
+
+    IndexedHeapPriorityQueue<Integer> queue2 = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MAX, 10);
+    assertTrue(queue2.isEmpty());
+    assertEquals(0, queue2.size());
+    assertThrows(NoSuchElementException.class, queue2::peek);
+    assertThrows(NoSuchElementException.class, queue2::poll);
+    for (int i = 0; i < 10; i++) {
+      assertFalse(queue2.contains(i));
+      assertFalse(queue2.contains((Integer)i));
+    }
+
+    IndexedHeapPriorityQueue<Integer> queue3 = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MIN, new Integer[0]);
+    assertTrue(queue3.isEmpty());
+    assertEquals(0, queue3.size());
+    assertThrows(NoSuchElementException.class, queue3::peek);
+    assertThrows(NoSuchElementException.class, queue3::poll);
+    for (int i = 0; i < 10; i++) {
+      assertFalse(queue3.contains(i));
+      assertFalse(queue3.contains((Integer)i));
+    }
+
+    IndexedHeapPriorityQueue<Integer> queue4 = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MAX, new Integer[0]);
+    assertTrue(queue4.isEmpty());
+    assertEquals(0, queue4.size());
+    assertThrows(NoSuchElementException.class, queue4::peek);
+    assertThrows(NoSuchElementException.class, queue4::poll);
+    for (int i = 0; i < 10; i++) {
+      assertFalse(queue4.contains(i));
+      assertFalse(queue4.contains((Integer)i));
+    }
+  }
+
+  @Test
   public void testClear() {
     Integer[] keys = generateData();
 
@@ -281,6 +361,15 @@ public class IndexedHeapPriorityQueueTest {
     queue.clear();
     assertTrue(queue.isEmpty());
     assertEquals(0, queue.size());
+  }
+
+  @Test
+  public void testToString() {
+    IndexedHeapPriorityQueue<Integer> queue = new IndexedHeapPriorityQueue<>(IndexedHeapPriorityQueue.Type.MIN, 5);
+    queue.add(0, 10);
+    queue.add(1, -10);
+    queue.add(4, 0);
+    assertEquals("IndexedHeapPriorityQueue{size:3,keys:[Node{index:1,key:-10},Node{index:0,key:10},Node{index:4,key:0}]}", queue.toString());
   }
 
   private int findMin(Integer[] array) {

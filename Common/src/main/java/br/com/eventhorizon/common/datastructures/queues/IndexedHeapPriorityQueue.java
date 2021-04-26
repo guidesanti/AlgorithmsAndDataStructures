@@ -17,6 +17,7 @@ public class IndexedHeapPriorityQueue<T> {
 
   private int size;
 
+  @SuppressWarnings("unchecked")
   public IndexedHeapPriorityQueue(Type type, int capacity) {
     this.type = type;
     this.capacity = capacity;
@@ -24,6 +25,7 @@ public class IndexedHeapPriorityQueue<T> {
     heap = new IndexedHeapPriorityQueue.Node[capacity];
   }
 
+  @SuppressWarnings("unchecked")
   public IndexedHeapPriorityQueue(Type type, T[] keys) {
     this.type = type;
     this.capacity = keys.length;
@@ -104,6 +106,9 @@ public class IndexedHeapPriorityQueue<T> {
   }
 
   public boolean contains(int index) {
+    if (size == 0) {
+      return false;
+    }
     return nodes[index] != null;
   }
 
@@ -130,7 +135,7 @@ public class IndexedHeapPriorityQueue<T> {
 
   @Override
   public String toString() {
-    StringJoiner str = new StringJoiner(",", "IndexedHeapPriorityQueue{size:" + size + " elements:[", "]}");
+    StringJoiner str = new StringJoiner(",", "IndexedHeapPriorityQueue{size:" + size + ",keys:[", "]}");
     for (int i = 0; i < size; i++) {
       str.add(heap[i].toString());
     }
@@ -247,6 +252,7 @@ public class IndexedHeapPriorityQueue<T> {
     heap[j] = temp;
   }
 
+  @SuppressWarnings("unchecked")
   private int compare(T key1, T key2) {
     return ((Comparable<? super T>)key1).compareTo(key2);
   }
@@ -277,7 +283,7 @@ public class IndexedHeapPriorityQueue<T> {
 
     @Override
     public String toString() {
-      return "Node{index: " + index + ", key: " + key + "}";
+      return "Node{index:" + index + ",key:" + key + "}";
     }
   }
 }
