@@ -19,7 +19,7 @@ public class SatUtils {
       }
       int numberOfVariables = scanner.nextInt();
       int numberOfClauses = scanner.nextInt();
-      List<List<Integer>> clausses = new ArrayList<>();
+      List<List<Integer>> clauses = new ArrayList<>();
       for (int i = 0; i < numberOfClauses; i++) {
         List<Integer> clause = new ArrayList<>();
         int next = scanner.nextInt();
@@ -27,9 +27,9 @@ public class SatUtils {
           clause.add(next);
           next = scanner.nextInt();
         }
-        clausses.add(clause);
+        clauses.add(clause);
       }
-      return new Cnf(numberOfVariables, clausses);
+      return new Cnf(numberOfVariables, clauses);
     } catch (IOException exception) {
       throw new RuntimeException("Failed to read CNF file", exception);
     }
