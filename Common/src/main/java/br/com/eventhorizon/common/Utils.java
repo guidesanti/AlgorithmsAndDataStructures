@@ -31,6 +31,10 @@ public class Utils {
     }
   }
 
+  public static Boolean getRandomBoolean() {
+    return getRandomInteger(0, 1) == 0;
+  }
+
   public static char getRandomChar(CharType type) {
     int ch = getRandomInteger(type.min, type.max);
     while (type.exclude.contains(ch)) {

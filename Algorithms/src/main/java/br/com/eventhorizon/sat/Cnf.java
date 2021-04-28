@@ -17,7 +17,20 @@ public class Cnf {
     return numberOfVariables;
   }
 
+  public int numberOfClauses() {
+    return clauses.size();
+  }
+
   public List<List<Integer>> clauses() {
     return clauses;
+  }
+
+  @Override
+  public String toString() {
+    return "Cnf{" +
+        "numberOfVariables=" + numberOfVariables +
+        "numberOfClauses=" + clauses.size() +
+        ", clauses=" + clauses +
+        '}';
   }
 }

@@ -1,3 +1,7 @@
 satCnfFileName,satisfiable
+sat-5.cnf,true
 sat-0.cnf,true
 sat-1.cnf,false
+sat-2.cnf,true
+sat-3.cnf,false
+sat-4.cnf,true
