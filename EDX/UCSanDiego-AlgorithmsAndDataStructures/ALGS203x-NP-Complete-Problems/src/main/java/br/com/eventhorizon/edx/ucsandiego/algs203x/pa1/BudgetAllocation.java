@@ -2,6 +2,8 @@ package br.com.eventhorizon.edx.ucsandiego.algs203x.pa1;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.ilp.BinaryIlpSolver;
+import br.com.eventhorizon.ilp.NaiveBinaryIlpSolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,7 +13,29 @@ public class BudgetAllocation implements PA {
 
   @Override
   public void naiveSolution() {
-    finalSolution();
+    FastScanner scanner = new FastScanner(System.in);
+    int numberOfInequalities = scanner.nextInt();
+    int numberOfVariables = scanner.nextInt();
+    int[][] coefficients = new int[numberOfInequalities][numberOfVariables];
+    for (int i = 0; i < numberOfInequalities; i++) {
+      for (int j = 0; j < numberOfVariables; j++) {
+        coefficients[i][j] = scanner.nextInt();
+      }
+    }
+    int[] b = new int[numberOfInequalities];
+    for (int i = 0; i < numberOfInequalities; i++) {
+      b[i] = scanner.nextInt();
+    }
+    BinaryIlpSolver solver = new NaiveBinaryIlpSolver();
+    int[] solution = solver.solve(coefficients, b);
+    if (solution == null) {
+      System.out.println("2 1");
+      System.out.println("1 0");
+      System.out.println("-1 0");
+    } else {
+      System.out.println("1 1");
+      System.out.println("1 0");
+    }
   }
 
   @Override
