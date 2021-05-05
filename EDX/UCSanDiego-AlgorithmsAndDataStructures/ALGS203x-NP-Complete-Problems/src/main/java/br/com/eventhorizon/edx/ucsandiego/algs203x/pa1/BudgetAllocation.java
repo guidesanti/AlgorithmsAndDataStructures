@@ -64,7 +64,7 @@ public class BudgetAllocation implements PA {
       List<Pair> pairs = coefficients[i];
 
       if (pairs.isEmpty()) {
-        if (b[i] > 0) {
+        if (b[i] < 0) {
           clauses.clear();
           List<Integer> clause = new ArrayList<>();
           clause.add(1);

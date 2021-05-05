@@ -24,9 +24,9 @@ public abstract class PATest {
 
   protected final PA pa;
 
-  private final boolean skipTimeLimitTest;
+  protected final boolean skipTimeLimitTest;
 
-  private final boolean skipStressTest;
+  protected final boolean skipStressTest;
 
   private OutputStream outputStream;
 

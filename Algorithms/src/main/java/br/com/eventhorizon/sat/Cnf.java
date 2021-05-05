@@ -25,11 +25,15 @@ public class Cnf {
     return clauses;
   }
 
+  public int maxClauseSize() {
+    return clauses.isEmpty() ? 0 : clauses.stream().map(List::size).reduce(Math::max).get();
+  }
+
   @Override
   public String toString() {
     return "Cnf{" +
         "numberOfVariables=" + numberOfVariables +
-        "numberOfClauses=" + clauses.size() +
+        ", numberOfClauses=" + clauses.size() +
         ", clauses=" + clauses +
         '}';
   }
