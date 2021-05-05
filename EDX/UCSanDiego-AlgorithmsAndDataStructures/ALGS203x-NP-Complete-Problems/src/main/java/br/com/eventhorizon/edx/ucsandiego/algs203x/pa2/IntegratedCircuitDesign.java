@@ -86,6 +86,7 @@ public class IntegratedCircuitDesign implements PA {
         assigned[Math.abs(literal) - 1] = true;
       }
     }));
+    solution.sort(Comparator.comparingInt(Math::abs));
     output(solution);
   }
 
