@@ -1,0 +1,4 @@
+graph,size,weight
+vertex-weighted-undirected-tree-0.csv,1,10
+vertex-weighted-undirected-tree-1.csv,0,16
+vertex-weighted-undirected-tree-2.csv,0,18

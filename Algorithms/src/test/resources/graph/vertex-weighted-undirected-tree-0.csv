@@ -1,0 +1,8 @@
+# First line contains number of vertices and number of edges
+# Second line contains all the vertex weights
+# Following lines contains all edges
+4,3
+10,1,2,3
+0,1
+0,2
+0,3

@@ -4,34 +4,26 @@ import br.com.eventhorizon.common.datastructures.LinkedList;
 import br.com.eventhorizon.common.datastructures.queues.Queue;
 import br.com.eventhorizon.common.datastructures.Stack;
 
-public class UndirectedGraphTraverseOrder {
+public final class UndirectedGraphTraverseOrder {
 
-  private final Iterable<Integer> order;
+  private UndirectedGraphTraverseOrder() { }
 
-  public UndirectedGraphTraverseOrder(UndirectedGraph graph, Type type) {
+  public static Iterable<Integer> order(UndirectedGraph graph, Type type) {
     switch (type) {
       case DEPTH_FIRST_PREORDER:
-        this.order = depthFirstPreorder(graph);
-        break;
+        return depthFirstPreorder(graph);
       case DEPTH_FIRST_POSTORDER:
-        this.order = depthFirstPostorder(graph);
-        break;
+        return depthFirstPostorder(graph);
       case DEPTH_FIRST_REVERSE_POSTORDER:
-        this.order = depthFirstReversePostorder(graph);
-        break;
+        return depthFirstReversePostorder(graph);
       case BREADTH_FIRST:
-        this.order = breadthFirst(graph);
-        break;
+        return breadthFirst(graph);
       default:
-        this.order = null;
+        throw new IllegalArgumentException("Invalid traverse order type");
     }
   }
 
-  public Iterable<Integer> order() {
-    return order;
-  }
-
-  private Iterable<Integer> depthFirstPreorder(UndirectedGraph graph) {
+  private static Iterable<Integer> depthFirstPreorder(UndirectedGraph graph) {
     boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
@@ -55,7 +47,7 @@ public class UndirectedGraphTraverseOrder {
     return order;
   }
 
-  private Iterable<Integer> depthFirstPostorder(UndirectedGraph graph) {
+  private static Iterable<Integer> depthFirstPostorder(UndirectedGraph graph) {
     boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
@@ -87,7 +79,7 @@ public class UndirectedGraphTraverseOrder {
     return order;
   }
 
-  private Iterable<Integer> depthFirstReversePostorder(UndirectedGraph graph) {
+  private static Iterable<Integer> depthFirstReversePostorder(UndirectedGraph graph) {
     boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Stack<Integer> stack = new Stack<>();
@@ -119,7 +111,7 @@ public class UndirectedGraphTraverseOrder {
     return order;
   }
 
-  private Iterable<Integer> breadthFirst(UndirectedGraph graph) {
+  private static Iterable<Integer> breadthFirst(UndirectedGraph graph) {
     boolean[] marked = new boolean[graph.numberOfVertices()];
     LinkedList<Integer> order = new LinkedList<>();
     Queue<Integer> queue = new Queue<>();

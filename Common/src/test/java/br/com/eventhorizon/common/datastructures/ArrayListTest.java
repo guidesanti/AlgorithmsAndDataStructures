@@ -3,6 +3,8 @@ package br.com.eventhorizon.common.datastructures;
 import br.com.eventhorizon.common.Utils;
 import org.junit.jupiter.api.Test;
 
+import java.util.Iterator;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ArrayListTest {
@@ -358,6 +360,23 @@ public class ArrayListTest {
       for (int j = 0; j < objects.length; j++) {
         assertEquals(objects[objects.length - j - 1], list.get(j));
       }
+    }
+  }
+
+  @Test
+  public void testIterator() {
+    for (int i = 0; i < 100; i++) {
+      Object[] objects = Utils.getRandomObjectArray(0, 1000);
+      ArrayList list = new ArrayList<>(objects);
+      assertEquals(objects.length, list.size());
+      assertArrayEquals(objects, list.toArray());
+      Iterator<Object> iterator = list.iterator();
+      int count = 0;
+      while (iterator.hasNext()) {
+        assertSame(objects[count++], iterator.next());
+      }
+      assertEquals(count, objects.length);
+      assertEquals(count, list.size());
     }
   }
 }

@@ -3,8 +3,9 @@ package br.com.eventhorizon.common.datastructures;
 import br.com.eventhorizon.common.Utils;
 
 import java.util.Arrays;
+import java.util.Iterator;
 
-public class ArrayList<T> {
+public class ArrayList<T> implements Iterable<T> {
 
   private static final int DEFAULT_INITIAL_CAPACITY = 16;
 
@@ -144,7 +145,32 @@ public class ArrayList<T> {
     }
   }
 
+  @Override
+  public Iterator<T> iterator() {
+    return new ArrayListIterator();
+  }
+
   private void increaseCapacity() {
     this.values = Arrays.copyOf(values, values.length << 1);
+  }
+
+  public class ArrayListIterator implements Iterator<T> {
+
+    private int index;
+
+    private ArrayListIterator() {
+      this.index = 0;
+    }
+
+    @Override
+    public boolean hasNext() {
+      return this.index < size;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public T next() {
+      return (T) values[index++];
+    }
   }
 }

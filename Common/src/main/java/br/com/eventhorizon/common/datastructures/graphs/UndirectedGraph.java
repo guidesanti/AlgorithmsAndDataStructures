@@ -12,13 +12,13 @@ import br.com.eventhorizon.common.datastructures.LinkedList;
  */
 public class UndirectedGraph {
 
-  private final int numberOfVertices;
+  protected final int numberOfVertices;
 
-  private int numberOfEdges;
+  protected int numberOfEdges;
 
-  private final LinkedList<Integer>[] adjacencies;
+  protected final LinkedList<Integer>[] adjacencies;
 
-  private int maxDegree;
+  protected int maxDegree;
 
   /**
    * Creates a graph with vertices and no edges.

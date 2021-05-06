@@ -20,8 +20,7 @@ public class UndirectedGraphTraverseOrderTest {
       UndirectedGraphTraverseOrder.Type type,
       @ConvertWith(StringToIntegerArrayConverter.class) int[] vertices) {
     UndirectedGraph graph = GraphUtils.readUndirectedGraphFromCsvFile("src/test/resources/graphs/" + graphFileName);
-    UndirectedGraphTraverseOrder undirectedGraphTraverseOrder = new UndirectedGraphTraverseOrder(graph, type);
-    Iterator<Integer> iterator = undirectedGraphTraverseOrder.order().iterator();
+    Iterator<Integer> iterator = UndirectedGraphTraverseOrder.order(graph, type).iterator();
     for (int vertex : vertices) {
       assertTrue(iterator.hasNext());
       assertEquals(vertex, iterator.next());
