@@ -4,7 +4,9 @@ import javax.naming.OperationNotSupportedException;
 
 public interface PA {
 
-  void naiveSolution();
+  default void naiveSolution() {
+    finalSolution();
+  }
 
   default void intermediateSolution1() throws OperationNotSupportedException {
     throw new OperationNotSupportedException();

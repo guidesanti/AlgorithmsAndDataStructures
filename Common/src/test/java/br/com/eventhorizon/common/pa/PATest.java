@@ -179,5 +179,7 @@ public abstract class PATest {
     return ThreadLocalRandom.current().nextLong(min, max);
   }
 
-  abstract protected String generateInput(PATestType type);
+  protected String generateInput(PATestType type) {
+    return null;
+  }
 }
