@@ -20,6 +20,7 @@
         <module>ALGS201x-DataStructuresFundamentals</module>
         <module>ALGS202x-GraphAlgorithms</module>
         <module>ALGS203x-NP-Complete-Problems</module>
+        <module>ALGS204x-StringProcessingAndPatternMatchingAlgorithms</module>
     </modules>
     <packaging>pom</packaging>
 
