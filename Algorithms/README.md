@@ -1,9 +1,16 @@
 # Algorithms
 
 This module contains implementations of some traditional algorithms, like sorting and string matching.
-The purpose of these implementations is for study and learning only.
+The purpose of these implementations is for study and learning only, so do not use the code
+in the algorithms developed here for production purposes.
 
 ## Contents
+
+# Graph Algorithms
+- [Maximum Independent Set in Trees](./src/main/java/br/com/eventhorizon/graph/MaxIndependentSetInTree.java)
+- [Maximum Weighted Independent Set in Trees](./src/main/java/br/com/eventhorizon/graph/MaxWeightedIndependentSetInTree.java)
+
+More graph algorithms can be found [here](../Common/src/main/java/br/com/eventhorizon/common/datastructures/graphs). 
 
 # Sorting Algorithms
 - [Heap Sort](./src/main/java/br/com/eventhorizon/sorting/HeapSort.java)

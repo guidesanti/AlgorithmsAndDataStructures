@@ -7,3 +7,5 @@ See https://www.edx.org/micromasters/ucsandiegox-algorithms-and-data-structures
 - [ALGS200x - Algorithmic Design and Techniques](./ALGS200x-AlgorithmicDesignAndTechniques/README.md)
 - [ALGS201x - Data Structures Fundamentals](./ALGS201x-DataStructuresFundamentals/README.md)
 - [ALGS202x - Graph Algorithms](./ALGS202x-GraphAlgorithms/README.md)
+- [ALGS203x - NP-Complete Problems](./ALGS203x-NP-Complete-Problems/README.md)
+- [ALGS204x - String Processing and Pattern Matching Algorithms](./ALGS204x-StringProcessingAndPatternMatchingAlgorithms/README.md)
