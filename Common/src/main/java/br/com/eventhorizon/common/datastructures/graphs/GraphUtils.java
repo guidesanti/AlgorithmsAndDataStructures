@@ -1,5 +1,6 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
+import br.com.eventhorizon.common.Utils;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;
@@ -128,6 +129,17 @@ public final class GraphUtils {
     }
   }
 
+  public static <T> T generateRandomGraph(int numberOfVertices, int numberOfEdges, Class type) {
+    if (type == UndirectedGraphV2.class) {
+      UndirectedGraphV2 graph = new UndirectedGraphV2(numberOfVertices);
+      for (int edge = 0; edge < numberOfEdges; edge++) {
+        graph.addEdge(Utils.getRandomInteger(0, numberOfVertices - 1), Utils.getRandomInteger(0, numberOfVertices - 1));
+      }
+      return (T) graph;
+    }
+    throw new RuntimeException("Type not supported: " + type.getName());
+  }
+
   public static boolean isIndependentSet(UndirectedGraph graph, List<Integer> set) {
     for (int i = 0; i < set.size(); i++) {
       for (int j = i + 1; j < set.size(); j++) {
@@ -137,5 +149,19 @@ public final class GraphUtils {
       }
     }
     return true;
+  }
+
+  public static boolean isVertexCover(UndirectedGraphV2 graph, List<Integer> vertexCover) {
+    Set<UndirectedGraphV2.Edge> notCoveredEdges = new HashSet<>();
+    for (UndirectedGraphV2.Edge edge : graph.edges()) {
+      notCoveredEdges.add(edge);
+    }
+    for (int vertex : vertexCover) {
+      notCoveredEdges.removeIf(edge -> edge.vertex1() == vertex || edge.vertex2() == vertex);
+      for (int adjVertex : graph.adjacencies(vertex)) {
+        notCoveredEdges.removeIf(edge -> edge.vertex1() == adjVertex || edge.vertex2() == adjVertex);
+      }
+    }
+    return notCoveredEdges.isEmpty();
   }
 }
