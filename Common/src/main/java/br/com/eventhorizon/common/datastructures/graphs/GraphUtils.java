@@ -140,10 +140,10 @@ public final class GraphUtils {
     throw new RuntimeException("Type not supported: " + type.getName());
   }
 
-  public static boolean isIndependentSet(UndirectedGraph graph, List<Integer> set) {
-    for (int i = 0; i < set.size(); i++) {
-      for (int j = i + 1; j < set.size(); j++) {
-        if (graph.adjacencies(set.get(i)).contains(set.get(j))) {
+  public static boolean isIndependentSet(UndirectedGraph graph, List<Integer> independentSet) {
+    for (int i = 0; i < independentSet.size(); i++) {
+      for (int j = i + 1; j < independentSet.size(); j++) {
+        if (graph.adjacencies(independentSet.get(i)).contains(independentSet.get(j))) {
           return false;
         }
       }

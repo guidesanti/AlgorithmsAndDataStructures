@@ -56,6 +56,14 @@ public class Utils {
     return getRandomString(type, length);
   }
 
+  public static String[] getRandomStringArray(CharType type, int minStringLength, int maxStringLength, int minArrayLength, int maxArrayLength) {
+    String[] array = new String[getRandomInteger(minArrayLength, maxArrayLength)];
+    for (int i = 0; i < array.length; i++) {
+      array[i] = getRandomString(type, getRandomInteger(minStringLength, maxStringLength));
+    }
+    return array;
+  }
+
   public static int getRandomInteger(int min, int max) {
     if (min == max) {
       return min;
