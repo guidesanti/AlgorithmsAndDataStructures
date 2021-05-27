@@ -1,5 +1,6 @@
 package br.com.eventhorizon.common;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +14,8 @@ public class Utils {
     UPPERCASE_ALPHABETICAL_CHARS(65, 90),
     ALPHABETICAL_CHARS(65, 122, 91, 92, 93, 94, 95, 96),
     ALPHA_NUMERICAL_CHARS(48, 122, 58, 59, 60, 61, 62, 63, 64, 91, 92, 93, 94, 95, 96),
-    ALL(32, 126);
+    ALL_ASCII(32, 126),
+    ALL(0, Character.MAX_VALUE);
 
     private int min;
 
@@ -41,6 +43,18 @@ public class Utils {
       ch = getRandomInteger(type.min, type.max);
     }
     return (char) ch;
+  }
+
+  public static Character[] getRandomCharArray(CharType type, int length) {
+    Character[] array = new Character[length];
+    for (int i = 0; i < length; i++) {
+      array[i] = getRandomChar(type);
+    }
+    return array;
+  }
+
+  public static Character[] getRandomCharArray(CharType type, int minLength, int maxLength) {
+    return getRandomCharArray(type, getRandomInteger(minLength, maxLength));
   }
 
   public static String getRandomString(CharType type, int length) {
@@ -135,6 +149,14 @@ public class Utils {
       values[i] = new Object();
     }
     return values;
+  }
+
+  public static char[] charBoxedArrayToPrimitiveArray(Character[] boxedArray) {
+    char[] primitiveArray = new char[boxedArray.length];
+    for (int i = 0; i < boxedArray.length; i++) {
+      primitiveArray[i] = boxedArray[i];
+    }
+    return primitiveArray;
   }
 
   public static int[] listOfIntegersToArray(List<Integer> list) {

@@ -37,8 +37,8 @@ public abstract class StringMatchingAlgorithmTest {
     LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
     long startTime = System.currentTimeMillis();
     for (int test = 0; true; test++) {
-      char[] pattern = Utils.getRandomString(Utils.CharType.ALL, 0, 1000).toCharArray();
-      char[] text = Utils.getRandomString(Utils.CharType.ALL, pattern.length, 10000).toCharArray();
+      char[] pattern = Utils.getRandomString(Utils.CharType.ALL_ASCII, 0, 1000).toCharArray();
+      char[] text = Utils.getRandomString(Utils.CharType.ALL_ASCII, pattern.length, 10000).toCharArray();
       int[] expectedShifts = makeShifts(text, pattern);
       int[] actualShifts = stringMatchingAlgorithm.match(text, pattern);
       if (!Arrays.equals(expectedShifts, actualShifts)) {

@@ -32,7 +32,7 @@ public class CheckBracketsInTheCodeTest extends PATest {
     int n = Utils.getRandomInteger(1, 100000);
     StringBuilder input = new StringBuilder();
     for (int i = 0; i < n; i++) {
-      input.append(Utils.getRandomChar(Utils.CharType.ALL));
+      input.append(Utils.getRandomChar(Utils.CharType.ALL_ASCII));
     }
     return input.toString();
   }

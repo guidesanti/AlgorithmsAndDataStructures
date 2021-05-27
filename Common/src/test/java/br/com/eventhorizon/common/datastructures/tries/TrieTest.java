@@ -58,7 +58,7 @@ public class TrieTest {
   @Test
   public void testAddRandomKeys() {
     for (int test = 0; test < NUMBER_OF_TESTS; test++) {
-      Set<String> keys = Arrays.stream(Utils.getRandomStringArray(Utils.CharType.ALL, 1, 256, 1, 1000)).collect(Collectors.toSet());
+      Set<String> keys = Arrays.stream(Utils.getRandomStringArray(Utils.CharType.ALL_ASCII, 1, 256, 1, 1000)).collect(Collectors.toSet());
       Trie trie = new Trie();
       assertTrue(trie.isEmpty());
       int expectedSize = 0;
@@ -187,7 +187,7 @@ public class TrieTest {
   @Test
   public void testRemoveRandomKeys() {
     for (int test = 0; test < NUMBER_OF_TESTS; test++) {
-      String[] keys = Utils.getRandomStringArray(Utils.CharType.ALL, 1, 256, 1, 100);
+      String[] keys = Utils.getRandomStringArray(Utils.CharType.ALL_ASCII, 1, 256, 1, 100);
       Set<String> keySet = Arrays.stream(keys).collect(Collectors.toSet());
       List<String> keyList = new ArrayList<>(keySet);
       Collections.shuffle(keyList);

@@ -10,16 +10,28 @@ import java.util.Stack;
  */
 public class Trie {
 
-  private static final int ALPHABET_SIZE = 128;
+  private final Alphabet alphabet;
 
   private final Node root;
 
   private int size;
 
   /**
-   * Creates an empty trie.
+   * Creates an empty trie with default alphabet Alphabet.DEFAULT.
    */
   public Trie() {
+    this.alphabet = Alphabet.DEFAULT;
+    this.root = new Node();
+    this.size = 0;
+  }
+
+  /**
+   * Creates an empty trie with custom alphabet.
+   *
+   * @param alphabet The custom alphabet to be used
+   */
+  public Trie(Alphabet alphabet) {
+    this.alphabet = alphabet;
     this.root = new Node();
     this.size = 0;
   }
@@ -43,12 +55,11 @@ public class Trie {
     validateKey(key);
     Node current = root;
     for (int i = 0; i < key.length(); i++) {
-      char symbol = key.charAt(i);
-      validateSymbol(symbol);
-      if (current.next[symbol] == null) {
-        current.next[symbol] = new Node();
+      int symbolIndex = alphabet.symbolToIndex(key.charAt(i));
+      if (current.next[symbolIndex] == null) {
+        current.next[symbolIndex] = new Node();
       }
-      current = current.next[symbol];
+      current = current.next[symbolIndex];
     }
     if (!current.present) {
       current.present = true;
@@ -69,12 +80,12 @@ public class Trie {
     Stack<Node> stack = new Stack<>();
     Node current = root;
     for (int i = 0; i < key.length(); i++) {
-      char ch = key.charAt(i);
-      if (current.next[ch] == null) {
+      int symbolIndex = alphabet.symbolToIndex(key.charAt(i));
+      if (current.next[symbolIndex] == null) {
         throw new NoSuchElementException("Key not found");
       }
       stack.push(current);
-      current = current.next[ch];
+      current = current.next[symbolIndex];
     }
     if (!current.present) {
       throw new NoSuchElementException("Key not found");
@@ -84,8 +95,7 @@ public class Trie {
       int index = key.length() - 1;
       while (!stack.isEmpty()) {
         Node node = stack.pop();
-        char symbol = key.charAt(index--);
-        node.next[symbol] = null;
+        node.next[alphabet.symbolToIndex(key.charAt(index--))] = null;
         if (node.hasChildren() || node.present) {
           break;
         }
@@ -121,12 +131,11 @@ public class Trie {
   public boolean contains(String key) {
     Node current = root;
     for (int index = 0; index < key.length(); index++) {
-      char symbol = key.charAt(index);
-      validateSymbol(symbol);
-      if (current.next[symbol] == null) {
+      int symbolIndex = alphabet.symbolToIndex(key.charAt(index));
+      if (current.next[symbolIndex] == null) {
         return false;
       }
-      current = current.next[symbol];
+      current = current.next[symbolIndex];
     }
     return current.present;
   }
@@ -143,13 +152,7 @@ public class Trie {
     }
   }
 
-  private void validateSymbol(char symbol) {
-    if (symbol >= ALPHABET_SIZE) {
-      throw new UnsupportedSymbolException("Unsupported symbol: " + symbol);
-    }
-  }
-
-  private static class Node {
+  private class Node {
 
     private boolean present;
 
@@ -157,7 +160,7 @@ public class Trie {
 
     public Node() {
       present = false;
-      next = new Node[ALPHABET_SIZE];
+      next = new Node[alphabet.size()];
     }
 
     public boolean hasChildren() {
