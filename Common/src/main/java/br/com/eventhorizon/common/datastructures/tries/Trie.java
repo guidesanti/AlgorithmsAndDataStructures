@@ -140,6 +140,25 @@ public class Trie {
     return current.present;
   }
 
+  /**
+   * Checks whether any of the keys present in this trie matches the text starting from offset.
+   *
+   * @param text The text to verify a match
+   * @param offset The offset from the beginning of the text
+   * @return True if any of the keys present in this trie matches the text starting from offset, otherwise returns false
+   */
+  public boolean match(String text, int offset) {
+    Node node = root;
+    while (node != null && offset < text.length()) {
+      int symbolIndex = alphabet.symbolToIndex(text.charAt(offset++));
+      if (node.present) {
+        return true;
+      }
+      node = node.next[symbolIndex];
+    }
+    return node != null && node.present;
+  }
+
   private void buildTrie(String[] keys) {
     for (String key : keys) {
       add(key);

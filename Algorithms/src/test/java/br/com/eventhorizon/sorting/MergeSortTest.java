@@ -5,7 +5,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 public class MergeSortTest extends SortAlgorithmTest {
 
-  private static final String DATA_SET = "/test-dataset/sorting.csv";
+  private static final String DATA_SET = "/sorting/sorting.csv";
 
   public MergeSortTest() {
     super(new MergeSort());

@@ -2,7 +2,12 @@ package br.com.eventhorizon.common.datastructures.tries;
 
 import java.util.NoSuchElementException;
 
-public class Trie<T> {
+/**
+ * TODO
+ *
+ * @param <T> TODO
+ */
+public class TrieMap<T> {
 
   private static final int ALPHABET_SIZE = 256;
 
@@ -10,12 +15,12 @@ public class Trie<T> {
 
   private int size;
 
-  public Trie() {
+  public TrieMap() {
     this.root = new Node<>();
     this.size = 0;
   }
 
-  public Trie(String[] keys, T[] values) {
+  public TrieMap(String[] keys, T[] values) {
     this();
     if (keys == null || values == null) {
       throw new IllegalArgumentException("keys and values cannot be null");

@@ -1,0 +1,7 @@
+# The list of patters shall be separated by a '%' char
+# If any of the patterns contains '%' char, it shall be escaped by '%%'
+text,patterns,shifts
+This is my first test,This%Some other text%Another%%string%my fir%my first,0 8
+AAA,AA,0 1
+AA,T,null
+AATCGGGTTCAATCGGGGT,ATCG%GGGT,1 4 11 15

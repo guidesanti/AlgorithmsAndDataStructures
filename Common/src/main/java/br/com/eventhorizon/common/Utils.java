@@ -1,10 +1,8 @@
 package br.com.eventhorizon.common;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 public class Utils {
 
@@ -66,8 +64,7 @@ public class Utils {
   }
 
   public static String getRandomString(CharType type, int minLength, int maxLength) {
-    int length = getRandomInteger(minLength, maxLength);
-    return getRandomString(type, length);
+    return getRandomString(type, getRandomInteger(minLength, maxLength));
   }
 
   public static String[] getRandomStringArray(CharType type, int minStringLength, int maxStringLength, int minArrayLength, int maxArrayLength) {
@@ -76,6 +73,21 @@ public class Utils {
       array[i] = getRandomString(type, getRandomInteger(minStringLength, maxStringLength));
     }
     return array;
+  }
+
+  public static List<String> getRandomStringList(
+      CharType type, boolean distinct,
+      int minStringLength, int maxStringLength,
+      int minArrayLength, int maxArrayLength) {
+    int size = getRandomInteger(minArrayLength, maxArrayLength);
+    List<String> list = new ArrayList<>(size);
+    for (int i = 0; i < size; i++) {
+      list.add(getRandomString(type, getRandomInteger(minStringLength, maxStringLength)));
+    }
+    if (distinct) {
+      list = list.stream().distinct().collect(Collectors.toList());
+    }
+    return list;
   }
 
   public static int getRandomInteger(int min, int max) {
