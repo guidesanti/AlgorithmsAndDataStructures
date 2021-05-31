@@ -42,11 +42,10 @@
         <maven.dependency.version>3.1.2</maven.dependency.version>
         <maven.jar.version>3.2.0</maven.jar.version>
         <maven.site.version>3.9.1</maven.site.version>
-        <jbehave.version>4.7</jbehave.version>
-        <opencsv.version>5.4</opencsv.version>
 
         <!-- Dependency Versions -->
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
+        <opencsv.version>5.4</opencsv.version>
     </properties>
 
     <build>
