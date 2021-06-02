@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.datastructures.tries;
+package br.com.eventhorizon.common.datastructures;
 
 public class UnsupportedSymbolException extends RuntimeException {
 

@@ -1,0 +1,4 @@
+input,expectedOutput
+A$,A$%$
+ACA$,A%CA$%$%CA$%$
+ATAAATG$,A%G$%T%$%A%T%AAATG$%G$%ATG$%TG$%AAATG$%G$

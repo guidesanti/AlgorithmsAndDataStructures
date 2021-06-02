@@ -1,11 +1,12 @@
 package br.com.eventhorizon.common.datastructures.tries;
 
+import br.com.eventhorizon.common.datastructures.Alphabet;
+
 import java.util.NoSuchElementException;
 import java.util.Stack;
 
 /**
- * Trie implementation with a default alphabet of 128 symbols from the ASCII table.
- * Any string with symbol not from ASCII table will result on UnsupportedSymbolException.
+ * Prefix trie implementation.
  * This implementation of trie does not accept null or empty keys.
  */
 public class Trie {

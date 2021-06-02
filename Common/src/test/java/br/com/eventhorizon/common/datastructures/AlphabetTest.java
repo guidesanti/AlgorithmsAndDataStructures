@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.datastructures.tries;
+package br.com.eventhorizon.common.datastructures;
 
 import br.com.eventhorizon.common.Utils;
 import org.junit.jupiter.api.Test;

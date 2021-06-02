@@ -19,7 +19,7 @@ More graph algorithms can be found [here](../Common/src/main/java/br/com/eventho
 - [Quick Sort](./src/main/java/br/com/eventhorizon/sorting/QuickSort.java)
 - [Selection Sort](./src/main/java/br/com/eventhorizon/sorting/SelectionSort.java)
 
-# String Matching Algorithms
-- [Naive](./src/main/java/br/com/eventhorizon/string/matching/Naive.java)
+# Pattern Matching Algorithms
+- [Brute Force](./src/main/java/br/com/eventhorizon/string/matching/Naive.java)
 - [Rabin-Karp](./src/main/java/br/com/eventhorizon/string/matching/RabinKarp.java)
-
+- [Prefix Trie](./src/main/java/br/com/eventhorizon/string/matching/TriePatternMatcher.java)

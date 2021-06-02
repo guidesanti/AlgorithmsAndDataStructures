@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.datastructures.tries;
+package br.com.eventhorizon.common.datastructures;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +39,10 @@ public class Alphabet {
 
   public int size() {
     return symbols == null ? DEFAULT_ALPHABET_SIZE : symbols.length;
+  }
+
+  public boolean contains(char symbol) {
+    return symbolToIndexMap.containsKey(symbol);
   }
 
   public int symbolToIndex(char symbol) {
