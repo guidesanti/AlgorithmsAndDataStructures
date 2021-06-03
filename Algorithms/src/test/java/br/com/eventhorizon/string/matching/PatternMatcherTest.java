@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public abstract class PatternMatcherTest {
+abstract class PatternMatcherTest {
 
   private static final Logger LOGGER = Logger.getLogger(PatternMatcherTest.class.getName());
 
@@ -22,21 +22,18 @@ public abstract class PatternMatcherTest {
 
   private static final String MULTI_PATTERN_MATCHING_DATA_SET = "/string/matching/multi-pattern-matching.csv";
 
-  protected final PatternMatcher naivePatternMatcher;
+  private final PatternMatcher naivePatternMatcher;
 
-  protected final PatternMatcher patternMatcher;
+  private final PatternMatcher patternMatcher;
 
-  public PatternMatcherTest(PatternMatcher patternMatcher) {
+  PatternMatcherTest(PatternMatcher patternMatcher) {
     this.naivePatternMatcher = new NaivePatternMatcher();
     this.patternMatcher = patternMatcher;
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = PATTERN_MATCHING_DATA_SET, numLinesToSkip = 1)
-  public void testPatternMatch(
-      String text,
-      String pattern,
-      @ConvertWith(StringToListOfIntegersConverter.class) List<Integer> expectedShifts) {
+  void testPatternMatch(String text, String pattern, @ConvertWith(StringToListOfIntegersConverter.class) List<Integer> expectedShifts) {
     Collection<Integer> actualShifts = patternMatcher.match(text, pattern);
     assertEquals(expectedShifts.size(), actualShifts.size());
     assertTrue(expectedShifts.containsAll(actualShifts));
@@ -44,17 +41,14 @@ public abstract class PatternMatcherTest {
 
   @ParameterizedTest
   @CsvFileSource(resources = MULTI_PATTERN_MATCHING_DATA_SET, numLinesToSkip = 1)
-  public void testMultiPatternMatch(
-      String text,
-      @ConvertWith(StringToListOfStringConverter.class) List<String> patterns,
-      @ConvertWith(StringToListOfIntegersConverter.class) List<Integer> expectedShifts) {
+  void testMultiPatternMatch(String text, @ConvertWith(StringToListOfStringConverter.class) List<String> patterns, @ConvertWith(StringToListOfIntegersConverter.class) List<Integer> expectedShifts) {
     Collection<Integer> actualShifts = patternMatcher.match(text, patterns);
     assertEquals(expectedShifts.size(), actualShifts.size());
     assertTrue(expectedShifts.containsAll(actualShifts));
   }
 
   @Test
-  public void patternMatchingStressTest() {
+  void patternMatchingStressTest() {
     LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
     if (patternMatcher instanceof NaivePatternMatcher) {
       LOGGER.info("Skipping pattern match stress test for NaivePatterMather to avoid compare it to itself");
