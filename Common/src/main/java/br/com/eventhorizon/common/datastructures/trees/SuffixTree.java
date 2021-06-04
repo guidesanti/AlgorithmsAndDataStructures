@@ -12,14 +12,25 @@ public class SuffixTree {
 
   private final Node root;
 
+  private int size;
+
   public SuffixTree(Alphabet alphabet, String text) {
-    if (alphabet.contains(END_OF_STRING_MARK)) {
+    if (!alphabet.contains(END_OF_STRING_MARK)) {
       throw new IllegalArgumentException("alphabet should contains the end of string mark '" + END_OF_STRING_MARK + "' symbol");
     }
     this.alphabet = alphabet;
     this.text = text + END_OF_STRING_MARK;
     this.root = new Node();
+    this.size = 0;
     buildSuffixTree(this.text);
+  }
+
+  public Node root() {
+    return root;
+  }
+
+  public int size() {
+    return size;
   }
 
   private void add(int offset, int length) {
@@ -28,6 +39,7 @@ public class SuffixTree {
     while (true) {
       if (node.next[symbolIndex] == null) {
         node.next[symbolIndex] = new Node(offset, length);
+        size++;
         break;
       }
       int commonLength = compare(offset, node.next[symbolIndex].offset, node.next[symbolIndex].length);
@@ -39,6 +51,7 @@ public class SuffixTree {
         node.next[symbolIndex].offset += commonLength;
         node.next[symbolIndex].length -= commonLength;
         node.next[symbolIndex] = partialSuffixNode;
+        size += 2;
         break;
       } else {
         node.next[symbolIndex].offset = offset;
@@ -67,7 +80,7 @@ public class SuffixTree {
     }
   }
 
-  private class Node {
+  public class Node {
 
     private final Node[] next;
 
@@ -83,6 +96,18 @@ public class SuffixTree {
       this.next = new Node[alphabet.size()];
       this.offset = offset;
       this.length = length;
+    }
+
+    public Node[] next() {
+      return next;
+    }
+
+    public int offset() {
+      return offset;
+    }
+
+    public int length() {
+      return length;
     }
 
     public boolean isLeaf() {

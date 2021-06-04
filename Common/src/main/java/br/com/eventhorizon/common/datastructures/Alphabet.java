@@ -42,6 +42,9 @@ public class Alphabet {
   }
 
   public boolean contains(char symbol) {
+    if (defaultAlphabet) {
+      return (symbol > 0) && (symbol < DEFAULT_ALPHABET_SIZE);
+    }
     return symbolToIndexMap.containsKey(symbol);
   }
 
