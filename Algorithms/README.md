@@ -21,6 +21,10 @@ More graph algorithms can be found [here](../Common/src/main/java/br/com/eventho
 
 # String Algorithms
 
+## Burrows-Wheeler Transform
+- [Naive](./src/main/java/br/com/eventhorizon/string/NaiveBurrowsWheelerTransform.java)
+- [Improved](./src/main/java/br/com/eventhorizon/string/ImprovedBurrowsWheelerTransform.java)
+
 ## Pattern Matching
 - [Naive (brute force)](./src/main/java/br/com/eventhorizon/string/matching/Naive.java)
 - [Rabin-Karp](./src/main/java/br/com/eventhorizon/string/matching/RabinKarp.java)
