@@ -1,5 +1,7 @@
 package br.com.eventhorizon.common;
 
+import br.com.eventhorizon.common.datastructures.Alphabet;
+
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
@@ -63,8 +65,32 @@ public class Utils {
     return string.toString();
   }
 
+  public static String getRandomString(char[] symbols, int length) {
+    StringBuilder string = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      string.append(symbols[getRandomInteger(0, symbols.length - 1)]);
+    }
+    return string.toString();
+  }
+
+  public static String getRandomString(Alphabet alphabet, int length) {
+    StringBuilder string = new StringBuilder();
+    for (int i = 0; i < length; i++) {
+      string.append(alphabet.indexToSymbol(getRandomInteger(0, alphabet.size() - 1)));
+    }
+    return string.toString();
+  }
+
   public static String getRandomString(CharType type, int minLength, int maxLength) {
     return getRandomString(type, getRandomInteger(minLength, maxLength));
+  }
+
+  public static String getRandomString(Alphabet alphabet, int minLength, int maxLength) {
+    return getRandomString(alphabet, getRandomInteger(minLength, maxLength));
+  }
+
+  public static String getRandomString(char[] symbols, int minLength, int maxLength) {
+    return getRandomString(symbols, getRandomInteger(minLength, maxLength));
   }
 
   public static String[] getRandomStringArray(CharType type, int minStringLength, int maxStringLength, int minArrayLength, int maxArrayLength) {
