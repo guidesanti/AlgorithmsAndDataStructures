@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.bwt;
 
 import java.util.ArrayList;
 import java.util.List;

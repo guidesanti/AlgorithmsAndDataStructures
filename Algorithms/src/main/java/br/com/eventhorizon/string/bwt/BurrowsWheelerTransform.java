@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.bwt;
 
 /**
  * Calculates the Burrows-Wheeler transform of a text.

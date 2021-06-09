@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.bwt;
 
 public class NaiveBurrowsWheelerTransformTest extends BurrowsWheelerTransformTest {
 

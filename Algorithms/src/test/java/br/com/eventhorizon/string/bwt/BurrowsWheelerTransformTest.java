@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.bwt;
 
 import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
@@ -14,7 +14,7 @@ public abstract class BurrowsWheelerTransformTest {
 
   private static final Logger LOGGER = Logger.getLogger(BurrowsWheelerTransformTest.class.getName());
 
-  private static final String DATA_SET = "/string/burrows-wheeler-transform.csv";
+  private static final String DATA_SET = "/string/bwt/burrows-wheeler-transform.csv";
 
   private final BurrowsWheelerTransform burrowsWheelerTransform;
 
