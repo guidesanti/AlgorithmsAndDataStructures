@@ -23,6 +23,8 @@ More graph algorithms can be found [here](../Common/src/main/java/br/com/eventho
 
 ## Burrows-Wheeler Transform
 
+Some implementations of the Burrows-Wheeler transform and its respective reverse.
+
 ### Transform
 - [Naive](./src/main/java/br/com/eventhorizon/string/bwt/NaiveBurrowsWheelerTransform.java)
 - [Improved](./src/main/java/br/com/eventhorizon/string/bwt/ImprovedBurrowsWheelerTransform.java)
