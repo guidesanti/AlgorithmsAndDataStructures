@@ -14,30 +14,50 @@ public class BurrowsWheelerTransformPatternMatcher implements PatternMatcher {
 
   @Override
   public Collection<Integer> match(String text, Collection<String> patterns) {
-    List<Integer> shifts = new ArrayList<>();
+    Set<Integer> shifts = new HashSet<>();
     String bwt = new ImprovedBurrowsWheelerTransform().transform(text);
     Map<Character, Integer> symbolCount = countSymbols(bwt);
     Map<Character, Integer> firstColumnSymbolOffsets = calculateFirstColumnSymbolOffsets(symbolCount);
     int[] lastToFirstColumnMap = calculateLastToFirstColumnMap(bwt, firstColumnSymbolOffsets);
-    int count = 0;
+    int[] suffixArray = buildSuffixArray(lastToFirstColumnMap);
     for (String pattern : patterns) {
       int index = pattern.length() - 1;
       char symbol = pattern.charAt(index--);
+      if (!firstColumnSymbolOffsets.containsKey(symbol)) {
+        continue;
+      }
       int top = firstColumnSymbolOffsets.get(symbol);
-      int bottom = top + symbolCount.get(symbol);
+      int bottom = top + symbolCount.get(symbol) - 1;
       while (top <= bottom) {
         if (index >= 0) {
           symbol = pattern.charAt(index--);
+          boolean stop = false;
           while (bwt.charAt(top) != symbol) {
             top++;
+            if (top > bottom) {
+              stop = true;
+              break;
+            }
+          }
+          if (stop) {
+            break;
           }
           while (bwt.charAt(bottom) != symbol) {
             bottom--;
+            if (bottom < top) {
+              stop = true;
+              break;
+            }
+          }
+          if (stop) {
+            break;
           }
           top = lastToFirstColumnMap[top];
           bottom = lastToFirstColumnMap[bottom];
         } else {
-          count += (bottom - top + 1);
+          for (int i = top; i <= bottom; i++) {
+            shifts.add(suffixArray[i]);
+          }
           break;
         }
       }
@@ -56,6 +76,8 @@ public class BurrowsWheelerTransformPatternMatcher implements PatternMatcher {
 
   private Map<Character, Integer> calculateFirstColumnSymbolOffsets(Map<Character, Integer> symbolCount) {
     List<Character> symbols = symbolCount.keySet().stream().sorted().collect(Collectors.toList());
+    symbols.remove((Character) '$');
+    symbols.add(0, '$');
     Map<Character, Integer> symbolOffsets = new HashMap<>();
     int offset = 0;
     for (char symbol : symbols) {
@@ -76,5 +98,15 @@ public class BurrowsWheelerTransformPatternMatcher implements PatternMatcher {
       symbolCount.put(symbol, count);
     }
     return lastToFirstColumnMap;
+  }
+
+  private int[] buildSuffixArray(int[] lastToFirstColumnMap) {
+    int index = 0;
+    int[] suffixArray = new int[lastToFirstColumnMap.length];
+    for (int suffixIndex = lastToFirstColumnMap.length - 1; suffixIndex >= 0; suffixIndex--) {
+      suffixArray[index] = suffixIndex;
+      index = lastToFirstColumnMap[index];
+    }
+    return suffixArray;
   }
 }

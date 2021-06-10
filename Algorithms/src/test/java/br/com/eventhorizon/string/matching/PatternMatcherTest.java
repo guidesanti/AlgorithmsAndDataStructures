@@ -56,8 +56,8 @@ abstract class PatternMatcherTest {
     }
     long startTime = System.currentTimeMillis();
     for (int test = 0; true; test++) {
-      String pattern = Utils.getRandomString(Utils.CharType.ALL_ASCII, 1, 1000);
-      String text = Utils.getRandomString(Utils.CharType.ALL_ASCII, pattern.length(), 10000);
+      String pattern = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 1000);
+      String text = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, pattern.length(), 10000);
       text = makeShifts(text, pattern);
       Collection<Integer> expectedShifts = naivePatternMatcher.match(text, pattern);
       Collection<Integer> actualShifts = patternMatcher.match(text, pattern);
@@ -65,6 +65,8 @@ abstract class PatternMatcherTest {
         LOGGER.info("Stress test " + test + " status: FAILED");
         LOGGER.info("Stress test " + test + " text: " + text);
         LOGGER.info("Stress test " + test + " pattern: " + pattern);
+        LOGGER.info("Stress test " + test + " expected shifts: " + expectedShifts);
+        LOGGER.info("Stress test " + test + " actual shifts: " + actualShifts);
         fail();
       }
       LOGGER.info("Stress test " + test + " status: PASSED");

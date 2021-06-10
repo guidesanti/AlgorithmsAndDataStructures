@@ -31,6 +31,6 @@ public class ImprovedBurrowsWheelerTransform implements BurrowsWheelerTransform 
   }
 
   private char charAt(int index) {
-    return index < text.length() ? text.charAt(index) : '$';
+    return index < text.length() ? text.charAt(index) : Character.MIN_VALUE;
   }
 }

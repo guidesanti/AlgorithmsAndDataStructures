@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * Pattern matching implementation with prefix trie.
- * This algorithm first builds a trie with all prefixes, that s all the patterns that are potential
+ * This algorithm first builds a trie with all prefixes, that is all the patterns that are potential
  * prefixes of the text to be searched and then the text is scanned char by char for a match with
  * the prefixes within the trie.
  */

@@ -3,5 +3,6 @@
 text,patterns,shifts
 This is my first test,This%Some other text%Another%%string%my fir%my first,0 8
 AAA,AA,0 1
+bananas,ana,1 3
 AA,T,null
 AATCGGGTTCAATCGGGGT,ATCG%GGGT,1 4 11 15
