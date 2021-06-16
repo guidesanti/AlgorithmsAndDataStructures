@@ -4,7 +4,7 @@ import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.PATestType;
 import br.com.eventhorizon.string.bwt.BurrowsWheelerTransform;
-import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform;
+import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform1;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -26,7 +26,7 @@ public class ReverseBurrowsWheelerTransformTest extends PATest {
 
   @Override
   protected String generateInput(PATestType type) {
-    BurrowsWheelerTransform bwt = new ImprovedBurrowsWheelerTransform();
+    BurrowsWheelerTransform bwt = new ImprovedBurrowsWheelerTransform1();
     return bwt.transform(Utils.getRandomString(ALPHABET_SYMBOLS, 1000000));
   }
 }

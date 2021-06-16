@@ -3,7 +3,7 @@ package br.com.eventhorizon.edx.ucsandiego.algs204x.pa2;
 import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform;
+import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform1;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -44,7 +44,7 @@ public class BWTMatchingTest extends PATest {
         break;
     }
     String text = Utils.getRandomString(ALPHABET_SYMBOLS, 1, textLength);
-    String bwt = new ImprovedBurrowsWheelerTransform().transform(text);
+    String bwt = new ImprovedBurrowsWheelerTransform1().transform(text);
     input.append(bwt).append(" ").append(n);
     for (int i = 0; i < n; i++) {
       int patternLength = Utils.getRandomInteger(1, 1000);
