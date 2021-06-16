@@ -1,0 +1,6 @@
+input,output
+banana$,6 5 3 1 0 4 2
+AAA$,3 2 1 0
+GAC$,3 1 2 0
+GAGAGAGA$,8 7 5 3 1 6 4 2 0
+AACGATAGCGGTAGA$,15 14 0 1 12 6 4 2 8 13 3 7 9 10 11 5
