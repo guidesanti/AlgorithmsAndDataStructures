@@ -3,7 +3,7 @@ package br.com.eventhorizon.string.bwt;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImprovedBurrowsWheelerTransform implements BurrowsWheelerTransform {
+public class ImprovedBurrowsWheelerTransform1 implements BurrowsWheelerTransform {
 
   private String text;
 

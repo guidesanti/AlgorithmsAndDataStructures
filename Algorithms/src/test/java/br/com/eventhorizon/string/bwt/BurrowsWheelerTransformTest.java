@@ -39,7 +39,7 @@ public abstract class BurrowsWheelerTransformTest {
     long startTime = System.currentTimeMillis();
     for (int test = 0; true; test++) {
       NaiveBurrowsWheelerTransform naiveBurrowsWheelerTransform = new NaiveBurrowsWheelerTransform();
-      String text = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 1000);
+      String text = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10000);
       String result1 = naiveBurrowsWheelerTransform.transform(text);
       String result2 = burrowsWheelerTransform.transform(text);
       if (!result1.equals(result2)) {
@@ -57,5 +57,34 @@ public abstract class BurrowsWheelerTransformTest {
         return;
       }
     }
+  }
+
+  @Test
+  void timeTest() {
+    if (burrowsWheelerTransform instanceof NaiveBurrowsWheelerTransform) {
+      LOGGER.info("Skipping time test for NaiveBurrowsWheelerTransform to avoid compare it to itself");
+      return;
+    }
+    double naiveTime = 0;
+    double time = 0;
+    for (int test = 0; test < 100; test++) {
+      BurrowsWheelerTransform naiveBurrowsWheelerTransform = new NaiveBurrowsWheelerTransform();
+
+      String text = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10000);
+
+      long startTime = System.currentTimeMillis();
+      naiveBurrowsWheelerTransform.transform(text);
+      long elapsedTime = System.currentTimeMillis() - startTime;
+      naiveTime += elapsedTime;
+
+      startTime = System.currentTimeMillis();
+      burrowsWheelerTransform.transform(text);
+      elapsedTime = System.currentTimeMillis() - startTime;
+      time += elapsedTime;
+    }
+
+    LOGGER.info("Time test total time (Naive): " + naiveTime);
+    LOGGER.info("Time test total time (" + burrowsWheelerTransform.getClass().getName() + "): " + time);
+    LOGGER.info("Time test relative time: " + naiveTime / time);
   }
 }

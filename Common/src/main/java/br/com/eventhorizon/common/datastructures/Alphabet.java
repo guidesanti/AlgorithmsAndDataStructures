@@ -1,6 +1,8 @@
 package br.com.eventhorizon.common.datastructures;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Alphabet {
@@ -11,11 +13,14 @@ public class Alphabet {
 
   private final boolean defaultAlphabet;
 
-  private final char[] symbols;
+  private int index;
+
+  private List<Character> symbols;
 
   private final Map<Character, Integer> symbolToIndexMap;
 
   public Alphabet() {
+    this.index = DEFAULT_ALPHABET_SIZE;
     this.defaultAlphabet = true;
     this.symbols = null;
     this.symbolToIndexMap = null;
@@ -26,10 +31,18 @@ public class Alphabet {
       throw new IllegalArgumentException("symbols cannot be null or empty");
     }
     this.defaultAlphabet = false;
-    this.symbols = symbols;
+    this.symbols = new ArrayList<>();
     this.symbolToIndexMap = new HashMap<>();
-    for (int index = 0; index < symbols.length; index++) {
-      this.symbolToIndexMap.put(symbols[index], index);
+    for (char symbol : symbols) {
+      this.symbols.add(symbol);
+      this.symbolToIndexMap.put(symbols[index], index++);
+    }
+  }
+
+  public void add(char symbol) {
+    if (!symbolToIndexMap.containsKey(symbol)) {
+      symbols.add(symbol);
+      symbolToIndexMap.put(symbol, index++);
     }
   }
 
@@ -38,7 +51,7 @@ public class Alphabet {
   }
 
   public int size() {
-    return symbols == null ? DEFAULT_ALPHABET_SIZE : symbols.length;
+    return symbols == null ? DEFAULT_ALPHABET_SIZE : symbols.size();
   }
 
   public boolean contains(char symbol) {
@@ -62,9 +75,13 @@ public class Alphabet {
   }
 
   public char indexToSymbol(int index) {
-    if (index < 0 || index >= (defaultAlphabet ? DEFAULT_ALPHABET_SIZE : symbols.length)) {
+    if (index < 0 || index >= (defaultAlphabet ? DEFAULT_ALPHABET_SIZE : symbols.size())) {
       throw new IndexOutOfBoundsException("Index cannot be less than zero or greater than or equals to the alphabet size");
     }
-    return defaultAlphabet ? (char) index : symbols[index];
+    return defaultAlphabet ? (char) index : symbols.get(index);
+  }
+
+  public List<Character> symbols() {
+    return symbols;
   }
 }

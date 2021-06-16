@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.matching;
 
-import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform;
+import br.com.eventhorizon.string.bwt.ImprovedBurrowsWheelerTransform1;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ public class BurrowsWheelerTransformPatternMatcher implements PatternMatcher {
   @Override
   public Collection<Integer> match(String text, Collection<String> patterns) {
     Set<Integer> shifts = new HashSet<>();
-    String bwt = new ImprovedBurrowsWheelerTransform().transform(text);
+    String bwt = new ImprovedBurrowsWheelerTransform1().transform(text);
     Map<Character, Integer> symbolCount = countSymbols(bwt);
     Map<Character, Integer> firstColumnSymbolOffsets = calculateFirstColumnSymbolOffsets(symbolCount);
     int[] lastToFirstColumnMap = calculateLastToFirstColumnMap(bwt, firstColumnSymbolOffsets);
