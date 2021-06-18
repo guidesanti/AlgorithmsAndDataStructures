@@ -79,32 +79,6 @@ abstract class PatternMatcherTest {
     }
   }
 
-//  @Test
-//  public void multiPatternMatchingStressTest() {
-//    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
-//    long startTime = System.currentTimeMillis();
-//    for (int test = 0; true; test++) {
-//      List<String> patterns = Utils.getRandomStringList(Utils.CharType.ALL_ASCII, true, 1, 100, 1, 5000);
-//      int maxPatternLength = patterns.stream().max((o1, o2) -> Math.max(o1.length(), o2.length())).get().length();
-//      String text = Utils.getRandomString(Utils.CharType.ALL_ASCII, maxPatternLength, 10000);
-//      int[] expectedShifts = makeShifts(text, patterns);
-//      int[] actualShifts = patternMatcher.match(text, patterns);
-//      if (!Arrays.equals(expectedShifts, actualShifts)) {
-//        LOGGER.info("Stress test " + test + " status: FAILED");
-//        LOGGER.info("Stress test " + test + " text: " + text);
-//        LOGGER.info("Stress test " + test + " patterns: " + patterns);
-//        assertArrayEquals(expectedShifts, actualShifts);
-//      }
-//      LOGGER.info("Stress test " + test + " status: PASSED");
-//
-//      // Check elapsed time
-//      long elapsedTime = System.currentTimeMillis() - startTime;
-//      if (elapsedTime > TestProperties.getStressTestDuration()) {
-//        return;
-//      }
-//    }
-//  }
-
   private String makeShifts(String text, String pattern) {
     if (text.length() == 0 || pattern.length() == 0) {
       return "";
