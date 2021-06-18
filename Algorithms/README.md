@@ -45,10 +45,11 @@ Some implementations of the Burrows-Wheeler transform and its respective reverse
 
 Many algorithms for pattern matching.
 
-- [Naive (brute force)](./src/main/java/br/com/eventhorizon/string/matching/NaivePatternMatcher.java)
-- [Rabin-Karp](./src/main/java/br/com/eventhorizon/string/matching/RabinKarpPatternMatcher.java)
-- [Prefix Trie](./src/main/java/br/com/eventhorizon/string/matching/TriePatternMatcher.java)
 - [Burrows-Wheeler](./src/main/java/br/com/eventhorizon/string/matching/BurrowsWheelerTransformPatternMatcher.java)
+- [Naive (brute force)](./src/main/java/br/com/eventhorizon/string/matching/NaivePatternMatcher.java)
+- [Prefix Trie](./src/main/java/br/com/eventhorizon/string/matching/TriePatternMatcher.java)
+- [Rabin-Karp](./src/main/java/br/com/eventhorizon/string/matching/RabinKarpPatternMatcher.java)
+- [Suffix Array](./src/main/java/br/com/eventhorizon/string/matching/SuffixArrayPatternMatcher.java)
 
 ## Shortest Non-Shared Pattern
 
