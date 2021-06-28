@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string.matching;
+package br.com.eventhorizon.string.misc;
 
 import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.util.Objects;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +14,7 @@ abstract class ShortestNonSharedPatternTest {
 
   private static final Logger LOGGER = Logger.getLogger(ShortestNonSharedPatternTest.class.getName());
 
-  private static final String DATA_SET = "/string/matching/shortest-non-shared-substring.csv";
+  private static final String DATA_SET = "/string/misc/shortest-non-shared-substring.csv";
 
   private final ShortestNonSharedPattern shortestNonSharedPattern;
 

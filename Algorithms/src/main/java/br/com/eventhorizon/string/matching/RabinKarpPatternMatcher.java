@@ -1,9 +1,6 @@
 package br.com.eventhorizon.string.matching;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class RabinKarpPatternMatcher implements PatternMatcher {
 
@@ -51,6 +48,15 @@ public class RabinKarpPatternMatcher implements PatternMatcher {
           hash += PRIME;
         }
       }
+    }
+    return shifts;
+  }
+
+  @Override
+  public Collection<Integer> match(String text, Collection<String> patterns) {
+    Set<Integer> shifts = new HashSet<>();
+    for (String pattern : patterns) {
+      shifts.addAll(match(text, pattern));
     }
     return shifts;
   }

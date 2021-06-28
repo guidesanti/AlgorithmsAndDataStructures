@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string.matching;
+package br.com.eventhorizon.string.misc;
 
 public class NaiveShortestNonSharedPattern implements ShortestNonSharedPattern {
 

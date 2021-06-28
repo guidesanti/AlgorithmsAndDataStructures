@@ -6,7 +6,5 @@ public interface PatternMatcher {
 
   Collection<Integer> match(String text, String pattern);
 
-  default Collection<Integer> match(String text, Collection<String> patterns) {
-    throw new RuntimeException("Method not implemented");
-  }
+  Collection<Integer> match(String text, Collection<String> patterns);
 }

@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string.matching;
+package br.com.eventhorizon.string.misc;
 
 import br.com.eventhorizon.common.datastructures.Alphabet;
 import br.com.eventhorizon.common.datastructures.trees.SuffixTree;

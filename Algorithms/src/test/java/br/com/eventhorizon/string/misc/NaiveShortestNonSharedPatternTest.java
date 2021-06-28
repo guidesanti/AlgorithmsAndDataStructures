@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string.matching;
+package br.com.eventhorizon.string.misc;
 
 class NaiveShortestNonSharedPatternTest extends ShortestNonSharedPatternTest {
 

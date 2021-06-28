@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string.matching;
+package br.com.eventhorizon.string.misc;
 
 /**
  * Given two texts text1 and text2, find the shortest non-shared pattern from text1.
