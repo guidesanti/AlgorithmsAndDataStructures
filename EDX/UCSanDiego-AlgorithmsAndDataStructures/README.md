@@ -9,3 +9,4 @@ See https://www.edx.org/micromasters/ucsandiegox-algorithms-and-data-structures
 - [ALGS202x - Graph Algorithms](./ALGS202x-GraphAlgorithms/README.md)
 - [ALGS203x - NP-Complete Problems](./ALGS203x-NP-Complete-Problems/README.md)
 - [ALGS204x - String Processing and Pattern Matching Algorithms](./ALGS204x-StringProcessingAndPatternMatchingAlgorithms/README.md)
+- [ALGS205x - DynamicProgramming: Applications in Machine Learning and Genomics](./ALGS205x-DynamicProgramming-ApplicationsInMachineLearningAndGenomics/README.md)
