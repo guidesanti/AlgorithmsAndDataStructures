@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.suffixarray;
 
 import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
@@ -17,7 +17,7 @@ public abstract class SuffixArrayBuilderTest {
 
   private static final Logger LOGGER = Logger.getLogger(SuffixArrayBuilderTest.class.getName());
 
-  private static final String DATA_SET = "/string/suffix-array-builder.csv";
+  private static final String DATA_SET = "/string/suffixarray/suffix-array-builder.csv";
 
   private final SuffixArrayBuilder suffixArrayBuilder;
 

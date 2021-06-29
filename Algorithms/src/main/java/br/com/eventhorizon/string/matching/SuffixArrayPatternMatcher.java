@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.matching;
 
-import br.com.eventhorizon.string.ImprovedSuffixArrayBuilder;
+import br.com.eventhorizon.string.suffixarray.ImprovedSuffixArrayBuilder;
 
 import java.util.*;
 

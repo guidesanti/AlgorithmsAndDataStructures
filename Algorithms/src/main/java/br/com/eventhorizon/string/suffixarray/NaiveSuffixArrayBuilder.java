@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.suffixarray;
 
 import java.util.ArrayList;
 import java.util.Collections;

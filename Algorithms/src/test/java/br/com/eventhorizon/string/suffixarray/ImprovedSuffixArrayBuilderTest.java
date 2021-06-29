@@ -1,4 +1,4 @@
-package br.com.eventhorizon.string;
+package br.com.eventhorizon.string.suffixarray;
 
 public class ImprovedSuffixArrayBuilderTest extends SuffixArrayBuilderTest {
 
