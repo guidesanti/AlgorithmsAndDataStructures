@@ -23,7 +23,11 @@ public class FastScanner {
   public String next() {
     while (st == null || !st.hasMoreTokens()) {
       try {
-        st = new StringTokenizer(br.readLine());
+        String line = br.readLine();
+        if (line == null) {
+          return null;
+        }
+        st = new StringTokenizer(line);
       } catch (IOException e) {
         e.printStackTrace();
       }
