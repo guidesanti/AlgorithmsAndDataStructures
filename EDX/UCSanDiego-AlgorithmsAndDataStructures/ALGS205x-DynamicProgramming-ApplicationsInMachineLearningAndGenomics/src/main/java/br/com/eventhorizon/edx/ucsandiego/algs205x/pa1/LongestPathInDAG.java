@@ -3,7 +3,6 @@ package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
-import javax.naming.OperationNotSupportedException;
 import java.util.*;
 
 public class LongestPathInDAG implements PA {
