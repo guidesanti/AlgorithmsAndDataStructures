@@ -8,9 +8,9 @@ import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GlobalAlignmentTest extends PATest {
+public class LocalAlignmentTest extends PATest {
 
-  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/global-alignment.csv";
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/local-alignment.csv";
 
   private static int matchScore;
 
@@ -18,8 +18,8 @@ public class GlobalAlignmentTest extends PATest {
 
   private static int gapScore;
 
-  public GlobalAlignmentTest() {
-    super(new GlobalAlignment(), true, true);
+  public LocalAlignmentTest() {
+    super(new LocalAlignment(), true, true);
   }
 
   @ParameterizedTest
