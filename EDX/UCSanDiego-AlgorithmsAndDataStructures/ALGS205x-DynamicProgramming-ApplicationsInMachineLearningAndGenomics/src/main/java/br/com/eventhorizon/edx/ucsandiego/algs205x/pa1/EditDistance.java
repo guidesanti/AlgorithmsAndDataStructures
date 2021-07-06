@@ -12,6 +12,40 @@ public class EditDistance implements PA {
   private static int editDistance;
 
   @Override
+  public void naiveSolution() {
+    init();
+    readInput();
+    naiveEditDistance();
+    writeOutput();
+  }
+
+  private static void naiveEditDistance() {
+    editDistance = naiveRecursiveEditDistance(string1, string2, 0);
+  }
+
+  private static int naiveRecursiveEditDistance(String source, String target, int index) {
+    if (source.equals(target)) {
+      return 0;
+    }
+    int del = Integer.MAX_VALUE;
+    int ins = Integer.MAX_VALUE;
+    int sub = Integer.MAX_VALUE;
+
+    if (index < source.length()) {
+      del = naiveRecursiveEditDistance(source.substring(0, index) + source.substring(index + 1), target, index) + 1;
+    }
+    if (index < target.length()) {
+      ins = naiveRecursiveEditDistance(source.substring(0, index) + target.charAt(index) + source.substring(index), target, index + 1) + 1;
+    }
+    if (index < target.length() && index < source.length()) {
+      sub = source.charAt(index) == target.charAt(index) ?
+          naiveRecursiveEditDistance(source, target, index + 1) :
+          naiveRecursiveEditDistance(source.substring(0, index) + target.charAt(index) + source.substring(index + 1), target, index + 1) + 1;
+    }
+    return Math.min(del, Math.min(ins, sub));
+  }
+
+  @Override
   public void finalSolution() {
     init();
     readInput();
