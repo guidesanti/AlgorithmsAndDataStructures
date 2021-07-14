@@ -4,7 +4,9 @@ import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AlignmentWithAffineGapPenalties implements PA {
 
@@ -164,11 +166,11 @@ public class AlignmentWithAffineGapPenalties implements PA {
   public void finalSolution() {
     init();
     readInput();
-    finalGlobalAlignment();
+    finalGlobalAlignment2();
     writeOutput();
   }
 
-  private static void finalGlobalAlignment() {
+  private static void finalGlobalAlignment1() {
     if (string1 == null || string1.isEmpty() || string2 == null || string2.isEmpty()) {
       return;
     }
@@ -270,6 +272,148 @@ public class AlignmentWithAffineGapPenalties implements PA {
     alignment2 = s2.toString();
   }
 
+  private static void finalGlobalAlignment2() {
+    if (string1 == null || string1.isEmpty() || string2 == null || string2.isEmpty()) {
+      return;
+    }
+
+    Map<String, Vertex2> vertices = new HashMap<>();
+    int[][] M = new int[string1.length() + 1][string2.length() + 1];
+    int[][] Ix = new int[string1.length() + 1][string2.length() + 1];
+    int[][] Iy = new int[string1.length() + 1][string2.length() + 1];
+
+    M[0][0] = 0;
+    Ix[0][0] = gapOpeningScore;
+    Iy[0][0] = gapOpeningScore;
+    Vertex2 vertex = new Vertex2('M', 0, 0);
+    vertices.put(vertex.id, vertex);
+    vertex = new Vertex2('X', 0, 0);
+    vertices.put(vertex.id, vertex);
+    vertex = new Vertex2('Y', 0, 0);
+    vertices.put(vertex.id, vertex);
+    for (int i = 1; i < M[0].length; i++) {
+      M[0][i] = Integer.MIN_VALUE;
+      Ix[0][i] = Integer.MIN_VALUE;
+      Iy[0][i] = gapOpeningScore + (i * gapExtensionScore);
+      Vertex2 to = vertices.get(id('Y', 0, i - 1));
+      Vertex2 from = new Vertex2('Y', 0, i);
+      from.next.add(to);
+      vertices.put(from.id, from);
+    }
+    for (int i = 1; i < M.length; i++) {
+      M[i][0] = Integer.MIN_VALUE;
+      Ix[i][0] = gapOpeningScore + (i * gapExtensionScore);
+      Iy[i][0] = Integer.MIN_VALUE;
+      Vertex2 to = vertices.get(id('X', i - 1, 0));
+      Vertex2 from = new Vertex2('X', i, 0);
+      from.next.add(to);
+      vertices.put(from.id, from);
+    }
+    for (int i = 1; i <= string1.length(); i++) {
+      for (int j = 1; j <= string2.length(); j++) {
+        int Ix0 = M[i - 1][j] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (M[i - 1][j] + gapOpeningScore);
+        int Ix1 = Ix[i - 1][j] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (Ix[i - 1][j] + gapExtensionScore);
+        Ix[i][j] = Math.max(Ix0, Ix1);
+        if (Ix[i][j] != Integer.MIN_VALUE) {
+          Vertex2 from = new Vertex2('X', i, j);
+          vertices.put(from.id, from);
+          if (Ix0 == Ix[i][j]) {
+            String id = id('M', i - 1, j);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('M', i - 1, j));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+          if (Ix1 == Ix[i][j]) {
+            String id = id('X', i - 1, j);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('X', i - 1, j));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+        }
+
+        int Iy0 = M[i][j - 1] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (M[i][j - 1] + gapOpeningScore);
+        int Iy1 = Iy[i][j - 1] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (Iy[i][j - 1] + gapExtensionScore);
+        Iy[i][j] = Math.max(Iy0, Iy1);
+        if (Iy[i][j] != Integer.MIN_VALUE) {
+          Vertex2 from = new Vertex2('Y', i, j);
+          vertices.put(from.id, from);
+          if (Iy0 == Iy[i][j]) {
+            String id = id('M', i, j - 1);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('M', i, j - 1));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+          if (Iy1 == Iy[i][j]) {
+            String id = id('Y', i, j - 1);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('Y', i, j - 1));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+        }
+
+        int s = string1.charAt(i - 1) == string2.charAt(j - 1) ? matchScore : mismatchScore;
+        int m0 = M[i - 1][j - 1] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (M[i - 1][j - 1] + s);
+        int m1 = Ix[i - 1][j - 1] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (Ix[i - 1][j - 1] + s);
+        int m2 = Iy[i - 1][j - 1] == Integer.MIN_VALUE ? Integer.MIN_VALUE : (Iy[i - 1][j - 1] + s);
+        M[i][j] = Math.max(m0, Math.max(m1, m2));
+        if (M[i][j] != Integer.MIN_VALUE) {
+          Vertex2 from = new Vertex2('M', i, j);
+          vertices.put(from.id, from);
+          if (m0 == M[i][j]) {
+            String id = id('M', i - 1, j - 1);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('M', i - 1, j - 1));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+          if (m1 == M[i][j]) {
+            String id = id('X', i - 1, j - 1);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('X', i - 1, j - 1));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+          if (m2 == M[i][j]) {
+            String id = id('Y', i - 1, j - 1);
+            Vertex2 to = vertices.getOrDefault(id, new Vertex2('Y', i - 1, j - 1));
+            vertices.put(to.id, to);
+            from.next.add(to);
+          }
+        }
+      }
+    }
+
+    int i = string1.length();
+    int j = string2.length();
+    Vertex2 curr;
+    if (M[i][j] >= Ix[i][j] && M[i][j] >= Iy[i][j]) {
+      score = M[i][j];
+      curr = vertices.get(id('M', i, j));
+    } else if (Ix[i][j] >= M[i][j] && Ix[i][j] >= Iy[i][j]) {
+      score = Ix[i][j];
+      curr = vertices.get(id('X', i, j));
+    } else {
+      score = Iy[i][j];
+      curr = vertices.get(id('Y', i, j));
+    }
+    StringBuilder s1 = new StringBuilder();
+    StringBuilder s2 = new StringBuilder();
+    while (!curr.next.isEmpty()) {
+      Vertex2 next = curr.next.get(0);
+      if (next.i == curr.i - 1 && next.j == curr.j - 1) {
+        s1.insert(0, string1.charAt(curr.i - 1));
+        s2.insert(0, string2.charAt(curr.j - 1));
+      } else if (next.i == curr.i) {
+        s1.insert(0, '-');
+        s2.insert(0, string2.charAt(curr.j - 1));
+      } else {
+        s1.insert(0, string1.charAt(curr.i - 1));
+        s2.insert(0, '-');
+      }
+      curr = next;
+    }
+    alignment1 = s1.toString();
+    alignment2 = s2.toString();
+  }
+
   private static void init() {
     score = 0;
     alignment1 = "";
@@ -292,6 +436,10 @@ public class AlignmentWithAffineGapPenalties implements PA {
     System.out.println(alignment2);
   }
 
+  private static String id(char table, int i, int j) {
+    return table + ":" + i + ":" + j;
+  }
+
   private static class Vertex {
 
     int i;
@@ -304,6 +452,27 @@ public class AlignmentWithAffineGapPenalties implements PA {
       this.i = i;
       this.j = j;
       this.gapExtension = gapExtension;
+    }
+  }
+
+  private static class Vertex2 {
+
+    final char table;
+
+    final int i;
+
+    final int j;
+
+    final String id;
+
+    final List<Vertex2> next;
+
+    Vertex2(char table, int i, int j) {
+      this.table = table;
+      this.i = i;
+      this.j = j;
+      this.id = id(table, i, j);
+      this.next = new ArrayList<>();
     }
   }
 }
