@@ -1,0 +1,8 @@
+input,expectedOutput
+1 1 2 GAGA GAT;(2, 2) (2, 3)
+1 5 1 TTTT CC;(2, 2) (2, 3)
+1 1 2 GAT AT;(0, 1) (1, 2)
+1 1 1 TTTT TTCTT;(3, 2) (4, 3)
+1 5 1 GAACCC G;(1, 3) (1, 4)
+2 3 1 ACAGT CAT;(1, 2) (2, 3)
+2 5 3 T AATCCC;(2, 0) (3, 1)
