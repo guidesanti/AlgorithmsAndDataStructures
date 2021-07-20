@@ -11,7 +11,7 @@ public class MiddleEdgeInAlignmentGraphTest extends PATest {
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/middle-edge-in-alignment-graph.csv";
 
   public MiddleEdgeInAlignmentGraphTest() {
-    super(new MiddleEdgeInAlignmentGraph(), false, false);
+    super(new MiddleEdgeInAlignmentGraph(), false, true);
   }
 
   @ParameterizedTest
@@ -28,20 +28,10 @@ public class MiddleEdgeInAlignmentGraphTest extends PATest {
 
   @Override
   protected String generateInput(PATestType type) {
-    switch (type) {
-      case TIME_LIMIT_TEST:
-        return Utils.getRandomInteger(1,10) + " " +
-            Utils.getRandomInteger(1, 10) + " " +
-            Utils.getRandomInteger(1, 10) + " " +
-            Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000) + " " +
-            Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000);
-      case STRESS_TEST:
-      default:
-        return Utils.getRandomInteger(1,10) + " " +
-            Utils.getRandomInteger(1, 10) + " " +
-            Utils.getRandomInteger(1, 10) + " " +
-            Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000) + " " +
-            Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000);
-    }
+    return Utils.getRandomInteger(1,10) + " " +
+        Utils.getRandomInteger(1, 10) + " " +
+        Utils.getRandomInteger(1, 10) + " " +
+        Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000) + " " +
+        Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000);
   }
 }
