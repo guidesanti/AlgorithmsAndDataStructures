@@ -1,0 +1,6 @@
+input,expectedOutput
+1 5 1 TT CC,-4%--TT%CC--
+1 1 2 GAGA GAT,-1%GAGA%GA-T
+1 1 1 AAAAAAAAA A,-7%A--------%AAAAAAAAA
+1 1 1 AAAAAAAA A,-6%A-------%AAAAAAAA
+1 5 1 TT CC,-4%--TT%CC--
