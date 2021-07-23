@@ -1,5 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
+import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.PATestType;
 import br.com.eventhorizon.common.pa.TestProperties;
@@ -56,6 +57,7 @@ public class GlobalAlignmentInLinearSpaceTest extends PATest {
       String[] values = input.split(" ");
       matchScore = Integer.parseInt(values[0]);
       mismatchScore = -Integer.parseInt(values[1]);
+      gapScore = -Integer.parseInt(values[2]);
 
       // Run and compare results
       System.setIn(new ByteArrayInputStream(input.getBytes()));
@@ -116,9 +118,9 @@ public class GlobalAlignmentInLinearSpaceTest extends PATest {
     String actualAlignment1 = values[1];
     String actualAlignment2 = values[2];
 
-    assertEquals(expectedScore, actualScore);
-    assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2));
-    assertEquals(expectedScore, score(actualAlignment1, actualAlignment2));
+    assertEquals(expectedScore, actualScore, "Score not match 1");
+    assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2), "Score not match 2: " + actualAlignment1 + " / " + actualAlignment2);
+    assertEquals(expectedScore, score(actualAlignment1, actualAlignment2), "Score not match 3");
   }
 
   private static int score(String alignment1, String alignment2) {
@@ -133,5 +135,28 @@ public class GlobalAlignmentInLinearSpaceTest extends PATest {
       }
     }
     return score;
+  }
+
+  @Override
+  protected String generateInput(PATestType type) {
+    StringBuilder input = new StringBuilder();
+    input.append(Utils.getRandomInteger(1, 10))
+        .append(" ")
+        .append(Utils.getRandomInteger(1, 10))
+        .append(" ")
+        .append(Utils.getRandomInteger(1, 10))
+        .append(" ");
+    switch (type) {
+      case TIME_LIMIT_TEST:
+        input.append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10000))
+            .append(" ")
+            .append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10000));
+      case STRESS_TEST:
+      default:
+        input.append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10))
+            .append(" ")
+            .append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10));
+    }
+    return input.toString();
   }
 }
