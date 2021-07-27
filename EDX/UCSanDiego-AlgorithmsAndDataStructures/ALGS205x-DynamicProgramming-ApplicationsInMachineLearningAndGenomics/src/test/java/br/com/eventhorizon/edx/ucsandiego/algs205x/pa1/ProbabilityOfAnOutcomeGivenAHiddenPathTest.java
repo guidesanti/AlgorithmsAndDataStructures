@@ -8,14 +8,14 @@ import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ProbabilityOfPathInHMMTest extends PATest {
+public class ProbabilityOfAnOutcomeGivenAHiddenPathTest extends PATest {
 
-  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/probability-of-path-in-hmm.csv";
+  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/probability-of-an-outcome-given-a-hidden-path.csv";
 
   private static final double DELTA = 0.00001;
 
-  public ProbabilityOfPathInHMMTest() {
-    super(new ProbabilityOfPathInHMM(), true, true);
+  public ProbabilityOfAnOutcomeGivenAHiddenPathTest() {
+    super(new ProbabilityOfAnOutcomeGivenAHiddenPath(), true, true);
   }
 
   @ParameterizedTest
