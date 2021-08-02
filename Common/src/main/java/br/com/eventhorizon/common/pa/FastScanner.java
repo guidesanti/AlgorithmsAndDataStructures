@@ -35,6 +35,19 @@ public class FastScanner {
     return st.nextToken();
   }
 
+  public Character nextRawChar() {
+    try {
+      int ch = br.read();
+      if (ch == -1) {
+        return null;
+      }
+      return (char) ch;
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+
   public char nextChar() {
     return next().charAt(0);
   }

@@ -158,6 +158,16 @@ public class Utils {
     return ThreadLocalRandom.current().nextLong(min, max < Long.MAX_VALUE ? max + 1 : max);
   }
 
+  public static double getRandomDouble(double min, double max) {
+    if (min == max) {
+      return min;
+    }
+    if (min > max) {
+      throw new IllegalArgumentException("max must be greater than min");
+    }
+    return ThreadLocalRandom.current().nextDouble(min, max);
+  }
+
   public static Long[] getRandomLongArray(int minLength, int maxLength, long min, long max) {
     int n = getRandomInteger(minLength, maxLength);
     Long[] values = new Long[n];
