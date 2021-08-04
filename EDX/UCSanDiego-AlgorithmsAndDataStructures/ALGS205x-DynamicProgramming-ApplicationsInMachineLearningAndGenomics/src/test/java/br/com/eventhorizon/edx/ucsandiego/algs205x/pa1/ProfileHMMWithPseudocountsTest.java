@@ -18,7 +18,7 @@ public class ProfileHMMWithPseudocountsTest extends PATest {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/profile-hmm-with-pseudocounts.csv";
 
-  private static char[] ALPHABET = { 'A', 'B', 'C', 'D', 'E', '-' };
+  private static final char[] ALPHABET = { 'A', 'B', 'C', 'D', 'E', '-' };
 
   private static final double DELTA = 0.01;
 
