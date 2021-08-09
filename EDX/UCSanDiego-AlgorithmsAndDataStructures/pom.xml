@@ -22,6 +22,7 @@
         <module>ALGS203x-NP-Complete-Problems</module>
         <module>ALGS204x-StringProcessingAndPatternMatchingAlgorithms</module>
         <module>ALGS205x-DynamicProgramming-ApplicationsInMachineLearningAndGenomics</module>
+        <module>ALGS206x-GraphAlgorithmsInGenomeSequencing</module>
     </modules>
     <packaging>pom</packaging>
 
