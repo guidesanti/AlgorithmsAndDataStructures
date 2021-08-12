@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
 
 public class FastScanner {
 
+  private String delimiters = null;
+
   private BufferedReader br;
 
   private StringTokenizer st;
@@ -20,6 +22,11 @@ public class FastScanner {
     }
   }
 
+  public FastScanner(InputStream stream, String delimiters) {
+    this(stream);
+    this.delimiters = delimiters;
+  }
+
   public String next() {
     while (st == null || !st.hasMoreTokens()) {
       try {
@@ -27,7 +34,11 @@ public class FastScanner {
         if (line == null) {
           return null;
         }
-        st = new StringTokenizer(line);
+        if (delimiters == null) {
+          st = new StringTokenizer(line);
+        } else {
+          st = new StringTokenizer(line, delimiters, false);
+        }
       } catch (IOException e) {
         e.printStackTrace();
       }
