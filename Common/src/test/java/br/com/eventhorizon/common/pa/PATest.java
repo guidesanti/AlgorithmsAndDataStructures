@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
 import static java.time.Duration.ofMillis;
-import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(TimingExtension.class)
 public abstract class PATest {
@@ -50,27 +50,27 @@ public abstract class PATest {
   protected void testNaiveSolution(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     pa.naiveSolution();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+    verify(input, expectedOutput, getActualOutput());
   }
 
   protected void testIntermediateSolution1(String input, String expectedOutput)
       throws OperationNotSupportedException {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     pa.intermediateSolution1();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+    assertEquals(expectedOutput, getActualOutput());
   }
 
   protected void testIntermediateSolution2(String input, String expectedOutput)
       throws OperationNotSupportedException {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     pa.intermediateSolution2();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+    assertEquals(expectedOutput, getActualOutput());
   }
 
   protected void testFinalSolution(String input, String expectedOutput) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     pa.finalSolution();
-    Assertions.assertEquals(expectedOutput, getActualOutput());
+    verify(input, expectedOutput, getActualOutput());
   }
 
   @Test
@@ -181,5 +181,12 @@ public abstract class PATest {
 
   protected String generateInput(PATestType type) {
     return null;
+  }
+
+  protected void verify(String input, String expectedOutput, String actualOutput) {
+    assertNotNull(input);
+    assertNotNull(expectedOutput);
+    assertNotNull(actualOutput);
+    assertEquals(expectedOutput, actualOutput);
   }
 }
