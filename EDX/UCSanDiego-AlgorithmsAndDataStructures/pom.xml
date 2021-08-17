@@ -23,6 +23,7 @@
         <module>ALGS204x-StringProcessingAndPatternMatchingAlgorithms</module>
         <module>ALGS205x-DynamicProgramming-ApplicationsInMachineLearningAndGenomics</module>
         <module>ALGS206x-GraphAlgorithmsInGenomeSequencing</module>
+        <module>ALGS207x-AlgorithmsAndDataStructuresCapstone</module>
     </modules>
     <packaging>pom</packaging>
 
