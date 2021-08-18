@@ -1,13 +1,10 @@
 package br.com.eventhorizon.edx.ucsandiego.algs206x.pa1;
 
-import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
