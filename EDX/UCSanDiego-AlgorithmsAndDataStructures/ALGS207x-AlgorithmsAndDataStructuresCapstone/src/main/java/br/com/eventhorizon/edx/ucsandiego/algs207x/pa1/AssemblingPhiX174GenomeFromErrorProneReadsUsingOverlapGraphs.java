@@ -48,6 +48,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static void writeOutput() {
+    long ini = System.currentTimeMillis();
     StringBuilder string = new StringBuilder();
     string.append(reads.get(path.get(0).from));
     for (Edge edge : path) {
@@ -61,6 +62,9 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
       }
     }
     System.out.println(string.toString());
+    long end1 = System.currentTimeMillis();
+    long diff1 = end1 - ini;
+    long diff = diff1;
   }
 
   @Override
@@ -89,6 +93,35 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     long ini;
     long end;
     long diff1;
+
+//    for (int i = 0; i < reads.size(); i++) {
+//      adjacencies.add(new ArrayList<>());
+//    }
+//
+//    List<Pair<Integer>> pairs = new ArrayList<>();
+//    for (int i = 0; i < reads.size(); i++) {
+//      String mer = reads.get(i).substring(readLength - 12);
+//      for (int j = 0; j < reads.size(); j++) {
+//        if (i == j) {
+//          continue;
+//        }
+//        String read2 = reads.get(j);
+//        if (read2.contains(mer)) {
+//          pairs.add(new Pair<>(i, j));
+//        }
+//      }
+//    }
+//
+//    pairs.forEach(pair -> {
+//      String read1 = reads.get(pair.value1);
+//      String read2 = reads.get(pair.value2);
+//      List<Edge> read1Adjacencies = adjacencies.get(pair.value1);
+//      Overlap overlap = findMaximumOverlap1(read1, read2);
+//      if (overlap.length > 0) {
+//        read1Adjacencies.add(new Edge(pair.value1, pair.value2, overlap));
+//      }
+//    });
+
     for (int i = 0; i < reads.size(); i++) {
       String read1 = reads.get(i);
       SuffixTrie trie = new SuffixTrie(read1);
@@ -253,15 +286,15 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static Pair<String> buildKMers(String read1, int index1, String read2, int index2) {
-    for (int i = 0; i < 6; i++) {
-      if (index1 == 0 || index2 == 0) {
-        break;
-      }
-      index1--;
-      index2--;
+    String kmer1;
+    String kmer2;
+    if (index1 < 50 || index2 < 50) {
+      kmer1 = read1.substring(index1, index1 + 12);
+      kmer2 = read2.substring(index2, index2 + 12);
+    } else {
+      kmer1 = read1.substring(index1 - 12, index1);
+      kmer2 = read2.substring(index2 - 12, index2);
     }
-    String kmer1 = read1.substring(index1, index1 + 12);
-    String kmer2 = read2.substring(index2, index2 + 12);
     return new Pair<>(kmer1, kmer2);
   }
 
