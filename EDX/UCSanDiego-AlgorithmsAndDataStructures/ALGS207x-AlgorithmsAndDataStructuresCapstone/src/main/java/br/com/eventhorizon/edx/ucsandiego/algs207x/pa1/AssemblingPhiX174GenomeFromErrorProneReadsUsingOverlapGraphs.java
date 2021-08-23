@@ -4,14 +4,22 @@ import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
 import java.util.*;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implements PA {
 
+  private static final Logger LOGGER = Logger.getLogger(AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.class.getName());
+
   private static final double LIMIT = 0.05;
+
+  private static int PARAM = 12;
 
   private static final Map<Character, Integer> ALPHABET = new HashMap<>();
 
   private static List<String> reads;
+
+  private static Map<Integer, List<Integer>> errorReads;
 
   private static int readLength;
 
@@ -28,6 +36,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
 
   private static void init() {
     reads = new ArrayList<>();
+    errorReads = new HashMap<>();
     readLength = 0;
     adjacencies = new ArrayList<>();
     path = new ArrayList<>();
@@ -54,12 +63,13 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
       String label = reads.get(edge.to);
       string.append(label, edge.overlap.length, label.length());
     }
-    for (int i = reads.get(0).length(); i > 1; i--) {
+    int maxI = 0;
+    for (int i = 1; i <= readLength; i++) {
       if (string.substring(0, i).equals(string.substring(string.length() - i))) {
-        string.delete(string.length() - i, string.length());
-        break;
+        maxI = i;
       }
     }
+    string.delete(string.length() - maxI, string.length());
     System.out.println(string.toString());
   }
 
@@ -99,12 +109,12 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
         }
         String read2 = reads.get(j);
         ini = System.currentTimeMillis();
-//        Overlap overlap = findMaximumOverlap1(read1, read2);
-        Overlap overlap = findMaximumOverlap2(trie, read2);
+        Overlap overlap = findMaximumOverlap1(read1, read2);
+//        Overlap overlap = findMaximumOverlap2(trie, read2);
         end = System.currentTimeMillis();
         diff1 = end - ini;
         trieMatchTime += diff1;
-        if (overlap.length > 0) {
+        if (overlap.length > 0 && overlap.error() < LIMIT) {
           read1Adjacencies.add(new Edge(i, j, overlap));
         }
       }
@@ -142,31 +152,64 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static void fixErrorReads() {
-    path.stream().filter(edge -> edge.overlap.hasErrors()).forEach(edge -> {
-      int overlapLength = edge.overlap.length;
-      edge.overlap.errors.forEach(pair -> {
-        String read1 = reads.get(edge.from);
-        String read2 = reads.get(edge.to);
-        int index2 = pair.value2;
-        int index1 = readLength - overlapLength + index2;
-        Pair<String> kmers = buildKMers(read1, index1, read2, index2);
+//    List<Edge> errorEdges = path.stream().filter(edge -> edge.overlap.hasErrors()).collect(Collectors.toList());
+    List<Edge> errorEdges = new ArrayList<>();
+    adjacencies.forEach(edges -> {
+      edges.stream().filter(edge -> edge.overlap.hasErrors()).forEach(errorEdges::add);
+    });
+    while (true) {
+      int fixedErrors = 0;
+      for (Edge edge : errorEdges) {
+        fixedErrors += fixErrorReads(edge);
+      }
+      LOGGER.info("Fixed errors: " + fixedErrors);
+      if (fixedErrors == 0) {
+        break;
+      }
+    }
+  }
+
+  private static int fixErrorReads(Edge edge) {
+    int fixedErrors = 0;
+    int overlapLength = edge.overlap.length;
+    for (Pair pair : edge.overlap.errors) {
+      String read1 = reads.get(edge.from);
+      String read2 = reads.get(edge.to);
+      int index2 = (int) pair.value2;
+      int index1 = readLength - overlapLength + index2;
+      if (read1.charAt(index1) != read2.charAt(index2)) {
+        List<Integer> list = adjacencies.get(edge.from).stream().map(edge1 -> edge1.to).collect(Collectors.toList());
+        adjacencies.forEach(edges -> {
+          edges.stream().filter(edge1 -> edge1.to == edge.from).forEach(edge1 -> list.add(edge1.from));
+        });
+        Pair<String> kmers = buildKMersUp(read1, index1, read2, index2, PARAM);
         String kmer1 = kmers.value1;
         String kmer2 = kmers.value2;
-        if (read1.charAt(index1) != read2.charAt(index2)) {
-          int count1 = countKMers(kmer1);
-          int count2 = countKMers(kmer2);
-          if (count1 > count2) {
-            StringBuilder newRead2 = new StringBuilder(read2);
-            newRead2.setCharAt(index2, read1.charAt(index1));
-            reads.set(edge.to, newRead2.toString());
-          } else {
-            StringBuilder newRead1 = new StringBuilder(read1);
-            newRead1.setCharAt(index1, read2.charAt(index2));
-            reads.set(edge.from, newRead1.toString());
-          }
+        int count1 = countKMers(kmer1, list);
+        int count2 = countKMers(kmer2, list);
+        kmers = buildKMersDown(read1, index1, read2, index2, PARAM);
+        kmer1 = kmers.value1;
+        kmer2 = kmers.value2;
+        count1 += countKMers(kmer1, list);
+        count2 += countKMers(kmer2, list);
+        if (count1 > count2) {
+          StringBuilder newRead2 = new StringBuilder(read2);
+          newRead2.setCharAt(index2, read1.charAt(index1));
+          reads.set(edge.to, newRead2.toString());
+          fixedErrors++;
+          LOGGER.info("Fixed read " + edge.to + "at index " + index2);
+        } else if (count2 > count1) {
+          StringBuilder newRead1 = new StringBuilder(read1);
+          newRead1.setCharAt(index1, read2.charAt(index2));
+          reads.set(edge.from, newRead1.toString());
+          fixedErrors++;
+          LOGGER.info("Fixed read " + edge.from + "at index " + index1);
+        } else {
+          LOGGER.info("Overlap not fixed");
         }
-      });
-    });
+      }
+    }
+    return fixedErrors;
   }
 
   private static boolean isHamiltonianPath(boolean[] marked) {
@@ -190,23 +233,45 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static Overlap findMaximumOverlap2(SuffixTrie read1SuffixTrie, String read2) {
-    Overlap overlap = new Overlap(0, Collections.emptyList());
-    findMaximumOverlapRecursive(read1SuffixTrie.root, read2, 0, overlap);
-    return overlap;
+    char symbol = read2.charAt(0);
+    int symbolIndex = ALPHABET.get(symbol);
+    Overlap maxOverlap = null;
+    for (int i = 0; i < 4; i++) {
+      if (read1SuffixTrie.root.next[i] != null) {
+        Overlap overlap = new Overlap(1, Collections.emptyList());
+        if (symbolIndex != i) {
+          overlap.errors.add(new Pair<>(-1, 0));
+        }
+        if (findMaximumOverlapRecursive(read1SuffixTrie.root.next[i], read2, 1, overlap)) {
+          if (overlap.error() <= LIMIT) {
+            if (maxOverlap == null) {
+              maxOverlap = overlap;
+            } else if (overlap.length > maxOverlap.length) {
+              maxOverlap = overlap;
+            }
+          }
+        }
+      }
+    }
+    if (maxOverlap != null) {
+      return maxOverlap;
+    }
+
+    return new Overlap(0, Collections.emptyList());
   }
 
   private static boolean findMaximumOverlapRecursive(SuffixTrie.Node node, String read2, int read2Index, Overlap overlap) {
+    if (overlap.errors.size() >= 5) {
+      return false;
+    }
     if (!node.hasChildren()) {
       return true;
-    }
-    if (overlap.errors.size() >= 2) {
-      return false;
     }
     char symbol = read2.charAt(read2Index);
     int symbolIndex = ALPHABET.get(symbol);
     if (node.next[symbolIndex] != null) {
       overlap.length++;
-      findMaximumOverlapRecursive(node.next[symbolIndex], read2, read2Index + 1, overlap);
+      return findMaximumOverlapRecursive(node.next[symbolIndex], read2, read2Index + 1, overlap);
     } else {
       Overlap maxOverlap = null;
       for (int i = 0; i < 4; i++) {
@@ -215,7 +280,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
           copy.length++;
           copy.errors.add(new Pair<>(-1, read2Index));
           if (findMaximumOverlapRecursive(node.next[i], read2, read2Index + 1, copy)) {
-            if (copy.error() < LIMIT) {
+            if (copy.error() <= LIMIT) {
               if (maxOverlap == null) {
                 maxOverlap = copy;
               } else if (copy.length > maxOverlap.length) {
@@ -225,14 +290,14 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
           }
         }
       }
-      if (maxOverlap != null) {
+      if (maxOverlap != null && maxOverlap.length > overlap.length) {
         overlap.length = maxOverlap.length;
         overlap.errors = maxOverlap.errors;
-      } else {
+      } else if (!node.present) {
         overlap.length = 0;
       }
+      return true;
     }
-    return true;
   }
 
   private static Overlap compare(String read1, String read2, int overlapLength) {
@@ -252,22 +317,56 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     return new Overlap(overlapLength, errors);
   }
 
-  private static Pair<String> buildKMers(String read1, int index1, String read2, int index2) {
-    for (int i = 0; i < 6; i++) {
-      if (index1 == 0 || index2 == 0) {
+  private static Pair<String> buildKMersUp(String read1, int index1, String read2, int index2, int length) {
+    String kmer1;
+    String kmer2;
+    int start1 = index1;
+    int start2 = index2;
+    int end1 = index1;
+    int end2 = index2;
+    for (int i = 0; i < length; i++) {
+      if (end1 < readLength - 1 && end2 < readLength - 1) {
+        end1++;
+        end2++;
+      } else if (start1 > 0 && start2 > 0) {
+        start1--;
+        start2--;
+      } else {
         break;
       }
-      index1--;
-      index2--;
     }
-    String kmer1 = read1.substring(index1, index1 + 12);
-    String kmer2 = read2.substring(index2, index2 + 12);
+    kmer1 = read1.substring(start1, end1);
+    kmer2 = read2.substring(start2, end2);
     return new Pair<>(kmer1, kmer2);
   }
 
-  private static int countKMers(String kmer) {
+  private static Pair<String> buildKMersDown(String read1, int index1, String read2, int index2, int length) {
+    String kmer1;
+    String kmer2;
+    int start1 = index1;
+    int start2 = index2;
+    int end1 = index1;
+    int end2 = index2;
+    for (int i = 0; i < length; i++) {
+      if (start1 > 0 && start2 > 0) {
+        start1--;
+        start2--;
+      } else if (end1 < readLength - 1 && end2 < readLength - 1) {
+        end1++;
+        end2++;
+      } else {
+        break;
+      }
+    }
+    kmer1 = read1.substring(start1, end1);
+    kmer2 = read2.substring(start2, end2);
+    return new Pair<>(kmer1, kmer2);
+  }
+
+  private static int countKMers(String kmer, List<Integer> readList) {
     int count = 0;
-    for (String read : reads) {
+    for (int readIndex : readList) {
+      String read = reads.get(readIndex);
       if (read.contains(kmer)) {
         count++;
       }
@@ -350,10 +449,13 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
           }
           curr = curr.next[symbolIndex];
         }
+        curr.present = true;
       }
     }
 
     private static class Node {
+
+      private boolean present;
 
       private final Node[] next;
 
