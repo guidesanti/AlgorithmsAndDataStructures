@@ -10,7 +10,6 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -55,7 +54,9 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
       resetOutput();
       System.setIn(new ByteArrayInputStream(input.getBytes()));
       pa.finalSolution();
-      verify(input, text, getActualOutput());
+      String output = getActualOutput();
+      LOGGER.info("Stress test " + i + " output: " + output);
+      verify(input, text, output);
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
@@ -68,9 +69,12 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
   private List<String> generateReads(String text, int readLength) {
     List<String> reads = new ArrayList<>();
     int index = 0;
+    List<String> readInfo = new ArrayList<>();
+    int count = 0;
     while (index < text.length()) {
-      String read;
+      // Generate read
       int end = index + readLength;
+      String read;
       if (end <= text.length()) {
         read = text.substring(index, index + readLength);
       } else {
@@ -78,6 +82,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
         read = text.substring(index);
         read += text.substring(0, overflow);
       }
+      // Simulate error on read
       int m = Utils.getRandomInteger(0, readLength - 1);
       char symbol = read.charAt(m);
       if (symbol == 'A') {
@@ -91,15 +96,19 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
       }
       read = read.substring(0, m) + symbol + read.substring(m + 1);
       reads.add(read);
-      index = Utils.getRandomInteger(index + 1, index + 11);
+      readInfo.add("Read " + count + ", index " + index + ", error index " + m + ", absolute error index " + (index + m));
+      // Next read index
+      index = Utils.getRandomInteger(index + 1, index + 5);
+      count++;
     }
-    reads.add(text.substring(text.length() - readLength));
 //    Collections.shuffle(reads);
+    readInfo.forEach(LOGGER::info);
     return reads;
   }
 
   @Override
   protected void verify(String input, String expectedOutput, String actualOutput) {
+    LOGGER.info("");
     assertEquals(expectedOutput.length(), actualOutput.length());
     boolean circularEqual = false;
     for (int i = 0; i < expectedOutput.length(); i++) {
