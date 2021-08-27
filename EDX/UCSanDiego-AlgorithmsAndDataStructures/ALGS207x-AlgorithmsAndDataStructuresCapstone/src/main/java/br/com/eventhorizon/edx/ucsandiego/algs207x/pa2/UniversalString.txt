@@ -1,0 +1,1 @@
+This problem is the same solved on ALGS026x course, look at class FindKUniversalCircularString.
