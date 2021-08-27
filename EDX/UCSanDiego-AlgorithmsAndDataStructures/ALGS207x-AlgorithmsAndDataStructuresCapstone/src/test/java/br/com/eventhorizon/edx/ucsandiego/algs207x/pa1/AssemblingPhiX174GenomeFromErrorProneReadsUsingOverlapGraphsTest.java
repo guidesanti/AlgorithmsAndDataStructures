@@ -34,7 +34,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
     TestProperties.setTimeLimit(4500);
     input = input.replace("%", "\n").replace(";", ",");
     expectedOutput = expectedOutput.replace("%", "\n").replace(";", ",");
-    super.testNaiveSolution(input, expectedOutput);
+    super.testFinalSolution(input, expectedOutput);
   }
 
   @Test
