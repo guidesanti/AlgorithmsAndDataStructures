@@ -87,8 +87,7 @@ public class AssemblingPhiX174GenomeFromErrorFreeReadsUsingOverlapGraphsTest ext
         circularEqual = true;
         break;
       }
-      actualOutput = actualOutput.substring(1);
-      actualOutput += actualOutput.charAt(0);
+      actualOutput = actualOutput.substring(1) + actualOutput.charAt(0);
     }
     assertTrue(circularEqual);
   }
