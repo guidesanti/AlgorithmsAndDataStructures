@@ -417,7 +417,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
       currentMismatch++;
       for (int i = 0; i < ALPHABET.size(); i++) {
         if (node.next[i] != null && i != symbolIndex) {
-          if (suffixTrieMatch1(node.next[i], pattern, patternIndex, length, currentMismatch, mismatchLimit)) {
+          if (suffixTrieMatch2(node.next[i], pattern, patternIndex, length, currentMismatch, mismatchLimit)) {
             return true;
           }
         }

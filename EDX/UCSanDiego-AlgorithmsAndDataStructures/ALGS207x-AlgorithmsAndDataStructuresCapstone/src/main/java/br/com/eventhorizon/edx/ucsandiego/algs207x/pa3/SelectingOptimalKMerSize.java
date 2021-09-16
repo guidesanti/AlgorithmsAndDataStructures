@@ -77,7 +77,7 @@ public class SelectingOptimalKMerSize implements PA {
     optimalK = 2;
     while (optimalK < readLength) {
       reset();
-      generateKMers2();
+      generateKMers();
       buildDeBruijnGraph();
       if (isPath()) {
         break;
@@ -121,57 +121,7 @@ public class SelectingOptimalKMerSize implements PA {
     }
   }
 
-  private static void generateKMers1() {
-    boolean [] processedReads = new boolean[reads.size()];
-    Queue<Integer> unprocessedReads = new LinkedList<>();
-    for (int i = 0; i < reads.size(); i++) {
-      unprocessedReads.add(i);
-    }
-    int curr = unprocessedReads.remove();
-    while (!unprocessedReads.isEmpty()) {
-            int prev = -1;
-            int prevOverlap = 0;
-            for (int i = 0; i < overlaps.length; i++) {
-              if (overlaps[i][curr] > prevOverlap) {
-                prevOverlap = overlaps[i][curr];
-                prev = i;
-              }
-            }
-            boolean isPrevProcessed = prev != -1 && processedReads[prev];
-
-      int next = -1;
-      int nextOverlap = 0;
-      for (int i = 0; i < overlaps[curr].length; i++) {
-        if (overlaps[curr][i] > nextOverlap) {
-          nextOverlap = overlaps[curr][i];
-          next = i;
-        }
-      }
-      boolean isNextProcessed = next != -1 && processedReads[next];
-
-      if (!isPrevProcessed && !isNextProcessed) {
-        generateKMers(reads.get(curr), 0, readLength - optimalK);
-      } else if (isPrevProcessed && !isNextProcessed) {
-        generateKMers(reads.get(curr), prevOverlap - optimalK + 1, readLength - optimalK);
-      } else if (!isPrevProcessed) {
-        generateKMers(reads.get(curr), 0, readLength - nextOverlap - 1);
-      } else {
-        generateKMers(reads.get(curr), prevOverlap - optimalK + 1, readLength - nextOverlap - 1);
-      }
-
-      generateKMers(reads.get(curr), prevOverlap - optimalK + 1, readLength - optimalK);
-      processedReads[curr] = true;
-      unprocessedReads.remove(curr);
-
-      if (next != -1) {
-        curr = next;
-      } else if (!unprocessedReads.isEmpty()) {
-        curr = unprocessedReads.peek();
-      }
-    }
-  }
-
-  private static void generateKMers2() {
+  private static void generateKMers() {
     boolean [] processedReads = new boolean[reads.size()];
     Queue<Integer> unprocessedReads = new LinkedList<>();
     for (int i = 0; i < reads.size(); i++) {
