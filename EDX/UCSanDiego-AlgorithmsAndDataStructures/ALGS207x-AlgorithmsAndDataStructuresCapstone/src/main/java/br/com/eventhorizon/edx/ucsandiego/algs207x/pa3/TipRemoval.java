@@ -3,13 +3,14 @@ package br.com.eventhorizon.edx.ucsandiego.algs207x.pa3;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class BubbleDetection implements PA {
+public class TipRemoval implements PA {
 
-  private static int k;
-
-  private static int t;
+  private static final int K = 3;
 
   private static List<String> reads;
 
@@ -19,24 +20,18 @@ public class BubbleDetection implements PA {
 
   private static int readLength;
 
-  private static int bubbleCount;
+  private static int removedEdgesCount;
 
   private static void init() {
-    k = 0;
-    t = 0;
     reads = new ArrayList<>();
     graph = null;
     count = new HashMap<>();
     readLength = 0;
-    bubbleCount = 0;
+    removedEdgesCount = 0;
   }
 
   private static void readInput() {
     FastScanner scanner = new FastScanner(System.in);
-
-    k = scanner.nextInt();
-    t = scanner.nextInt();
-
     String kmer = scanner.next();
     while (kmer != null) {
       reads.add(kmer);
@@ -46,7 +41,7 @@ public class BubbleDetection implements PA {
   }
 
   private static void writeOutput() {
-    System.out.print("" + bubbleCount);
+    System.out.print("" + removedEdgesCount);
   }
 
   @Override
@@ -59,7 +54,7 @@ public class BubbleDetection implements PA {
 
   private static void finalSolutionImpl() {
     buildDeBruijnGraph();
-    findBubbles();
+    findTips();
   }
 
   private static void buildDeBruijnGraph() {
@@ -67,8 +62,8 @@ public class BubbleDetection implements PA {
     Map<String, Integer> indices = new HashMap<>();
     List<Edge> edges = new ArrayList<>();
     for (String read : reads) {
-      for (int i = 0; i <= readLength - k; i++) {
-        String kmer = read.substring(i, i + k);
+      for (int i = 0; i <= readLength - K; i++) {
+        String kmer = read.substring(i, i + K);
 
         if (count.containsKey(kmer)) {
           count.put(kmer, count.get(kmer) + 1);
@@ -98,70 +93,62 @@ public class BubbleDetection implements PA {
     graph = new Vertex[indices.size()];
     indices.forEach((l, i) -> graph[i] = new Vertex(i, l));
     edges.forEach(edge -> {
-      graph[edge.from].outEdges2.add(edge);
-      graph[edge.to].inEdges2.add(edge);
+      graph[edge.from].outEdges.add(edge);
+      graph[edge.to].inEdges.add(edge);
     });
   }
 
-  private static void findBubbles() {
+  private static void findTips() {
+    boolean[] visited = new boolean[graph.length];
     for (Vertex vertex : graph) {
-      if (vertex.outEdges2.size() < 2) {
+      if (visited[vertex.index]) {
         continue;
       }
-      forward(vertex.index, vertex.index, 0, new boolean[graph.length]);
+      findTipsForward(vertex.index, visited);
     }
-    bubbleCount /= 2;
+    visited = new boolean[graph.length];
+    for (Vertex vertex : graph) {
+      if (visited[vertex.index]) {
+        continue;
+      }
+      findTipsBackward(vertex.index, visited);
+    }
   }
 
-  private static void forward(int start, int curr, int count, boolean[] visited) {
-    count++;
+  private static boolean findTipsForward(int curr, boolean[] visited) {
     visited[curr] = true;
-
-    if (count - 1 > t) {
-      visited[curr] = false;
-      return;
+    if (graph[curr].outEdges.isEmpty()) {
+      return true;
     }
-
-    for (Edge edge : graph[curr].outEdges2) {
-      if (edge.blocked || visited[edge.to]) {
+    int count = 0;
+    for (Edge edge : graph[curr].outEdges) {
+      if (visited[edge.to]) {
         continue;
       }
-      edge.blocked = true;
-      forward(start, edge.to, count, visited);
-      edge.blocked = false;
+      if (findTipsForward(edge.to, visited)) {
+        removedEdgesCount++;
+        count++;
+      }
     }
-
-    if (curr != start) {
-      backward(start, curr, 0, visited);
-    }
-
-    visited[curr] = false;
+    return count == graph[curr].outEdges.size();
   }
 
-  private static void backward(int start, int curr, int count, boolean[] visited) {
-    count++;
+  private static boolean findTipsBackward(int curr, boolean[] visited) {
     visited[curr] = true;
-
-    if (count - 1 > t) {
-      visited[curr] = false;
-      return;
+    if (graph[curr].inEdges.isEmpty()) {
+      return true;
     }
-
-    for (Edge edge : graph[curr].inEdges2) {
-      if (edge.blocked) {
-        continue;
-      }
-      if (edge.from == start) {
-        bubbleCount++;
-      }
+    int count = 0;
+    for (Edge edge : graph[curr].inEdges) {
       if (visited[edge.from]) {
         continue;
       }
-      edge.blocked = true;
-      backward(start, edge.from, count, visited);
-      edge.blocked = false;
+      if (findTipsBackward(edge.from, visited)) {
+        removedEdgesCount++;
+        count++;
+      }
     }
-    visited[curr] = false;
+    return count == graph[curr].inEdges.size();
   }
 
   private static class Vertex {
@@ -170,15 +157,15 @@ public class BubbleDetection implements PA {
 
     final String label;
 
-    final List<Edge> outEdges2;
+    final List<Edge> outEdges;
 
-    final List<Edge> inEdges2;
+    final List<Edge> inEdges;
 
     Vertex(int index, String label) {
       this.index = index;
       this.label = label;
-      this.outEdges2 = new ArrayList<>();
-      this.inEdges2 = new ArrayList<>();
+      this.outEdges = new ArrayList<>();
+      this.inEdges = new ArrayList<>();
     }
 
     @Override
@@ -193,7 +180,7 @@ public class BubbleDetection implements PA {
 
     final int to;
 
-    boolean blocked;
+    boolean removed;
 
     public Edge(int from, int to) {
       this.from = from;
