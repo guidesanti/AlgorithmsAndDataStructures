@@ -2,7 +2,6 @@ package br.com.eventhorizon.edx.ucsandiego.algs207x.pa3;
 
 import br.com.eventhorizon.common.Utils;
 import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
 import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -104,7 +103,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphsTest e
       reads.add(read);
       //      readInfo.add("Read " + count + ", index " + index + ", error index " + m + ", absolute error index " + (index + m));
       // Next read index
-      index = Utils.getRandomInteger(index + 1, index + K - 1);
+      index = Utils.getRandomInteger(index + 1, index + (K / 2));
       count++;
     }
     //    Collections.shuffle(reads);

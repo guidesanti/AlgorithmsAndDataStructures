@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs implements PA {
 
+  private static final int MISMATCH_LIMIT = 2;
+
   private static final int K = 15;
 
   private static List<String> reads;
@@ -79,10 +81,10 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs imple
   private static void finalSolutionImpl() {
     buildDeBruijnGraph();
     removeTips();
-    buildCycle();
     findBubbles();
     removeEdges();
     removeTips();
+    buildCycle();
     findEulerianCycle();
   }
 
@@ -110,6 +112,8 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs imple
           }
           if (sameKMer) {
             continue;
+          } else {
+            int a = 10;
           }
           info.add(new KMerInfo(r, i));
         } else {
@@ -147,8 +151,12 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs imple
   }
 
   private static boolean overlap(String read1, String read2, int offset) {
+    int mismatchCount = 0;
     for (int i = 0; i < readLength - offset; i++) {
       if (read1.charAt(offset + i) != read2.charAt(i)) {
+        mismatchCount++;
+      }
+      if (mismatchCount > MISMATCH_LIMIT) {
         return false;
       }
     }
@@ -217,10 +225,10 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs imple
     List<Vertex> sources = new ArrayList<>();
     List<Vertex> sinks = new ArrayList<>();
     for (Vertex vertex : vertices) {
-      if (vertex.inEdges.isEmpty() && vertex.outEdges.size() > 0) {
+      if (vertex.inEdges.size() < vertex.outEdges.size()) {
         sources.add(vertex);
       }
-      if (vertex.inEdges.size() > 0 && vertex.outEdges.isEmpty()) {
+      if (vertex.inEdges.size() > vertex.outEdges.size()) {
         sinks.add(vertex);
       }
     }
@@ -336,15 +344,23 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingDeBruijnGraphs imple
     double backwardPathCoverage = sum / count;
 
     // Mark edges to be removed
-    Stack<Integer> verticesToRemove = forwardPathCoverage >= backwardPathCoverage ? forwardPath : backwardPath;
-    for (int i = 1; i < verticesToRemove.size() - 1; i++) {
-      int vertexIndex = verticesToRemove.get(i);
-      vertices[vertexIndex].inEdges.forEach(edge -> {
-        edge.removed = true;
-      });
-      vertices[vertexIndex].outEdges.forEach(edge -> {
-        edge.removed = true;
-      });
+    Stack<Integer> verticesToRemove = forwardPathCoverage >= backwardPathCoverage ? backwardPath : forwardPath;
+    if (forwardPathCoverage >= backwardPathCoverage) {
+      int prevVertex = verticesToRemove.get(verticesToRemove.size() - 1);
+      for (int i = verticesToRemove.size() - 2; i >= 0; i--) {
+        int currVertex = verticesToRemove.get(i);
+        Edge edgeToRemove = vertices[prevVertex].outEdges.stream().filter(edge -> edge.to == currVertex).findFirst().get();
+        edgeToRemove.removed = true;
+        prevVertex = currVertex;
+      }
+    } else {
+      int prevVertex = verticesToRemove.get(0);
+      for (int i = 1; i < verticesToRemove.size() - 1; i++) {
+        int currVertex = verticesToRemove.get(i);
+        Edge edgeToRemove = vertices[prevVertex].outEdges.stream().filter(edge -> edge.to == currVertex).findFirst().get();
+        edgeToRemove.removed = true;
+        prevVertex = currVertex;
+      }
     }
   }
 
