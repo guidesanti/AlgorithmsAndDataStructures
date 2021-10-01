@@ -1,7 +1,6 @@
-package br.com.eventhorizon.common.datastructures.trees;
+package br.com.eventhorizon.common.datastructures.strings;
 
 import br.com.eventhorizon.common.Utils;
-import br.com.eventhorizon.common.datastructures.Alphabet;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -27,6 +26,6 @@ public class SuffixTreeTest {
     Alphabet alphabet = new Alphabet(ALPHABET_SYMBOLS);
     String text = Utils.getRandomString(ALPHABET_SYMBOLS, 1000000);
     alphabet.add(EOF);
-    assertTimeoutPreemptively(Duration.ofSeconds(10), () -> new SuffixTree(alphabet, text));
+    assertTimeoutPreemptively(Duration.ofSeconds(5), () -> new SuffixTree(alphabet, text));
   }
 }

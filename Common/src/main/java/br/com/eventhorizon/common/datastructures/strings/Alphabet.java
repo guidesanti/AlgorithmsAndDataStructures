@@ -1,4 +1,6 @@
-package br.com.eventhorizon.common.datastructures;
+package br.com.eventhorizon.common.datastructures.strings;
+
+import br.com.eventhorizon.common.datastructures.UnsupportedSymbolException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +17,7 @@ public class Alphabet {
 
   private int index;
 
-  private List<Character> symbols;
+  private final List<Character> symbols;
 
   private final Map<Character, Integer> symbolToIndexMap;
 

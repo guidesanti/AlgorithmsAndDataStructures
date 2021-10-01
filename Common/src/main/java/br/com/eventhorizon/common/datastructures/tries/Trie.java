@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.tries;
 
-import br.com.eventhorizon.common.datastructures.Alphabet;
+import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 
 import java.util.NoSuchElementException;
 import java.util.Stack;

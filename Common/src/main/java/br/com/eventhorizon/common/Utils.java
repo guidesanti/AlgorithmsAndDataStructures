@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common;
 
-import br.com.eventhorizon.common.datastructures.Alphabet;
+import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

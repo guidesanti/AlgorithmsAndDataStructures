@@ -1,6 +1,4 @@
-package br.com.eventhorizon.common.datastructures.trees;
-
-import br.com.eventhorizon.common.datastructures.Alphabet;
+package br.com.eventhorizon.common.datastructures.strings;
 
 public class SuffixTree {
 
