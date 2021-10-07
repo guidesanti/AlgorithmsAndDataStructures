@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.strings;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

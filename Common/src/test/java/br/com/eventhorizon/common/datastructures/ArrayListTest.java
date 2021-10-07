@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Iterator;

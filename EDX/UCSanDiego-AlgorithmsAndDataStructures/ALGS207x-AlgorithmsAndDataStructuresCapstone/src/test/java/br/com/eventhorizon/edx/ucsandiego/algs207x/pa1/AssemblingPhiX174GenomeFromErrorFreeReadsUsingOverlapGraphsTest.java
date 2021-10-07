@@ -1,6 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa1;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;

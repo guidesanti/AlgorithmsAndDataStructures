@@ -1,6 +1,6 @@
 package br.com.eventhorizon.sorting;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;

@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.matching;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
 import br.com.eventhorizon.common.utils.StringToListOfIntegersConverter;
 import br.com.eventhorizon.common.utils.StringToListOfStringConverter;

@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.bwt;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

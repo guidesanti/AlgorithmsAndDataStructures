@@ -74,130 +74,136 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
 
   @Override
   public void finalSolution() {
-    long ini = System.currentTimeMillis();
     init();
     readInput();
     finalSolutionImpl();
     writeOutput();
-    long end = System.currentTimeMillis();
-    long diff = end - ini;
   }
 
   private static void finalSolutionImpl() {
-    long ini = System.currentTimeMillis();
-    buildOverlapGraph3();
-    long end1 = System.currentTimeMillis();
-    long diff1 = end1 - ini;
+    buildOverlapGraph1();
     findHamiltonianPath();
-    long end2 = System.currentTimeMillis();
-    long diff2 = end2 - end1;
     fixErrorReads();
-    long end3 = System.currentTimeMillis();
-    long diff3 = end3 - end2;
   }
 
   private static void buildOverlapGraph1() {
+    BurrowsWheelerTransform[] bwt = new BurrowsWheelerTransform[reads.size()];
     for (int i = 0; i < reads.size(); i++) {
-      String read1 = reads.get(i);
-//      SuffixTrie trie = new SuffixTrie(read1);
-      List<Edge> read1Adjacencies = new ArrayList<>();
-      for (int j = 0; j < reads.size(); j++) {
-        if (i == j) {
-          continue;
-        }
-        String read2 = reads.get(j);
-        Overlap overlap = findMaximumOverlap1(read1, read2);
-//        Overlap overlap = findMaximumOverlap2(trie, read2);
-        if (overlap.length > 0 && overlap.error() < LIMIT) {
-          read1Adjacencies.add(new Edge(i, j, overlap));
-          for (Pair<Integer> pair : overlap.errors) {
-//            errorCount.get(i)[readLength - overlap.length + pair.value2]++;
-            errorCount.get(i)[pair.value1]++;
-            errorCount.get(j)[pair.value2]++;
-          }
-        }
-      }
-      adjacencies.add(read1Adjacencies);
-    }
-  }
-
-  private static void buildOverlapGraph2() {
-    Set<Pair<Integer>> pairs = new HashSet<>();
-    for (int i = 0; i < reads.size(); i++) {
+      bwt[i] = new BurrowsWheelerTransform(reads.get(i));
       adjacencies.add(new ArrayList<>());
+    }
+
+    for (int i = 0; i < reads.size(); i++) {
       String read1 = reads.get(i);
+      BurrowsWheelerTransform read1Bwt = bwt[i];
       for (int j = 0; j < reads.size(); j++) {
         if (i == j) {
           continue;
         }
         String read2 = reads.get(j);
-        for (int k = 0; k <= 15; k++) {
-          int count = 0;
-          for (int l = 0; l < 12; l++) {
-            if (read2.charAt(l) != read1.charAt(k + l)) {
-              count++;
-              if (count > 2) {
+        for (int k = 0; k <= 48; k += 12) {
+          List<Integer> matches = read1Bwt.match(read2, k, 12);
+          if (!matches.isEmpty()) {
+            Collections.sort(matches);
+            for (int offset : matches) {
+              int potentialOverlapLength = readLength - offset + k;
+              if (potentialOverlapLength >= readLength) {
+                continue;
+              }
+              Overlap overlap = overlap(read1, read2, potentialOverlapLength);
+              if (overlap != null) {
+                adjacencies.get(i).add(new Edge(i, j, overlap));
+                for (Pair<Integer> pair1 : overlap.errors) {
+                  errorCount.get(i)[pair1.value1]++;
+                  errorCount.get(j)[pair1.value2]++;
+                }
                 break;
               }
             }
-          }
-          if (count <= 2) {
-            pairs.add(new Pair<>(i, j));
             break;
           }
         }
       }
     }
+  }
 
-    for (Pair<Integer> pair : pairs) {
-      int i = pair.value1;
-      int j = pair.value2;
+  private static void buildOverlapGraph2() {
+    SuffixArray[] suffixArrays = new SuffixArray[reads.size()];
+    for (int i = 0; i < reads.size(); i++) {
+      suffixArrays[i] = new SuffixArray(reads.get(i));
+      adjacencies.add(new ArrayList<>());
+    }
+
+    for (int i = 0; i < reads.size(); i++) {
       String read1 = reads.get(i);
-      String read2 = reads.get(j);
-      Overlap overlap1 = findMaximumOverlap1(read1, read2);
-      List<Edge> edges1 = adjacencies.get(i);
-      if (overlap1.length > 0 && overlap1.error() <= LIMIT) {
-        edges1.add(new Edge(i, j, overlap1));
-        for (Pair<Integer> pair1 : overlap1.errors) {
-          errorCount.get(i)[pair1.value1]++;
-          errorCount.get(j)[pair1.value2]++;
+      SuffixArray read1SuffixArray = suffixArrays[i];
+      for (int j = 0; j < reads.size(); j++) {
+        if (i == j) {
+          continue;
+        }
+        String read2 = reads.get(j);
+        for (int k = 0; k <= 48; k += 12) {
+          List<Integer> matches = read1SuffixArray.match(read2, k, 12);
+          if (!matches.isEmpty()) {
+            Collections.sort(matches);
+            for (int offset : matches) {
+              int potentialOverlapLength = readLength - offset + k;
+              if (potentialOverlapLength >= readLength) {
+                continue;
+              }
+              Overlap overlap = overlap(read1, read2, potentialOverlapLength);
+              if (overlap != null) {
+                adjacencies.get(i).add(new Edge(i, j, overlap));
+                for (Pair<Integer> pair1 : overlap.errors) {
+                  errorCount.get(i)[pair1.value1]++;
+                  errorCount.get(j)[pair1.value2]++;
+                }
+                break;
+              }
+            }
+            break;
+          }
         }
       }
     }
   }
 
   private static void buildOverlapGraph3() {
-    SuffixTrie[] tries = new SuffixTrie[reads.size()];
+    SuffixTrie[] suffixTries = new SuffixTrie[reads.size()];
     for (int i = 0; i < reads.size(); i++) {
-      tries[i] = new SuffixTrie(reads.get(i));
+      suffixTries[i] = new SuffixTrie(reads.get(i));
       adjacencies.add(new ArrayList<>());
     }
 
-    List<Pair<Integer>> pairs = new ArrayList<>();
     for (int i = 0; i < reads.size(); i++) {
-      SuffixTrie read1SuffixTrie = tries[i];
+      String read1 = reads.get(i);
+      SuffixTrie read1SuffixTrie = suffixTries[i];
       for (int j = 0; j < reads.size(); j++) {
         if (i == j) {
           continue;
         }
         String read2 = reads.get(j);
-        if (suffixTrieMatch1(read1SuffixTrie.root, read2, 0, 12, 0, 2)) {
-          pairs.add(new Pair<>(i, j));
-        }
-      }
-    }
-
-    for (Pair<Integer> pair : pairs) {
-      int i = pair.value1;
-      int j = pair.value2;
-      String read1 = reads.get(i);
-      String read2 = reads.get(j);
-      Overlap overlap = findMaximumOverlap1(read1, read2);
-      if (overlap.length > 0 && overlap.error() < LIMIT) {
-        adjacencies.get(i).add(new Edge(i, j, overlap));
-        for (Pair<Integer> pair1 : overlap.errors) {
-          errorCount.get(i)[pair1.value1]++;
-          errorCount.get(j)[pair1.value2]++;
+        for (int k = 0; k <= 48; k += 12) {
+          List<Match> matches = read1SuffixTrie.match(read2, k);
+          if (!matches.isEmpty()) {
+            matches.sort(Comparator.comparingInt(o -> o.offset));
+            for (Match match : matches) {
+              int potentialOverlapLength = readLength - match.offset + k;
+              if (potentialOverlapLength >= readLength) {
+                continue;
+              }
+              Overlap overlap = overlap(read1, read2, potentialOverlapLength, match);
+              if (overlap != null) {
+                adjacencies.get(i).add(new Edge(i, j, overlap));
+                for (Pair<Integer> pair1 : overlap.errors) {
+                  errorCount.get(i)[pair1.value1]++;
+                  errorCount.get(j)[pair1.value2]++;
+                }
+                break;
+              }
+            }
+            break;
+          }
         }
       }
     }
@@ -310,120 +316,50 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     return true;
   }
 
-  private static Overlap findMaximumOverlap1(String read1, String read2) {
-    Overlap maxOverlap = new Overlap(0, Collections.emptyList());
-    for (int i = readLength - 1; i >= 0; i--) {
-      Overlap overlap = compare(read1, read2, i);
-      if (overlap.percentage <= LIMIT) {
-        maxOverlap = overlap;
-        break;
-      }
-    }
-    return maxOverlap;
-  }
-
-  public static Overlap findMaximumOverlap2(SuffixTrie read1SuffixTrie, String read2) {
-    Overlap maxOverlap = new Overlap(0, Collections.emptyList());
-    findMaximumOverlapRecursive(read1SuffixTrie.root, read2, 0, new Overlap(0, Collections.emptyList()), maxOverlap);
-    return maxOverlap;
-  }
-
-  private static void findMaximumOverlapRecursive(SuffixTrie.Node node, String read2, int read2Index, Overlap overlap, Overlap maxOverlap) {
-    if (overlap.errors.size() >= 5) {
-      return;
-    }
-    if (node.present) {
-      double error = overlap.error();
-      if (overlap.length > maxOverlap.length && error <= LIMIT) {
-        maxOverlap.length = overlap.length;
-        maxOverlap.errors.clear();
-        maxOverlap.errors.addAll(overlap.errors);
-      }
-    }
-    if (!node.hasChildren()) {
-      return;
-    }
-    char symbol = read2.charAt(read2Index);
-    int symbolIndex = ALPHABET.get(symbol);
-    for (int i = 0; i < 4; i++) {
-      if (node.next[i] != null) {
-        Overlap copy = overlap.copy();
-        copy.length++;
-        if (i != symbolIndex) {
-          copy.errors.add(new Pair<>(-1, read2Index));
-        }
-        findMaximumOverlapRecursive(node.next[i], read2, read2Index + 1, copy, maxOverlap);
-      }
-    }
-  }
-
-  private static Overlap compare(String read1, String read2, int overlapLength) {
+  private static Overlap overlap(String read1, String read2, int overlapLength) {
     int index1 = readLength - overlapLength;
     int index2 = 0;
     List<Pair<Integer>> errors = new ArrayList<>();
     while (index1 < readLength) {
       if (read1.charAt(index1) != read2.charAt(index2)) {
         errors.add(new Pair<>(index1, index2));
-        if (errors.size() > 5) {
-          break;
+        if (errors.size() > 2) {
+          return null;
         }
       }
       index1++;
       index2++;
     }
-    return new Overlap(overlapLength, errors);
+    double error = (double) errors.size() / overlapLength;
+    if (error < LIMIT) {
+      return new Overlap(overlapLength, errors);
+    }
+    return null;
   }
 
-  public static boolean suffixTrieMatch1(SuffixTrie.Node node, String pattern, int patternIndex, int length, int currentMismatch, int mismatchLimit) {
-    if (currentMismatch > mismatchLimit) {
-      return false;
-    }
-    if (patternIndex >= length) {
-      return true;
-    }
-    char symbol = pattern.charAt(patternIndex);
-    int symbolIndex = ALPHABET.get(symbol);
-    patternIndex++;
-    if (node.next[symbolIndex] != null) {
-      if (suffixTrieMatch1(node.next[symbolIndex], pattern, patternIndex, length, currentMismatch, mismatchLimit)) {
-        return true;
+  private static Overlap overlap(String read1, String read2, int overlapLength, Match match) {
+    int index1 = readLength - overlapLength;
+    int index2 = 0;
+    List<Pair<Integer>> errors = new ArrayList<>();
+    while (index1 < readLength) {
+      if (index2 == match.offset) {
+        index1 += match.length;
+        index2 += match.length;
       }
-    }
-    currentMismatch++;
-    for (int i = 0; i < ALPHABET.size(); i++) {
-      if (node.next[i] != null && i != symbolIndex) {
-        if (suffixTrieMatch1(node.next[i], pattern, patternIndex, length, currentMismatch, mismatchLimit)) {
-          return true;
+      if (read1.charAt(index1) != read2.charAt(index2)) {
+        errors.add(new Pair<>(index1, index2));
+        if (errors.size() > 2) {
+          return null;
         }
       }
+      index1++;
+      index2++;
     }
-    return false;
-  }
-
-  public static boolean suffixTrieMatch2(SuffixTrie.Node node, String pattern, int patternIndex, int length, int currentMismatch, int mismatchLimit) {
-    while (true) {
-      if (currentMismatch > mismatchLimit) {
-        return false;
-      }
-      if (patternIndex >= length) {
-        return true;
-      }
-      char symbol = pattern.charAt(patternIndex);
-      int symbolIndex = ALPHABET.get(symbol);
-      patternIndex++;
-      if (node.next[symbolIndex] != null) {
-        node = node.next[symbolIndex];
-      }
-      currentMismatch++;
-      for (int i = 0; i < ALPHABET.size(); i++) {
-        if (node.next[i] != null && i != symbolIndex) {
-          if (suffixTrieMatch2(node.next[i], pattern, patternIndex, length, currentMismatch, mismatchLimit)) {
-            return true;
-          }
-        }
-      }
-      return false;
+    double error = (double) errors.size() / overlapLength;
+    if (error < LIMIT) {
+      return new Overlap(overlapLength, errors);
     }
+    return null;
   }
 
   private static class Edge {
@@ -448,28 +384,13 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
 
   private static class Overlap {
 
-    double percentage;
+    final int length;
 
-    int length;
-
-    List<Pair<Integer>> errors;
+    final List<Pair<Integer>> errors;
 
     public Overlap(int length, List<Pair<Integer>> errors) {
-      this.percentage = length == 0 ? 0.0 : (double) errors.size() / length;
       this.length = length;
       this.errors = new ArrayList<>(errors);
-    }
-
-    boolean hasErrors() {
-      return !errors.isEmpty();
-    }
-
-    double error() {
-      return (double) errors.size() / length;
-    }
-
-    Overlap copy() {
-      return new Overlap(length, errors);
     }
   }
 
@@ -496,9 +417,429 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     }
   }
 
+  public static class BurrowsWheelerTransform {
+
+    private static final char EOF = '$';
+
+    private final String text;
+
+    private final int[] suffixArray;
+
+    private final String burrowsWheelerTransform;
+
+    private final Map<Character, Integer> symbolCount;
+
+    private final Map<Character, Integer> firstColumnSymbolOffsets;
+
+    private final int[] lastToFirstColumnMap;
+
+//    private final int[][] countArray;
+
+    BurrowsWheelerTransform(String text) {
+      this.text = text;
+      suffixArray = buildSuffixArray();
+      burrowsWheelerTransform = buildBurrowsWheelerTransform();
+      symbolCount = countSymbols();
+      firstColumnSymbolOffsets = calculateFirstColumnSymbolOffsets();
+      lastToFirstColumnMap = calculateLastToFirstColumnMap();
+//      countArray = computeCountArray();
+    }
+
+    private String buildBurrowsWheelerTransform() {
+      StringBuilder burrowsWheelerTransform = new StringBuilder();
+      for (int firstColumnIndex : suffixArray) {
+        if (firstColumnIndex > 0) {
+          burrowsWheelerTransform.append(charAt(text, firstColumnIndex - 1));
+        } else {
+          burrowsWheelerTransform.append(EOF);
+        }
+      }
+      return burrowsWheelerTransform.toString();
+    }
+
+    private int[] buildSuffixArray() {
+      int[] order = sortCharacters(text);
+      int[] classes = computeCharacterClasses(text, order);
+      for (int length = 1; length <= text.length(); length *= 2) {
+        order = sortDoubledShifts(text, length, order, classes);
+        classes = updateClasses(order, classes, length);
+      }
+      return order;
+    }
+
+    private int[] sortCharacters(String text) {
+      int[] order = new int[text.length() + 1];
+      Map<Character, Integer> count = new HashMap<>();
+
+      // Discover all possible symbols in the text and count the occurrence of each one
+      for (int i = 0; i <= text.length(); i++) {
+        char symbol = charAt(text, i);
+        count.put(symbol, count.getOrDefault(symbol, 0) + 1);
+      }
+
+      // For each possible symbol, calculate the position in the sorted array of all the symbols
+      // of the text right after the last such symbol
+      List<Character> sortedSymbols = count.keySet().stream().sorted().collect(Collectors.toList());
+      for (int i = 1; i < sortedSymbols.size(); i++) {
+        char prevSymbol = sortedSymbols.get(i - 1);
+        char symbol = sortedSymbols.get(i);
+        count.put(symbol, count.get(symbol) + count.get(prevSymbol));
+      }
+
+      // Calculate the order of the characters within text
+      for (int i = text.length(); i >= 0; i--) {
+        char symbol = charAt(text, i);
+        int position = count.get(symbol) - 1;
+        count.put(symbol, position);
+        order[position] = i;
+      }
+
+      return order;
+    }
+
+    private int[] computeCharacterClasses(String text, int[] order) {
+      int[] classes = new int[order.length];
+      classes[order[0]] = 0;
+      for (int i = 1; i < order.length; i++) {
+        if (charAt(text, order[i]) == charAt(text, order[i - 1])) {
+          classes[order[i]] = classes[order[i - 1]];
+        } else {
+          classes[order[i]] = classes[order[i - 1]] + 1;
+        }
+      }
+      return classes;
+    }
+
+    private int[] sortDoubledShifts(String text, int length, int[] order, int[] classes) {
+      int[] count = new int[order.length];
+      int[] newOrder = new int[order.length];
+
+      // Count the number of times each class occurs in the text
+      for (int i = 0; i <= text.length(); i++) {
+        count[classes[i]] = count[classes[i]] + 1;
+      }
+
+      // For each class, calculate the position in the sorted array of the last such class
+      for (int i = 1; i <= text.length(); i++) {
+        count[i] = count[i] + count[i - 1];
+      }
+
+      // Calculate the order of the doubled shifts
+      for (int i = text.length(); i >= 0; i--) {
+        int doubledShiftStart = (order[i] - length + text.length() + 1) % (text.length() + 1);
+        int clazz = classes[doubledShiftStart];
+        count[clazz] = count[clazz] - 1;
+        newOrder[count[clazz]] = doubledShiftStart;
+      }
+
+      return newOrder;
+    }
+
+    private int[] updateClasses(int[] order, int[] classes, int length) {
+      int[] newClasses = new int[order.length];
+      newClasses[order[0]] = 0;
+      for (int i = 1; i < order.length; i++) {
+        int curr = order[i];
+        int prev = order[i - 1];
+        int midCurr = (curr + length) % order.length;
+        int midPrev = (prev + length) % order.length;
+        if (classes[curr] != classes[prev] ||
+            classes[midCurr] != classes[midPrev]) {
+          newClasses[curr] = newClasses[prev] + 1;
+        } else {
+          newClasses[curr] = newClasses[prev];
+        }
+      }
+      return newClasses;
+    }
+
+    private char charAt(String text, int index) {
+      return index < text.length() ? text.charAt(index) : EOF;
+    }
+
+    private int symbolIndex(char symbol) {
+      switch (symbol) {
+        case '$':
+          return 0;
+        case 'A':
+          return 1;
+        case 'C':
+          return 2;
+        case 'G':
+          return 3;
+        case 'T':
+          return 4;
+        default:
+          throw new RuntimeException("Invalid symbol " + symbol);
+      }
+    }
+
+    List<Integer> match(String pattern, int start, int length) {
+      List<Integer> shifts = new ArrayList<>();
+      int index = start + length - 1;
+      char symbol = pattern.charAt(index--);
+      if (!firstColumnSymbolOffsets.containsKey(symbol)) {
+        return shifts;
+      }
+      int top = firstColumnSymbolOffsets.get(symbol);
+      int bottom = top + symbolCount.get(symbol) - 1;
+      while (top <= bottom) {
+        if (index >= start) {
+          symbol = pattern.charAt(index--);
+          boolean stop = false;
+          while (burrowsWheelerTransform.charAt(top) != symbol) {
+            top++;
+            if (top > bottom) {
+              stop = true;
+              break;
+            }
+          }
+          if (stop) {
+            break;
+          }
+          while (burrowsWheelerTransform.charAt(bottom) != symbol) {
+            bottom--;
+            if (bottom < top) {
+              stop = true;
+              break;
+            }
+          }
+          if (stop) {
+            break;
+          }
+          top = lastToFirstColumnMap[top];
+          bottom = lastToFirstColumnMap[bottom];
+        } else {
+          for (int i = top; i <= bottom; i++) {
+            shifts.add(suffixArray[i]);
+          }
+          break;
+        }
+      }
+      return shifts;
+    }
+
+//    List<Integer> match2(String pattern, int start, int length) {
+//      List<Integer> shifts = new ArrayList<>();
+//      int index = start + length - 1;
+//      int top = 0;
+//      int bottom = burrowsWheelerTransform.length() - 1;
+//      while (top <= bottom) {
+//        if (index >= start) {
+//          char symbol = pattern.charAt(index--);
+//          int symbolIndex = symbolIndex(symbol);
+//          top = firstColumnSymbolOffsets.get(symbol) + countArray[symbolIndex][top];
+//          bottom = firstColumnSymbolOffsets.get(symbol) + countArray[symbolIndex][bottom + 1] - 1;
+//        } else {
+//          for (int i = top; i <= bottom; i++) {
+//            shifts.add(suffixArray[i]);
+//          }
+//          break;
+//        }
+//      }
+//      return shifts;
+//    }
+
+    private Map<Character, Integer> countSymbols() {
+      Map<Character, Integer> symbolCount = new HashMap<>();
+      for (int index = 0; index < burrowsWheelerTransform.length(); index++) {
+        char symbol = burrowsWheelerTransform.charAt(index);
+        symbolCount.put(symbol, symbolCount.getOrDefault(symbol, 0) + 1);
+      }
+      return symbolCount;
+    }
+
+    private Map<Character, Integer> calculateFirstColumnSymbolOffsets() {
+      List<Character> symbols = symbolCount.keySet().stream().sorted().collect(Collectors.toList());
+      symbols.remove((Character) '$');
+      symbols.add(0, '$');
+      Map<Character, Integer> symbolOffsets = new HashMap<>();
+      int offset = 0;
+      for (char symbol : symbols) {
+        symbolOffsets.put(symbol, offset);
+        offset += symbolCount.get(symbol);
+      }
+      return symbolOffsets;
+    }
+
+    private int[] calculateLastToFirstColumnMap() {
+      Map<Character, Integer> symbolCount = new HashMap<>();
+      int[] lastToFirstColumnMap = new int[burrowsWheelerTransform.length()];
+      for (int index = 0; index < burrowsWheelerTransform.length(); index++) {
+        char symbol = burrowsWheelerTransform.charAt(index);
+        int count = symbolCount.getOrDefault(symbol, 0);
+        lastToFirstColumnMap[index] = firstColumnSymbolOffsets.get(symbol) + count;
+        count++;
+        symbolCount.put(symbol, count);
+      }
+      return lastToFirstColumnMap;
+    }
+
+    private int[][] computeCountArray() {
+      int [][] countArray = new int[5][burrowsWheelerTransform.length() + 1];
+      for (int i = 1; i <= burrowsWheelerTransform.length(); i++) {
+        for (int j = 0; j < 5; j++) {
+          countArray[j][i] = countArray[j][i - 1];
+        }
+        countArray[symbolIndex(charAt(burrowsWheelerTransform, i - 1))][i]++;
+      }
+      return countArray;
+    }
+  }
+
+  public static class SuffixArray {
+
+    private static final char SPECIAL_SYMBOL = 0;
+
+    private final String text;
+
+    private final int[] suffixArray;
+
+    SuffixArray(String text) {
+      this.text = text;
+      suffixArray = buildSuffixArray();
+    }
+
+    private int[] buildSuffixArray() {
+      int[] order = sortCharacters(text);
+      int[] classes = computeCharacterClasses(order);
+      for (int length = 1; length <= text.length(); length *= 2) {
+        order = sortDoubledShifts(text, length, order, classes);
+        classes = updateClasses(order, classes, length);
+      }
+      return order;
+    }
+
+    private int[] sortCharacters(String text) {
+      int[] order = new int[text.length() + 1];
+      Map<Character, Integer> count = new HashMap<>();
+
+      // Discover all possible symbols in the text and count the occurrence of each one
+      for (int i = 0; i <= text.length(); i++) {
+        char symbol = charAt(i);
+        count.put(symbol, count.getOrDefault(symbol, 0) + 1);
+      }
+
+      // For each possible symbol, calculate the position in the sorted array of all the symbols
+      // of the text right after the last such symbol
+      List<Character> sortedSymbols = count.keySet().stream().sorted().collect(Collectors.toList());
+      for (int i = 1; i < sortedSymbols.size(); i++) {
+        char prevSymbol = sortedSymbols.get(i - 1);
+        char symbol = sortedSymbols.get(i);
+        count.put(symbol, count.get(symbol) + count.get(prevSymbol));
+      }
+
+      // Calculate the order of the characters within text
+      for (int i = text.length(); i >= 0; i--) {
+        char symbol = charAt(i);
+        int position = count.get(symbol) - 1;
+        count.put(symbol, position);
+        order[position] = i;
+      }
+
+      return order;
+    }
+
+    private int[] computeCharacterClasses(int[] order) {
+      int[] classes = new int[order.length];
+      classes[order[0]] = 0;
+      for (int i = 1; i < order.length; i++) {
+        if (charAt(order[i]) == charAt(order[i - 1])) {
+          classes[order[i]] = classes[order[i - 1]];
+        } else {
+          classes[order[i]] = classes[order[i - 1]] + 1;
+        }
+      }
+      return classes;
+    }
+
+    private int[] sortDoubledShifts(String text, int length, int[] order, int[] classes) {
+      int[] count = new int[order.length];
+      int[] newOrder = new int[order.length];
+
+      // Count the number of times each class occurs in the text
+      for (int i = 0; i <= text.length(); i++) {
+        count[classes[i]] = count[classes[i]] + 1;
+      }
+
+      // For each class, calculate the position in the sorted array of the last such class
+      for (int i = 1; i <= text.length(); i++) {
+        count[i] = count[i] + count[i - 1];
+      }
+
+      // Calculate the order of the doubled shifts
+      for (int i = text.length(); i >= 0; i--) {
+        int doubledShiftStart = (order[i] - length + text.length() + 1) % (text.length() + 1);
+        int clazz = classes[doubledShiftStart];
+        count[clazz] = count[clazz] - 1;
+        newOrder[count[clazz]] = doubledShiftStart;
+      }
+
+      return newOrder;
+    }
+
+    private int[] updateClasses(int[] order, int[] classes, int length) {
+      int[] newClasses = new int[order.length];
+      newClasses[order[0]] = 0;
+      for (int i = 1; i < order.length; i++) {
+        int curr = order[i];
+        int prev = order[i - 1];
+        int midCurr = (curr + length) % order.length;
+        int midPrev = (prev + length) % order.length;
+        if (classes[curr] != classes[prev] ||
+            classes[midCurr] != classes[midPrev]) {
+          newClasses[curr] = newClasses[prev] + 1;
+        } else {
+          newClasses[curr] = newClasses[prev];
+        }
+      }
+      return newClasses;
+    }
+
+    private char charAt(int index) {
+      return index < text.length() ? text.charAt(index) : SPECIAL_SYMBOL;
+    }
+
+    public List<Integer> match(String pattern, int offset, int length) {
+      List<Integer> matches = new ArrayList<>();
+      int start = 0;
+      int end = text.length();
+      for (int i = 0; i < length; i++) {
+        int minIndex = start;
+        int maxIndex = end;
+        while (minIndex < maxIndex) {
+          int middleIndex = (minIndex + maxIndex) / 2;
+          if (charAt(suffixArray[middleIndex] + i) < pattern.charAt(offset + i)) {
+            minIndex = middleIndex + 1;
+          } else {
+            maxIndex = middleIndex;
+          }
+        }
+        start = minIndex;
+        maxIndex = end;
+        while (minIndex < maxIndex) {
+          int middleIndex = (minIndex + maxIndex) / 2;
+          if (charAt(suffixArray[middleIndex] + i) > pattern.charAt(offset + i)) {
+            maxIndex = middleIndex;
+          } else {
+            minIndex = middleIndex + 1;
+          }
+        }
+        end = maxIndex;
+        if (start >= end) {
+          break;
+        }
+      }
+      while (start < end) {
+        matches.add(suffixArray[start++]);
+      }
+      return matches;
+    }
+  }
+
   public static class SuffixTrie {
 
-    Node root;
+    private final Node root;
 
     SuffixTrie(String read) {
       root = new Node();
@@ -511,22 +852,69 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
             curr.next[symbolIndex] = new Node();
           }
           curr = curr.next[symbolIndex];
-          curr.chainLength[symbolIndex]++;
         }
-        curr.present = true;
+        curr.index = i;
+      }
+    }
+
+//    public List<Integer> match(String pattern, int offset, int length) {
+//      List<Integer> matches = new ArrayList<>();
+//      match(root, pattern, offset, length, matches);
+//      return matches;
+//    }
+//
+//    private void match(Node node, String pattern, int offset, int length, List<Integer> matches) {
+//      if (offset < length) {
+//        char symbol = pattern.charAt(offset);
+//        int symbolIndex = ALPHABET.get(symbol);
+//        if (node.next[symbolIndex] != null) {
+//          match(node.next[symbolIndex], pattern, offset + 1, length, matches);
+//        }
+//      } else {
+//        for (int i = 0; i < ALPHABET.size(); i++) {
+//          if (node.next[i] != null) {
+//            match(node.next[i], pattern, offset, length, matches);
+//          }
+//        }
+//        if (node.index != -1) {
+//          matches.add(node.index);
+//        }
+//      }
+//    }
+
+    public List<Match> match(String pattern, int offset) {
+      List<Match> matches = new ArrayList<>();
+      match(root, pattern, offset, matches);
+      return matches;
+    }
+
+    private void match(Node node, String pattern, int offset, List<Match> matches) {
+      if (offset < pattern.length()) {
+        char symbol = pattern.charAt(offset);
+        int symbolIndex = ALPHABET.get(symbol);
+        if (node.next[symbolIndex] != null) {
+          match(node.next[symbolIndex], pattern, offset + 1, matches);
+        }
+      } else {
+        for (int i = 0; i < ALPHABET.size(); i++) {
+          if (node.next[i] != null) {
+            match(node.next[i], pattern, offset, matches);
+          }
+        }
+        if (node.index != -1) {
+          matches.add(new Match(node.index, offset));
+        }
       }
     }
 
     public static class Node {
 
-      private boolean present;
-
-      private final int[] chainLength;
+      private int index;
 
       private final Node[] next;
 
       public Node() {
-        chainLength = new int[ALPHABET.size()];
+        this.index = -1;
         next = new Node[ALPHABET.size()];
       }
 
@@ -538,6 +926,18 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
         }
         return false;
       }
+    }
+  }
+
+  public static class Match {
+
+    private final int offset;
+
+    private final int length;
+
+    Match(int offset, int length) {
+      this.offset = offset;
+      this.length = length;
     }
   }
 }

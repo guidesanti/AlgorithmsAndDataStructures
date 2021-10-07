@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.suffixarray;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
 import br.com.eventhorizon.common.utils.StringToIntegerArrayConverter;
 import org.junit.jupiter.api.Test;

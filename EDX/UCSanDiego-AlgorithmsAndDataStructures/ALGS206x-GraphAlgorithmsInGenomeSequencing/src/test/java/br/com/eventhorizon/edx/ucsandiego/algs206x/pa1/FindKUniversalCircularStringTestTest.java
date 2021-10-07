@@ -4,11 +4,11 @@ import br.com.eventhorizon.common.pa.PATest;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class FindKUniversalCircularStringTest extends PATest {
+public class FindKUniversalCircularStringTestTest extends PATest {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/find-k-universal-circular-string.csv";
 
-  public FindKUniversalCircularStringTest() {
+  public FindKUniversalCircularStringTestTest() {
     super(new FindKUniversalCircularString(), true, true);
   }
 

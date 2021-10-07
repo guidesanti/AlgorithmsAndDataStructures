@@ -1,6 +1,6 @@
 package br.com.eventhorizon.sat;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.FastScanner;
 
 import java.io.FileInputStream;

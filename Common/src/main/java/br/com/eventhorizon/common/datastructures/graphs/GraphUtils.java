@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import com.opencsv.CSVReader;
 
 import java.io.FileReader;

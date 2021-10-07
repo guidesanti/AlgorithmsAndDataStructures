@@ -1,7 +1,6 @@
 package br.com.eventhorizon.common.datastructures.queues;
 
-import br.com.eventhorizon.common.Utils;
-import br.com.eventhorizon.common.datastructures.queues.Queue;
+import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;

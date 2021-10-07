@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.strings;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.datastructures.UnsupportedSymbolException;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,6 @@ public class AlphabetTest {
   @Test
   public void testDefaultAlphabet() {
     Alphabet alphabet = new Alphabet();
-    assertTrue(alphabet.isDefaultAlphabet());
     assertEquals(DEFAULT_ALPHABET_SIZE, alphabet.size());
     for (int index = 0; index < DEFAULT_ALPHABET_SIZE; index++) {
       assertEquals((char) index, alphabet.indexToSymbol(index));
@@ -30,7 +29,6 @@ public class AlphabetTest {
 
   @Test
   public void testCustomAlphabet() {
-    assertThrows(IllegalArgumentException.class, () -> new Alphabet(null));
     assertThrows(IllegalArgumentException.class, () -> new Alphabet(new char[0]));
     Set<Character> symbolSet = new HashSet<>(Arrays.asList(Utils.getRandomCharArray(Utils.CharType.ALL, 1, 100)));
     Map<Character, Integer> symbolMap = new HashMap<>();
@@ -42,7 +40,6 @@ public class AlphabetTest {
       index++;
     }
     Alphabet alphabet = new Alphabet(symbols);
-    assertFalse(alphabet.isDefaultAlphabet());
     assertEquals(symbols.length, alphabet.size());
     for (char symbol = 0; symbol < Character.MAX_VALUE; symbol++) {
       if (symbolSet.contains(symbol)) {

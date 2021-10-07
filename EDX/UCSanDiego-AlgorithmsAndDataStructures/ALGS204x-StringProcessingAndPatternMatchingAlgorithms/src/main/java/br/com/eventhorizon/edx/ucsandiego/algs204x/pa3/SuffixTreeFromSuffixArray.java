@@ -1,6 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa3;
 
-import br.com.eventhorizon.common.datastructures.Alphabet;
+import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 

@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.queues;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.datastructures.sets.ArraySet;
 import org.junit.jupiter.api.Test;
 

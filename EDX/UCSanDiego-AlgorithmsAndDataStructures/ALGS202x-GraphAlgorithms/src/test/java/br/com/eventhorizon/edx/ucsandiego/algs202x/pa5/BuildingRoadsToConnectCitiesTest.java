@@ -1,6 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs202x.pa5;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.datastructures.sets.ArraySet;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.PATestType;

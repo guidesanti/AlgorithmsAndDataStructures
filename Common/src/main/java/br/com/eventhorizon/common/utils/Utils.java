@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common;
+package br.com.eventhorizon.common.utils;
 
 import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 

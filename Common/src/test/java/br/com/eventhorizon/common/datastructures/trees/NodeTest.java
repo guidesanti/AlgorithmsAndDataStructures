@@ -1,7 +1,6 @@
 package br.com.eventhorizon.common.datastructures.trees;
 
-import br.com.eventhorizon.common.Utils;
-import br.com.eventhorizon.common.datastructures.trees.Node;
+import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

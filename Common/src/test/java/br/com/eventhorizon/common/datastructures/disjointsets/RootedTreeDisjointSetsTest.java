@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.disjointsets;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

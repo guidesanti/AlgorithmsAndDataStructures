@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.tries;
 
-import br.com.eventhorizon.common.Utils;
+import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.datastructures.UnsupportedSymbolException;
 import org.junit.jupiter.api.Test;
 
