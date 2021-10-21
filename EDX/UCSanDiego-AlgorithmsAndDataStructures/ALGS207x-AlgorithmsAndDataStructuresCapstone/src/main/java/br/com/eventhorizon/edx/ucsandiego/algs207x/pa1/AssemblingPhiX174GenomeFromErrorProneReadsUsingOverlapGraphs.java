@@ -1,5 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa1;
 
+import br.com.eventhorizon.common.datastructures.strings.Alphabet;
+import br.com.eventhorizon.common.datastructures.strings.UkkonenSuffixTree;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
@@ -10,7 +12,9 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
 
   private static final double LIMIT = 0.05;
 
-  private static final Map<Character, Integer> ALPHABET = new HashMap<>();
+  private static final char[] ALPHABET_SYMBOLS = { 'A', 'C', 'G', 'T' };
+
+  private static final Alphabet ALPHABET = new Alphabet(ALPHABET_SYMBOLS);
 
   private static List<String> reads;
 
@@ -21,13 +25,6 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   private static List<List<Edge>> adjacencies;
 
   private static List<Edge> path;
-
-  static {
-    ALPHABET.put('A', 0);
-    ALPHABET.put('C', 1);
-    ALPHABET.put('G', 2);
-    ALPHABET.put('T', 3);
-  }
 
   private static void init() {
     reads = new ArrayList<>();
@@ -81,9 +78,15 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static void finalSolutionImpl() {
+    long a = System.currentTimeMillis();
     buildOverlapGraph1();
+    long diff1 = System.currentTimeMillis() - a;
+    a = System.currentTimeMillis();
     findHamiltonianPath();
+    long diff2 = System.currentTimeMillis() - a;
+    a = System.currentTimeMillis();
     fixErrorReads();
+    long diff3 = System.currentTimeMillis() - a;
   }
 
   private static void buildOverlapGraph1() {
@@ -169,30 +172,58 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
   }
 
   private static void buildOverlapGraph3() {
-    SuffixTrie[] suffixTries = new SuffixTrie[reads.size()];
+    long a = System.currentTimeMillis();
+    SuffixTree[] suffixTrees = new SuffixTree[reads.size()];
     for (int i = 0; i < reads.size(); i++) {
-      suffixTries[i] = new SuffixTrie(reads.get(i));
+      suffixTrees[i] = new SuffixTree(ALPHABET, reads.get(i));
+      adjacencies.add(new ArrayList<>());
+    }
+    long diff1 = System.currentTimeMillis() - a;
+
+    for (int i = 0; i < reads.size(); i++) {
+      SuffixTree read1SuffixTree = suffixTrees[i];
+      for (int j = 0; j < reads.size(); j++) {
+        if (i == j) {
+          continue;
+        }
+        String read2 = reads.get(j);
+        Overlap overlap = read1SuffixTree.match(read2);
+        if (overlap != null && overlap.length > 0) {
+          adjacencies.get(i).add(new Edge(i, j, overlap));
+          for (Pair<Integer> pair1 : overlap.errors) {
+            errorCount.get(i)[pair1.value1]++;
+            errorCount.get(j)[pair1.value2]++;
+          }
+        }
+      }
+    }
+  }
+
+  private static void buildOverlapGraph4() {
+    SuffixTree[] suffixTrees = new SuffixTree[reads.size()];
+    for (int i = 0; i < reads.size(); i++) {
+      suffixTrees[i] = new SuffixTree(ALPHABET, reads.get(i));
       adjacencies.add(new ArrayList<>());
     }
 
     for (int i = 0; i < reads.size(); i++) {
       String read1 = reads.get(i);
-      SuffixTrie read1SuffixTrie = suffixTries[i];
+      SuffixTree read1SuffixTree = suffixTrees[i];
       for (int j = 0; j < reads.size(); j++) {
         if (i == j) {
           continue;
         }
         String read2 = reads.get(j);
         for (int k = 0; k <= 48; k += 12) {
-          List<Match> matches = read1SuffixTrie.match(read2, k);
+          List<Integer> matches = read1SuffixTree.match(read2, k, 12);
           if (!matches.isEmpty()) {
-            matches.sort(Comparator.comparingInt(o -> o.offset));
-            for (Match match : matches) {
-              int potentialOverlapLength = readLength - match.offset + k;
+            Collections.sort(matches);
+            for (int offset : matches) {
+              int potentialOverlapLength = readLength - offset + k;
               if (potentialOverlapLength >= readLength) {
                 continue;
               }
-              Overlap overlap = overlap(read1, read2, potentialOverlapLength, match);
+              Overlap overlap = overlap(read1, read2, potentialOverlapLength);
               if (overlap != null) {
                 adjacencies.get(i).add(new Edge(i, j, overlap));
                 for (Pair<Integer> pair1 : overlap.errors) {
@@ -337,31 +368,6 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     return null;
   }
 
-  private static Overlap overlap(String read1, String read2, int overlapLength, Match match) {
-    int index1 = readLength - overlapLength;
-    int index2 = 0;
-    List<Pair<Integer>> errors = new ArrayList<>();
-    while (index1 < readLength) {
-      if (index2 == match.offset) {
-        index1 += match.length;
-        index2 += match.length;
-      }
-      if (read1.charAt(index1) != read2.charAt(index2)) {
-        errors.add(new Pair<>(index1, index2));
-        if (errors.size() > 2) {
-          return null;
-        }
-      }
-      index1++;
-      index2++;
-    }
-    double error = (double) errors.size() / overlapLength;
-    if (error < LIMIT) {
-      return new Overlap(overlapLength, errors);
-    }
-    return null;
-  }
-
   private static class Edge {
 
     final int from;
@@ -382,13 +388,13 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     }
   }
 
-  private static class Overlap {
+  public static class Overlap {
 
-    final int length;
+    private final int length;
 
-    final List<Pair<Integer>> errors;
+    private final List<Pair<Integer>> errors;
 
-    public Overlap(int length, List<Pair<Integer>> errors) {
+    Overlap(int length, List<Pair<Integer>> errors) {
       this.length = length;
       this.errors = new ArrayList<>(errors);
     }
@@ -837,107 +843,279 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs implem
     }
   }
 
-  public static class SuffixTrie {
+  public static class SuffixTree {
 
-    private final Node root;
+    private static final char EMPTY_CHAR = 0;
 
-    SuffixTrie(String read) {
-      root = new Node();
-      for (int i = read.length() - 1; i >= 0; i--) {
-        Node curr = root;
-        for (int j = i; j < read.length(); j++) {
-          char symbol = read.charAt(j);
-          int symbolIndex = ALPHABET.get(symbol);
-          if (curr.next[symbolIndex] == null) {
-            curr.next[symbolIndex] = new Node();
-          }
-          curr = curr.next[symbolIndex];
-        }
-        curr.index = i;
-      }
+    private final Alphabet alphabet;
+
+    private final String text;
+
+    private final SuffixTree.Node root;
+
+    SuffixTree(Alphabet alphabet, String text) {
+      this.alphabet = new Alphabet(alphabet.symbols());
+      this.alphabet.add(EMPTY_CHAR);
+      this.text = text + EMPTY_CHAR;
+      this.root = new SuffixTree.Node();
+      buildSuffixTree();
     }
 
-//    public List<Integer> match(String pattern, int offset, int length) {
-//      List<Integer> matches = new ArrayList<>();
-//      match(root, pattern, offset, length, matches);
-//      return matches;
-//    }
-//
-//    private void match(Node node, String pattern, int offset, int length, List<Integer> matches) {
-//      if (offset < length) {
-//        char symbol = pattern.charAt(offset);
-//        int symbolIndex = ALPHABET.get(symbol);
-//        if (node.next[symbolIndex] != null) {
-//          match(node.next[symbolIndex], pattern, offset + 1, length, matches);
-//        }
-//      } else {
-//        for (int i = 0; i < ALPHABET.size(); i++) {
-//          if (node.next[i] != null) {
-//            match(node.next[i], pattern, offset, length, matches);
-//          }
-//        }
-//        if (node.index != -1) {
-//          matches.add(node.index);
-//        }
-//      }
-//    }
-
-    public List<Match> match(String pattern, int offset) {
-      List<Match> matches = new ArrayList<>();
-      match(root, pattern, offset, matches);
+    List<Integer> match(String pattern, int patternIndex, int maxLength) {
+      List<Integer> matches = new ArrayList<>();
+      int symbolIndex = alphabet.symbolToIndex(pattern.charAt(patternIndex));
+      if (root.children[symbolIndex] != null) {
+        match(root.children[symbolIndex], pattern, patternIndex, 0, maxLength, matches);
+      }
       return matches;
     }
 
-    private void match(Node node, String pattern, int offset, List<Match> matches) {
-      if (offset < pattern.length()) {
-        char symbol = pattern.charAt(offset);
-        int symbolIndex = ALPHABET.get(symbol);
-        if (node.next[symbolIndex] != null) {
-          match(node.next[symbolIndex], pattern, offset + 1, matches);
-        }
-      } else {
-        for (int i = 0; i < ALPHABET.size(); i++) {
-          if (node.next[i] != null) {
-            match(node.next[i], pattern, offset, matches);
+    private void match(Node node, String pattern, int patternIndex, int length, int maxLength, List<Integer> matches) {
+      if (length < maxLength) {
+        int textIndex = node.start;
+        int end = node.isLeaf() ? node.end.value - 1 : node.end.value;
+        while (textIndex <= end) {
+          char tch = text.charAt(textIndex);
+          char pch = pattern.charAt(patternIndex);
+          if (text.charAt(textIndex) != pattern.charAt(patternIndex)) {
+            return;
+          }
+          textIndex++;
+          patternIndex++;
+          length++;
+          if (length >= maxLength) {
+            for (Node child : node.children) {
+              if (child != null) {
+                match(child, pattern, patternIndex, length, maxLength, matches);
+              }
+            }
+            if (node.isLeaf()) {
+              matches.add(node.suffixIndex);
+            }
+            return;
           }
         }
-        if (node.index != -1) {
-          matches.add(new Match(node.index, offset));
+        int symbolIndex = alphabet.symbolToIndex(pattern.charAt(patternIndex));
+        if (node.children[symbolIndex] != null) {
+          match(node.children[symbolIndex], pattern, patternIndex, length, maxLength, matches);
+        }
+        return;
+      }
+
+      if (node.isLeaf()) {
+        matches.add(node.suffixIndex);
+        return;
+      }
+      for (Node child : node.children) {
+        if (child != null) {
+          match(child, pattern, patternIndex, length, maxLength, matches);
         }
       }
     }
 
-    public static class Node {
+    Overlap match(String pattern) {
+      return match(root, pattern, 0, 0, new ArrayList<>(), new Overlap(0, new ArrayList<>()));
+    }
 
-      private int index;
+    private Overlap match(Node node, String pattern, int patternIndex, int length, List<Pair<Integer>> mismatches, Overlap maxOverlap) {
+      List<Pair<Integer>> localMismatches = new ArrayList<>(mismatches);
 
-      private final Node[] next;
+      if (!node.isRoot()) {
+        int textIndex = node.start;
+        int end = node.isLeaf() ? node.end.value - 1 : node.end.value;
+        while (textIndex <= end) {
+          if (text.charAt(textIndex) != pattern.charAt(patternIndex)) {
+            localMismatches.add(new Pair<>(-1, patternIndex));
+            if (localMismatches.size() >= 3) {
+              return maxOverlap;
+            }
+          }
+          textIndex++;
+          patternIndex++;
+          length++;
+        }
+        if (node.isLeaf()) {
+          double error = (double) localMismatches.size() / length;
+          if (length > maxOverlap.length && error < LIMIT) {
+            int finalLength = length;
+            localMismatches.forEach(p -> {
+              p.value1 = (text.length() - 1 - finalLength + p.value2);
+            });
+            maxOverlap = new Overlap(length, localMismatches);
+          }
+          return maxOverlap;
+        }
+      }
+
+      for (Node child : node.children) {
+        if (child != null) {
+          Overlap overlap = match(child, pattern, patternIndex, length, localMismatches, maxOverlap);
+          if (overlap.length > maxOverlap.length) {
+            maxOverlap = overlap;
+          }
+        }
+      }
+
+      return maxOverlap;
+    }
+
+    private void buildSuffixTree() {
+      int leafCount = 0;
+      SuffixTree.End end = new SuffixTree.End(0);
+
+      // Initialize active point composed by activeNode, activeEdge and activeLength
+      SuffixTree.Node activeNode = root;
+      int activeEdge = -1;
+      int activeLength = 0;
+
+      int remainingSuffixCount = 0;
+      SuffixTree.Node lastCreatedNode = null;
+
+      for (int index = 0; index < text.length(); index++) {
+        // Rule 1: add current character to all leaves
+        end.set(index);
+
+        // Increment remaining suffix count
+        remainingSuffixCount++;
+
+        while (remainingSuffixCount > 0) {
+          // Handle active point change for active length zero
+          if (activeLength == 0) {
+            activeEdge = index;
+          }
+
+          int activeEdgeIndex = alphabet.symbolToIndex(text.charAt(activeEdge));
+
+          if (activeNode.children[activeEdgeIndex] == null) {
+            // Rule 2: add new leaf
+            activeNode.children[activeEdgeIndex] = new SuffixTree.Node(index, end, leafCount);
+            leafCount++;
+            if (lastCreatedNode != null) {
+              lastCreatedNode.suffixLink = activeNode;
+              lastCreatedNode = null;
+            }
+          } else {
+            // Handle active point for walk down
+            SuffixTree.Node next = activeNode.children[activeEdgeIndex];
+            int edgeLength = next.end.value - next.start + 1;
+            if (activeLength >= edgeLength)  {
+              activeEdge += edgeLength;
+              activeLength -= edgeLength;
+              activeNode = next;
+              continue;
+            }
+
+            // Rule 3:
+            if (text.charAt(next.start + activeLength) == text.charAt(index)) {
+              if (lastCreatedNode != null) {
+                lastCreatedNode.suffixLink = activeNode;
+                lastCreatedNode = null;
+              }
+
+              // Handle active point for rule 3
+              activeLength++;
+              // Rule 3 is show stopper
+              break;
+            }
+
+            // Rule 2: add new leaf ad new internal node
+            SuffixTree.Node leaf = new SuffixTree.Node(index, end, leafCount);
+            leafCount++;
+            SuffixTree.Node intermediate = new SuffixTree.Node(next.start, new SuffixTree.End(next.start + activeLength - 1));
+            next.start += activeLength;
+            intermediate.children[alphabet.symbolToIndex(text.charAt(next.start))] = next;
+            intermediate.children[alphabet.symbolToIndex(text.charAt(leaf.start))] = leaf;
+            activeNode.children[alphabet.symbolToIndex(text.charAt(intermediate.start))] = intermediate;
+            if (lastCreatedNode != null) {
+              lastCreatedNode.suffixLink = intermediate;
+            }
+            lastCreatedNode = intermediate;
+          }
+
+          remainingSuffixCount--;
+
+          if (activeNode == root && activeLength > 0) {
+            // Handle active point change for rule 2 case 1
+            activeLength--;
+            activeEdge = index - remainingSuffixCount + 1;
+          } else if (activeNode != root) {
+            // Handle active point change for rule 2 case 2
+            activeNode = activeNode.suffixLink;
+          }
+        }
+      }
+    }
+
+    private static class End {
+
+      int value;
+
+      End(int value) {
+        this.value = value;
+      }
+
+      public int get() {
+        return value;
+      }
+
+      public void set(int value) {
+        this.value = value;
+      }
+
+      @Override
+      public String toString() {
+        return "" + value;
+      }
+    }
+
+    class Node {
+
+      private final SuffixTree.Node[] children;
+
+      private int start;
+
+      private final SuffixTree.End end;
+
+      private final int suffixIndex;
+
+      private SuffixTree.Node suffixLink;
 
       public Node() {
-        this.index = -1;
-        next = new Node[ALPHABET.size()];
+        this.children = new SuffixTree.Node[alphabet.size()];
+        this.start = -1;
+        this.end = new SuffixTree.End(-1);
+        this.suffixIndex = -1;
       }
 
-      public boolean hasChildren() {
-        for (Node child : next) {
-          if (child != null) {
-            return true;
-          }
+      public Node(int start, SuffixTree.End end) {
+        this.children = new SuffixTree.Node[alphabet.size()];
+        this.start = start;
+        this.end = end;
+        this.suffixIndex = -1;
+      }
+
+      public Node(int start, SuffixTree.End end, int suffixIndex) {
+        this.children = new SuffixTree.Node[alphabet.size()];
+        this.start = start;
+        this.end = end;
+        this.suffixIndex = suffixIndex;
+      }
+
+      public boolean isRoot() {
+        return start < 0;
+      }
+
+      public boolean isLeaf() {
+        return suffixIndex >= 0;
+      }
+
+      @Override
+      public String toString() {
+        if (start == -1) {
+          return "ROOT";
         }
-        return false;
+        return "Node{" + text.substring(start, end.value + 1) + "}";
       }
-    }
-  }
-
-  public static class Match {
-
-    private final int offset;
-
-    private final int length;
-
-    Match(int offset, int length) {
-      this.offset = offset;
-      this.length = length;
     }
   }
 }

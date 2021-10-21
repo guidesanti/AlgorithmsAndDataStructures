@@ -14,6 +14,7 @@
         <module>Common</module>
         <module>EDX</module>
         <module>Algorithms</module>
+        <module>URI</module>
     </modules>
 
     <properties>
@@ -46,6 +47,7 @@
         <!-- Dependency Versions -->
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
         <opencsv.version>5.4</opencsv.version>
+        <jackson.version>2.13.0</jackson.version>
     </properties>
 
     <build>
@@ -233,6 +235,13 @@
                 <groupId>com.opencsv</groupId>
                 <artifactId>opencsv</artifactId>
                 <version>${opencsv.version}</version>
+            </dependency>
+
+            <!-- Jackson -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

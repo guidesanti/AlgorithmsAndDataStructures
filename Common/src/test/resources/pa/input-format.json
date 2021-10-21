@@ -1,0 +1,45 @@
+{
+  "lines": [
+    {
+      "count": 1,
+      "fields": [
+        {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10
+        },
+        {
+          "type": "long",
+          "minimum": 100,
+          "maximum": 10000
+        },
+        {
+          "type": "double",
+          "minimum": 5.34,
+          "maximum": 40.5
+        },
+        {
+          "type": "string",
+          "minLength": 10,
+          "maxLength": 100,
+          "alphabet": [ "A", "C", "G", "T" ]
+        },
+        {
+          "type": "string",
+          "length": 1000,
+          "alphabet": [ "A", "C", "G", "T" ]
+        }
+      ]
+    },
+    {
+      "countRef": "$line[0].field[0]",
+      "fields": [
+        {
+          "type": "string",
+          "lengthRef": "$line[0].field[1]",
+          "alphabet": [ "A", "C", "G", "T" ]
+        }
+      ]
+    }
+  ]
+}

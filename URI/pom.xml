@@ -9,20 +9,24 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>common</artifactId>
+    <artifactId>uri</artifactId>
     <version>1.0.0</version>
-    <description>Sorting algorithms implementations and comparison</description>
+    <description>URI problems</description>
     <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
+            <groupId>br.com.eventhorizon</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-databind</artifactId>
+            <groupId>br.com.eventhorizon</groupId>
+            <artifactId>common</artifactId>
+            <version>1.0.0</version>
+            <classifier>tests</classifier>
+            <type>test-jar</type>
+            <scope>test</scope>
         </dependency>
     </dependencies>
-
 </project>

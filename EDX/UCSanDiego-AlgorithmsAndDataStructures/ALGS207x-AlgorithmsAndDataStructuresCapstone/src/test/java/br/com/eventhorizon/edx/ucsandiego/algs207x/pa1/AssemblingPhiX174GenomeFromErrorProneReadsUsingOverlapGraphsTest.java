@@ -1,5 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa1;
 
+import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.PATest;
 import br.com.eventhorizon.common.pa.PATestType;
@@ -10,7 +11,6 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,21 +35,6 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
     input = input.replace("%", "\n").replace(";", ",");
     expectedOutput = expectedOutput.replace("%", "\n").replace(";", ",");
     super.testFinalSolution(input, expectedOutput);
-  }
-
-//  @Test
-//  public void testSuffixTrie() {
-//    AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTrie sa =
-//        new AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTrie("AGACGTGCACGT");
-//    List<Integer> matches = sa.match("ACGT", 0, 4);
-//  }
-
-  @Test
-  public void testSuffixTrie2() {
-    AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTrie sa =
-        new AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTrie("AAAAAGAAGGAGGCCGTCTTCTCCCAACTCGTATGTAATAGAAACCAATGTCAGTCTGTAACGTGTTGTCATACACCGACCAATTGAACCGAGGATCTTG");
-    List<AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.Match> matches = sa.match("ATCCACCCCCATAGGTCCTGGTTGCTCCTAATGGTGCCATCGAAAAAGAAGGAGGCCGTCTTCTCCCAACTCGTATGTAATAGAAACCAATGTCAGTCTG", 48);
-    int a = 10;
   }
 
   @Test
@@ -85,6 +70,26 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
       List<Integer> matches = bwt.match(pattern, i, 12);
       int a = 10;
     }
+  }
+
+  @Test
+  public void test3() {
+    String text = "TATGGGAGTGGAAACTTCCCCACTTCTAGACAAAGAAATCCGCACTGCTGGGCGGGACTAATTATAAGCACATACGCTAAGCCCAACGGCGGAAACTAAC";
+    String pattern = "AACTTCCCCACTTCTAGAGAAAGAAATCCGCACTGCTGGGCCGGACTAATTATAAGCACATACGCTAAGCCCAACGGCGGAAACTAACGCATACGTAAAG";
+    AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTree st =
+        new AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTree(new Alphabet(ALPHABET), text);
+    AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.Overlap overlap = st.match(pattern);
+    int a = 10;
+  }
+
+  @Test
+  public void test4() {
+    String text = "CCAGTTAGTGGTGCGGCACGTAAAGTCTCTTAACCTCATAGGCGAACACTACTGGCCTCTATCACGCTCTTATAATAACGCAGATAAGCACAACTCGTTC";
+    String pattern = "AGTTACTGGTGCGGCACGTAAAGTCTCTTAACCTCATAGGCGAACACTACTGGCCACTATCACGCTCTTATAATAACGCAGATAAGCACAACTCGTTCTT";
+    AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTree st =
+        new AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphs.SuffixTree(new Alphabet(ALPHABET), text);
+    List<Integer> matches = st.match(pattern, 12, 12);
+    int a = 10;
   }
 
   @Test
@@ -151,7 +156,7 @@ public class AssemblingPhiX174GenomeFromErrorProneReadsUsingOverlapGraphsTest ex
       index = Utils.getRandomInteger(index + 1, index + 12);
       count++;
     }
-    Collections.sort(reads);
+//    Collections.sort(reads);
 //    readInfo.forEach(LOGGER::info);
     return reads;
   }

@@ -1,15 +1,18 @@
 package br.com.eventhorizon.common.pa;
 
+import br.com.eventhorizon.common.pa.format.*;
+import br.com.eventhorizon.common.utils.Utils;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import javax.naming.OperationNotSupportedException;
+import javax.rmi.CORBA.Util;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.logging.Logger;
 
@@ -27,18 +30,29 @@ public abstract class PATest {
 
   protected final boolean skipStressTest;
 
+  private final InputFormat inputFormat;
+
   private OutputStream outputStream;
 
   public PATest(PA pa) {
     this.pa = pa;
     this.skipTimeLimitTest = false;
     this.skipStressTest = false;
+    this.inputFormat = null;
   }
 
   public PATest(PA pa, boolean skipTimeLimitTest, boolean skipStressTest) {
     this.pa = pa;
     this.skipTimeLimitTest = skipTimeLimitTest;
     this.skipStressTest = skipStressTest;
+    this.inputFormat = null;
+  }
+
+  public PATest(PA pa, boolean skipTimeLimitTest, boolean skipStressTest, String inputFormatSpecificationFile) throws IOException {
+    this.pa = pa;
+    this.skipTimeLimitTest = skipTimeLimitTest;
+    this.skipStressTest = skipStressTest;
+    this.inputFormat = loadInputFormat(inputFormatSpecificationFile);
   }
 
   @BeforeEach
@@ -179,7 +193,71 @@ public abstract class PATest {
   }
 
   protected String generateInput(PATestType type) {
-    return null;
+    if (inputFormat == null) {
+      throw new RuntimeException("Input format specification file was not set");
+    }
+
+    StringBuilder input = new StringBuilder();
+    Map<Reference, Object> references = new HashMap<>();
+    int lineNumber = 0;
+    for (Line line : inputFormat.getLines()) {
+      int count;
+      if (line.getCountRef() != null) {
+        count = (int) references.get(line.getCountRef());
+      } else {
+        count = line.getCount();
+      }
+
+      for (int i = 0; i < count; i++) {
+        for (int fieldNumber = 0; fieldNumber < line.getFields().size(); fieldNumber++) {
+          Reference reference = new Reference(lineNumber, fieldNumber);
+          Field field = line.getFields().get(fieldNumber);
+          switch (field.getType()) {
+            case BOOLEAN:
+              boolean booleanValue = Utils.getRandomInteger(0, 9) < 5;
+              references.put(reference, booleanValue);
+              input.append(booleanValue);
+              break;
+            case INTEGER:
+              IntegerField integerField = (IntegerField) field;
+              int integerValue = Utils.getRandomInteger(integerField.getMinimum(), integerField.getMaximum());
+              references.put(reference, integerValue);
+              input.append(integerValue);
+              break;
+            case LONG:
+              LongField longField = (LongField) field;
+              long longValue = Utils.getRandomLong(longField.getMinimum(), longField.getMaximum());
+              references.put(reference, longValue);
+              input.append(longValue);
+              break;
+            case DOUBLE:
+              DoubleField doubleField = (DoubleField) field;
+              double doubleValue = Utils.getRandomDouble(doubleField.getMinimum(), doubleField.getMaximum());
+              references.put(reference, doubleValue);
+              input.append(doubleValue);
+              break;
+            case STRING:
+              StringField stringField = (StringField) field;
+              String stringValue;
+              if (stringField.getLengthRef() != null) {
+                stringValue = Utils.getRandomString(stringField.getAlphabet(), (int) references.get(stringField.getLengthRef()));
+              } else if (stringField.getLength() > 0) {
+                stringValue = Utils.getRandomString(stringField.getAlphabet(), stringField.getLength());
+              } else {
+                stringValue = Utils.getRandomString(stringField.getAlphabet(), stringField.getMinLength(), stringField.getMaxLength());
+              }
+              references.put(reference, stringValue);
+              input.append(stringValue);
+              break;
+          }
+          input.append(" ");
+        }
+        input.replace(input.length() - 1, input.length(), "\n");
+        lineNumber++;
+      }
+    }
+
+    return input.toString();
   }
 
   protected void verify(String input, String expectedOutput, String actualOutput) {
@@ -187,5 +265,14 @@ public abstract class PATest {
     assertNotNull(expectedOutput);
     assertNotNull(actualOutput);
     assertEquals(expectedOutput, actualOutput);
+  }
+
+  private InputFormat loadInputFormat(String inputFormatFilePath) throws IOException {
+    ObjectMapper objectMapper = new ObjectMapper();
+    SimpleModule module = new SimpleModule("Deserializer", new Version(1, 0, 0, null, null, null));
+    module.addDeserializer(Field.class, new FieldDeserializer());
+    objectMapper.registerModule(module);
+    InputStream inputFormatFile = getClass().getClassLoader().getResourceAsStream(inputFormatFilePath);
+    return objectMapper.readValue(inputFormatFile, InputFormat.class);
   }
 }
