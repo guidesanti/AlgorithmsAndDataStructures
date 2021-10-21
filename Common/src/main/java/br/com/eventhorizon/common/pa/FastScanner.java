@@ -10,6 +10,8 @@ public class FastScanner {
 
   private String delimiters = null;
 
+  private boolean returnDelimiters = false;
+
   private BufferedReader br;
 
   private StringTokenizer st;
@@ -27,6 +29,11 @@ public class FastScanner {
     this.delimiters = delimiters;
   }
 
+  public FastScanner(InputStream stream, String delimiters, boolean returnDelimiters) {
+    this(stream, delimiters);
+    this.returnDelimiters = returnDelimiters;
+  }
+
   public String next() {
     while (st == null || !st.hasMoreTokens()) {
       try {
@@ -37,7 +44,7 @@ public class FastScanner {
         if (delimiters == null) {
           st = new StringTokenizer(line);
         } else {
-          st = new StringTokenizer(line, delimiters, false);
+          st = new StringTokenizer(line, delimiters, returnDelimiters);
         }
       } catch (IOException e) {
         e.printStackTrace();
