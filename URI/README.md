@@ -1,4 +1,4 @@
-# EDX
+# URI
 This module contains implementation of some problems from [URI](https://www.urionlinejudge.com.br). 
 
 ## Contents
