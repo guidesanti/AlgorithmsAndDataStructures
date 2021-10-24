@@ -1,0 +1,5 @@
+3 0
+ADD R0,1
+CALL R0
+RET R0
+0 0

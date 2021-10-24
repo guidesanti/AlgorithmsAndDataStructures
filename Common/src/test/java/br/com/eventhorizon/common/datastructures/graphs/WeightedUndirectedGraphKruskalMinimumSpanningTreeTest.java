@@ -1,6 +1,6 @@
 package br.com.eventhorizon.common.datastructures.graphs;
 
-import br.com.eventhorizon.common.utils.StringToSetOfWeightedUndirectedEdges;
+import br.com.eventhorizon.common.utils.converters.StringToSetOfWeightedUndirectedEdges;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;

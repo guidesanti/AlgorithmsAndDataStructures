@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.utils;
+package br.com.eventhorizon.common.utils.converters;
 
 import org.junit.jupiter.params.converter.ArgumentConversionException;
 import org.junit.jupiter.params.converter.SimpleArgumentConverter;

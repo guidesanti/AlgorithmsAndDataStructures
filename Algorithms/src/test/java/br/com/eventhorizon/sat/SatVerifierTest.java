@@ -1,6 +1,6 @@
 package br.com.eventhorizon.sat;
 
-import br.com.eventhorizon.common.utils.StringToIntegerArrayConverter;
+import br.com.eventhorizon.common.utils.converters.StringToIntegerArrayConverter;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;
 import org.junit.jupiter.params.provider.CsvFileSource;

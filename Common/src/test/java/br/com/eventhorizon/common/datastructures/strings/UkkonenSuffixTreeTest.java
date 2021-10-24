@@ -52,7 +52,7 @@ public class UkkonenSuffixTreeTest {
   public void testBuildTime() {
     for (int i = 0; i < 30; i++) {
       String text = Utils.getRandomString(Alphabet.DEFAULT, 1000000);
-      assertTimeoutPreemptively(Duration.ofMillis(1000), () -> new UkkonenSuffixTree(Alphabet.DEFAULT, text));
+      assertTimeoutPreemptively(Duration.ofMillis(2000), () -> new UkkonenSuffixTree(Alphabet.DEFAULT, text));
     }
   }
 

@@ -1,12 +1,13 @@
-package br.com.eventhorizon.datastructures;
+package br.com.eventhorizon.uri.datastructures;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.PAv2;
 
 import java.util.SortedSet;
 import java.util.TreeSet;
 
-public class P1215 implements PA {
+public class P1215 implements PAv2 {
 
   private StringBuilder text;
 

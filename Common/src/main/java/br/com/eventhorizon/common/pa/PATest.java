@@ -18,6 +18,12 @@ import java.util.logging.Logger;
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @deprecated
+ * This class was replaced by PAv2TestBase.
+ * <p>Use {@link PAv2TestBase} instead.</p>
+ */
+@Deprecated
 @ExtendWith(TimingExtension.class)
 public abstract class PATest {
 

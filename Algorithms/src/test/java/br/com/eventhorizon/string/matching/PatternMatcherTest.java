@@ -2,8 +2,8 @@ package br.com.eventhorizon.string.matching;
 
 import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.TestProperties;
-import br.com.eventhorizon.common.utils.StringToListOfIntegersConverter;
-import br.com.eventhorizon.common.utils.StringToListOfStringConverter;
+import br.com.eventhorizon.common.utils.converters.StringToListOfIntegersConverter;
+import br.com.eventhorizon.common.utils.converters.StringToListOfStringConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.converter.ConvertWith;

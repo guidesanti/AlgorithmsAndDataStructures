@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.utils;
+package br.com.eventhorizon.common.utils.converters;
 
 import br.com.eventhorizon.common.datastructures.graphs.WeightedUndirectedEdge;
 import org.junit.jupiter.params.converter.ArgumentConversionException;

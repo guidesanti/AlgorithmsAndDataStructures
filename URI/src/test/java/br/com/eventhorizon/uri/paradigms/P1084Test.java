@@ -1,31 +1,29 @@
 package br.com.eventhorizon.uri.paradigms;
 
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.TestProperties;
+import br.com.eventhorizon.common.pa.*;
 import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class P1084Test extends PATest {
+public class P1084Test extends PAv2TestBase {
 
   private static final String SIMPLE_DATA_SET = "/paradigms/p1084.csv";
 
   public P1084Test() {
-    super(new P1084(), false, true);
-    TestProperties.setTimeLimit(1000);
+    super(new P1084(), PATestSettings.builder()
+        .skipTimeLimitTest(false)
+        .timeLimit(1000)
+        .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    input = input.replace("%", "\n");
-    expectedOutput = expectedOutput.replace("%", "\n");
-    super.testFinalSolution(input, expectedOutput);
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     StringBuilder input = new StringBuilder();
     int n;
     int d;

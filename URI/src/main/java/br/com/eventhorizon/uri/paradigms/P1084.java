@@ -2,8 +2,9 @@ package br.com.eventhorizon.uri.paradigms;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.PAv2;
 
-public class P1084 implements PA {
+public class P1084 implements PAv2 {
 
   private static int n;
 
