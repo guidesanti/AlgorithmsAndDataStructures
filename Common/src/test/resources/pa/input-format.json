@@ -4,24 +4,25 @@
       "count": 1,
       "fields": [
         {
+          "key": "field0",
           "type": "integer",
-          "minimum": 1,
-          "maximum": 10
+          "min": 1,
+          "max": 10
         },
         {
           "type": "long",
-          "minimum": 100,
-          "maximum": 10000
+          "min": 100,
+          "max": 1000000000000
         },
         {
           "type": "double",
-          "minimum": 5.34,
-          "maximum": 40.5
+          "min": 5.34,
+          "max": 40.5
         },
         {
           "type": "string",
-          "minLength": 10,
-          "maxLength": 100,
+          "min": 10,
+          "max": 100,
           "alphabet": [ "A", "C", "G", "T" ]
         },
         {
@@ -32,11 +33,11 @@
       ]
     },
     {
-      "countRef": "$line[0].field[0]",
+      "count": "$field0",
       "fields": [
         {
           "type": "string",
-          "lengthRef": "$line[0].field[1]",
+          "length": "$field0",
           "alphabet": [ "A", "C", "G", "T" ]
         }
       ]

@@ -1,0 +1,42 @@
+{
+  "lines": [
+    {
+      "count": 1,
+      "fields": [
+        {
+          "key": "propertyCount",
+          "type": "integer",
+          "min": 1,
+          "max": 1000000
+        }
+      ]
+    },
+    {
+      "count": "$propertyCount",
+      "fields": [
+        {
+          "key": "propertyResidentCount",
+          "type": "integer",
+          "min": 1,
+          "max": 10
+        },
+        {
+          "key": "propertyConsumption",
+          "type": "integer",
+          "min": 1,
+          "max": 200
+        }
+      ]
+    },
+    {
+      "count": 1,
+      "fields": [
+        {
+          "key": "eof",
+          "type": "integer",
+          "value": 0
+        }
+      ]
+    }
+  ]
+}

@@ -1,63 +1,61 @@
-package br.com.eventhorizon.common.pa;
-
-import br.com.eventhorizon.common.pa.format.InputFormat;
+package br.com.eventhorizon.common.pa.v2;
 
 public class PATestSettings {
 
-  private static final boolean DEFAULT_SKIP_TIME_LIMIT_TEST = true;
+  private static final boolean DEFAULT_TIME_LIMIT_TEST_ENABLED = false;
 
   public static final long DEFAULT_TIME_LIMIT_TEST_DURATION = 15000L;
 
   public static final long DEFAULT_TIME_LIMIT = 1500L;
 
-  private static final boolean DEFAULT_SKIP_STRESS_TEST = true;
+  private static final boolean DEFAULT_STRESS_TEST_ENABLED = false;
 
   public static final long DEFAULT_STRESS_TEST_DURATION = 15000L;
 
-  private static final boolean DEFAULT_SKIP_COMPARE_TEST = true;
+  private static final boolean DEFAULT_COMPARE_TEST_ENABLED = false;
 
   public static final long DEFAULT_COMPARE_TEST_DURATION = 15000L;
 
-  private boolean skipTimeLimitTest;
+  private boolean timeLimitTestEnabled;
 
   private long timeLimitTestDuration;
 
   private long timeLimit;
 
-  private boolean skipStressTest;
+  private boolean stressTestEnabled;
 
   private long stressTestDuration;
 
-  private boolean skipCompareTest;
+  private boolean compareTestEnabled;
 
   private long compareTestDuration;
 
-  private InputFormat inputFormat;
+  private String inputFormatFile;
 
   private PATestSettings() {
-    this.skipTimeLimitTest = DEFAULT_SKIP_TIME_LIMIT_TEST;
+    this.timeLimitTestEnabled = DEFAULT_TIME_LIMIT_TEST_ENABLED;
     this.timeLimitTestDuration = DEFAULT_TIME_LIMIT_TEST_DURATION;
     this.timeLimit = DEFAULT_TIME_LIMIT;
-    this.skipStressTest = DEFAULT_SKIP_STRESS_TEST;
+    this.stressTestEnabled = DEFAULT_STRESS_TEST_ENABLED;
     this.stressTestDuration = DEFAULT_STRESS_TEST_DURATION;
-    this.skipCompareTest = DEFAULT_SKIP_COMPARE_TEST;
+    this.compareTestEnabled = DEFAULT_COMPARE_TEST_ENABLED;
     this.compareTestDuration = DEFAULT_COMPARE_TEST_DURATION;
-    this.inputFormat = null;
+    this.inputFormatFile = null;
   }
 
   private PATestSettings(PATestSettings settings) {
-    this.skipTimeLimitTest = settings.skipTimeLimitTest;
+    this.timeLimitTestEnabled = settings.timeLimitTestEnabled;
     this.timeLimitTestDuration = settings.timeLimitTestDuration;
     this.timeLimit = settings.timeLimit;
-    this.skipStressTest = settings.skipStressTest;
+    this.stressTestEnabled = settings.stressTestEnabled;
     this.stressTestDuration = settings.stressTestDuration;;
-    this.skipCompareTest = settings.skipCompareTest;
+    this.compareTestEnabled = settings.compareTestEnabled;
     this.compareTestDuration = settings.compareTestDuration;
-    this.inputFormat = settings.inputFormat;
+    this.inputFormatFile = settings.inputFormatFile;
   }
 
-  public boolean isSkipTimeLimitTest() {
-    return skipTimeLimitTest;
+  public boolean isTimeLimitTestEnabled() {
+    return timeLimitTestEnabled;
   }
 
   public long getTimeLimitTestDuration() {
@@ -68,24 +66,24 @@ public class PATestSettings {
     return timeLimit;
   }
 
-  public boolean isSkipStressTest() {
-    return skipStressTest;
+  public boolean isStressTestEnabled() {
+    return stressTestEnabled;
   }
 
   public long getStressTestDuration() {
     return stressTestDuration;
   }
 
-  public boolean isSkipCompareTest() {
-    return skipCompareTest;
+  public boolean isCompareTestEnabled() {
+    return compareTestEnabled;
   }
 
   public long getCompareTestDuration() {
     return compareTestDuration;
   }
 
-  public InputFormat getInputFormat() {
-    return inputFormat;
+  public String getInputFormatFile() {
+    return inputFormatFile;
   }
 
   public static Builder builder() {
@@ -98,8 +96,8 @@ public class PATestSettings {
 
     private Builder() { }
 
-    public Builder skipTimeLimitTest(boolean skipTimeLimitTest) {
-      this.settings.skipTimeLimitTest = skipTimeLimitTest;
+    public Builder timeLimitTestEnabled(boolean timeLimitTestEnabled) {
+      this.settings.timeLimitTestEnabled = timeLimitTestEnabled;
       return this;
     }
 
@@ -113,8 +111,8 @@ public class PATestSettings {
       return this;
     }
 
-    public Builder skipStressTest(boolean skipStressTest) {
-      this.settings.skipStressTest = skipStressTest;
+    public Builder stressTestEnabled(boolean stressTestEnabled) {
+      this.settings.stressTestEnabled = stressTestEnabled;
       return this;
     }
 
@@ -123,8 +121,8 @@ public class PATestSettings {
       return this;
     }
 
-    public Builder skipCompareTest(boolean skipCompareTest) {
-      this.settings.skipCompareTest = skipCompareTest;
+    public Builder compareTestEnabled(boolean compareTestEnabled) {
+      this.settings.compareTestEnabled = compareTestEnabled;
       return this;
     }
 
@@ -133,8 +131,8 @@ public class PATestSettings {
       return this;
     }
 
-    public Builder inputFormat(InputFormat inputFormat) {
-      this.settings.inputFormat = inputFormat;
+    public Builder inputFormatFile(String inputFormatFile) {
+      this.settings.inputFormatFile = inputFormatFile;
       return this;
     }
 

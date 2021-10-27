@@ -5,7 +5,7 @@ import javax.naming.OperationNotSupportedException;
 /**
  * @deprecated
  * This class was replaced by PAv2.
- * <p>Use {@link PAv2} instead.</p>
+ * <p>Use {@link br.com.eventhorizon.common.pa.v2.PA} instead.</p>
  */
 @Deprecated
 public interface PA {

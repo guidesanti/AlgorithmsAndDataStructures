@@ -1,6 +1,8 @@
-package br.com.eventhorizon.common.pa;
+package br.com.eventhorizon.common.pa.v2;
 
-import br.com.eventhorizon.common.pa.format.*;
+import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.common.pa.TimingExtension;
+import br.com.eventhorizon.common.pa.v2.input.format.*;
 import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,24 +15,29 @@ import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(TimingExtension.class)
-public abstract class PAv2TestBase {
+public abstract class PATestBase {
 
-  private static final Logger LOGGER = Logger.getLogger(PAv2TestBase.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(PATestBase.class.getName());
 
-  protected final PAv2 pa;
+  protected final PA pa;
 
   private final PATestSettings settings;
 
+  private final InputFormat inputFormat;
+
   private OutputStream outputStream;
 
-  protected PAv2TestBase(PAv2 pa) {
+  protected PATestBase(PA pa) {
     this.pa = pa;
     this.settings = PATestSettings.Builder.defaultSettings();
+    this.inputFormat = null;
   }
 
-  protected PAv2TestBase(PAv2 pa, PATestSettings settings) {
+  protected PATestBase(PA pa, PATestSettings settings) {
     this.pa = pa;
     this.settings = settings;
+    this.inputFormat = settings.getInputFormatFile() != null
+        ? InputFormat.parse(settings.getInputFormatFile()) : null;
   }
 
   /**
@@ -40,7 +47,7 @@ public abstract class PAv2TestBase {
    */
   @Test
   public void timeLimitTest() {
-    if (settings.isSkipTimeLimitTest()) {
+    if (!settings.isTimeLimitTestEnabled()) {
       LOGGER.warning("Time limit test skipped");
       return;
     }
@@ -52,7 +59,7 @@ public abstract class PAv2TestBase {
     for (long i = 0; true; i++) {
       // Generate input
       String input = generateInput(PATestType.TIME_LIMIT_TEST, null);
-      LOGGER.info("Time limit test " + i + " input: " + input);
+      LOGGER.info("Time limit test " + i + " input:\n" + input);
 
       // Run and verify time consumed
       reset(input);
@@ -87,7 +94,7 @@ public abstract class PAv2TestBase {
    */
   @Test
   public void stressTest() {
-    if (settings.isSkipCompareTest()) {
+    if (!settings.isStressTestEnabled()) {
       LOGGER.warning("Stress test skipped");
       return;
     }
@@ -98,7 +105,7 @@ public abstract class PAv2TestBase {
       StringBuilder expectedOutputTemp = new StringBuilder();
       String input = generateInput(PATestType.STRESS_TEST, expectedOutputTemp);
       String expectedOutput = expectedOutputTemp.toString();
-      LOGGER.info("Stress test " + i + " input: " + input);
+      LOGGER.info("Stress test " + i + " input:\n" + input);
 
       // Run and verify result
       reset(input);
@@ -108,8 +115,8 @@ public abstract class PAv2TestBase {
         LOGGER.info("Stress test " + i + " status: PASSED");
       } else {
         LOGGER.info("Stress test " + i + " status: FAILED");
-        LOGGER.info("Stress test " + i + " expected output:  " + expectedOutput);
-        LOGGER.info("Stress test " + i + " actual output:  " + actualOutput);
+        LOGGER.info("Stress test " + i + " expected output:\n" + expectedOutput);
+        LOGGER.info("Stress test " + i + " actual output:\n" + actualOutput);
         fail("Stress test failed");
       }
 
@@ -127,7 +134,7 @@ public abstract class PAv2TestBase {
    */
   @Test
   public void compareTest() {
-    if (settings.isSkipCompareTest()) {
+    if (!settings.isCompareTestEnabled()) {
       LOGGER.warning("Compare test skipped");
       return;
     }
@@ -135,7 +142,7 @@ public abstract class PAv2TestBase {
     long startTime = System.currentTimeMillis();
     for (long i = 0; true; i++) {
       String input = generateInput(PATestType.COMPARE_TEST, null);
-      LOGGER.info("Compare test " + i + " input: " + input);
+      LOGGER.info("Compare test " + i + " input:\n" + input);
 
       // Run and compare results
       reset(input);
@@ -148,8 +155,8 @@ public abstract class PAv2TestBase {
         LOGGER.info("Compare test " + i + " status: PASSED");
       } else {
         LOGGER.info("Compare test " + i + " status: FAILED");
-        LOGGER.info("Compare test " + i + " trivial solution output:  " + trivialSolutionOutput);
-        LOGGER.info("Compare test " + i + " final solution output:  " + finalSolutionOutput);
+        LOGGER.info("Compare test " + i + " trivial solution output:\n" + trivialSolutionOutput);
+        LOGGER.info("Compare test " + i + " final solution output:\n" + finalSolutionOutput);
         fail("Compare test failed");
       }
 
@@ -173,9 +180,13 @@ public abstract class PAv2TestBase {
       pa.finalSolution();
     }
     // Verify output
-    if (!verify(input, expectedOutput, getActualOutput())) {
-      fail("Test failed");
-    }
+    verifyEquals(input, expectedOutput, getActualOutput());
+//    String actualOutput = getActualOutput();
+//    if (!verify(input, expectedOutput, actualOutput)) {
+//      LOGGER.info("Expected output:\n" + expectedOutput);
+//      LOGGER.info("Actual output:\n" + actualOutput);
+//      fail("Test failed");
+//    }
   }
 
   protected void testSolutionFromFile(PASolution solution, String inputFile, String expectedOutputFile) throws IOException {
@@ -189,11 +200,7 @@ public abstract class PAv2TestBase {
     inputStream.close();
     reset(input);
     // Run test
-    if (solution == PASolution.TRIVIAL) {
-      pa.trivialSolution();
-    } else {
-      pa.finalSolution();
-    }
+    testSolution(solution, input, expectedOutput);
   }
 
   protected String getActualOutput() {
@@ -201,66 +208,61 @@ public abstract class PAv2TestBase {
   }
 
   protected String generateInput(PATestType type, StringBuilder expectedOutput) {
-    if (settings.getInputFormat() == null) {
+    if (inputFormat == null) {
       throw new RuntimeException("Input format specification file was not set");
     }
 
     StringBuilder input = new StringBuilder();
-    Map<Reference, Object> references = new HashMap<>();
+    Map<String, Object> references = new HashMap<>();
     int lineNumber = 0;
-    for (Line line : settings.getInputFormat().getLines()) {
-      int count;
-      if (line.getCountRef() != null) {
-        count = (int) references.get(line.getCountRef());
-      } else {
-        count = line.getCount();
-      }
+    for (Line line : inputFormat.getLines()) {
+      int count = line.getCount().isReference()
+          ? (int) references.get(line.getCount().asReference().substring(1))
+          : line.getCount().asValue();
 
       for (int i = 0; i < count; i++) {
         for (int fieldNumber = 0; fieldNumber < line.getFields().size(); fieldNumber++) {
-          Reference reference = new Reference(lineNumber, fieldNumber);
           Field field = line.getFields().get(fieldNumber);
+          String key = field.getKey() != null ? field.getKey() : "$line[" + lineNumber + "].field[" + i + "]";
           switch (field.getType()) {
             case BOOLEAN -> {
-              boolean booleanValue = Utils.getRandomInteger(0, 9) < 5;
-              references.put(reference, booleanValue);
-              input.append(booleanValue);
+              boolean value = field.getValue() != null
+                  ? field.getValue()
+                  : Utils.getRandomInteger(0, 9) < 5;
+              references.put(key, value);
+              input.append(value);
             }
             case INTEGER -> {
-              IntegerField integerField = (IntegerField) field;
-              int integerValue =
-                  Utils.getRandomInteger(integerField.getMinimum(), integerField.getMaximum());
-              references.put(reference, integerValue);
-              input.append(integerValue);
+              int value = field.getValue() != null
+                  ? field.getValue()
+                  : Utils.getRandomInteger((int) field.getMin(), (int) field.getMax());
+              references.put(key, value);
+              input.append(value);
             }
             case LONG -> {
-              LongField longField = (LongField) field;
-              long longValue = Utils.getRandomLong(longField.getMinimum(), longField.getMaximum());
-              references.put(reference, longValue);
-              input.append(longValue);
+              long value = field.getValue() != null
+                  ? field.getValue()
+                  : Utils.getRandomLong((long) field.getMin(), (long) field.getMax());
+              references.put(key, value);
+              input.append(value);
             }
             case DOUBLE -> {
-              DoubleField doubleField = (DoubleField) field;
-              double doubleValue =
-                  Utils.getRandomDouble(doubleField.getMinimum(), doubleField.getMaximum());
-              references.put(reference, doubleValue);
-              input.append(doubleValue);
+              double value = field.getValue() != null
+                  ? field.getValue()
+                  : Utils.getRandomDouble((double) field.getMin(), (double) field.getMax());
+              references.put(key, value);
+              input.append(value);
             }
             case STRING -> {
-              StringField stringField = (StringField) field;
-              String stringValue;
-              if (stringField.getLengthRef() != null) {
-                stringValue =
-                    Utils.getRandomString(stringField.getAlphabet(), (int) references.get(stringField.getLengthRef()));
-              } else if (stringField.getLength() > 0) {
-                stringValue =
-                    Utils.getRandomString(stringField.getAlphabet(), stringField.getLength());
-              } else {
-                stringValue =
-                    Utils.getRandomString(stringField.getAlphabet(), stringField.getMinLength(), stringField.getMaxLength());
-              }
-              references.put(reference, stringValue);
-              input.append(stringValue);
+              String value = field.getValue() != null
+                  ? field.getValue()
+                  : field.getLength().isReference()
+                    ? Utils.getRandomString(field.getAlphabet(), (int) references.get(field.getLength().asReference().substring(1)))
+                    : field.getLength().asValue() > 0
+                      ? Utils.getRandomString(field.getAlphabet(), field.getLength().asValue())
+                      : Utils.getRandomString(field.getAlphabet(), (int) field.getMin(), (int) field.getMax());
+              references.put(key, value);
+              input.append(value);
             }
           }
           input.append(" ");
@@ -271,6 +273,13 @@ public abstract class PAv2TestBase {
     }
 
     return input.toString();
+  }
+
+  protected void verifyEquals(String input, String expectedOutput, String actualOutput) {
+    assertNotNull(input, "Input is null");
+    assertNotNull(expectedOutput, "Expected output is null");
+    assertNotNull(actualOutput, "Actual output is null");
+    assertEquals(expectedOutput, actualOutput);
   }
 
   protected boolean verify(String input, String expectedOutput, String actualOutput) {

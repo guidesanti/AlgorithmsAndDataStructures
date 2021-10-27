@@ -1,4 +1,4 @@
-package br.com.eventhorizon.common.pa.format;
+package br.com.eventhorizon.common.pa.v2.input.format;
 
 public class Reference {
 

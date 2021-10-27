@@ -1,11 +1,11 @@
 package br.com.eventhorizon.uri.datastructures;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PAv2;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.*;
 
-public class P1405 implements PAv2 {
+public class P1405 implements PA {
 
   private static final int MOD = 1000;
 

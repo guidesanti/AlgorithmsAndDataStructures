@@ -1,11 +1,11 @@
 package br.com.eventhorizon.uri.datastructures;
 
-import br.com.eventhorizon.common.pa.PASolution;
-import br.com.eventhorizon.common.pa.PAv2TestBase;
+import br.com.eventhorizon.common.pa.v2.PASolution;
+import br.com.eventhorizon.common.pa.v2.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class P1215Test extends PAv2TestBase {
+public class P1215Test extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/datastructures/p1215.csv";
 
