@@ -19,12 +19,6 @@ public class P1023Test extends PATestBase {
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testTrivialSolutionWithSimpleDataSet1(String input, String expectedOutput) {
-    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet1(String input, String expectedOutput) {
     super.testSolution(PASolution.FINAL, input, expectedOutput);
   }

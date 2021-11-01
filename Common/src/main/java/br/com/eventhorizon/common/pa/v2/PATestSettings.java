@@ -2,19 +2,11 @@ package br.com.eventhorizon.common.pa.v2;
 
 public class PATestSettings {
 
-  private static final boolean DEFAULT_TIME_LIMIT_TEST_ENABLED = false;
+  private boolean memoryLimitTestEnabled;
 
-  public static final long DEFAULT_TIME_LIMIT_TEST_DURATION = 15000L;
+  private long memoryLimitTestDuration;
 
-  public static final long DEFAULT_TIME_LIMIT = 1500L;
-
-  private static final boolean DEFAULT_STRESS_TEST_ENABLED = false;
-
-  public static final long DEFAULT_STRESS_TEST_DURATION = 15000L;
-
-  private static final boolean DEFAULT_COMPARE_TEST_ENABLED = false;
-
-  public static final long DEFAULT_COMPARE_TEST_DURATION = 15000L;
+  private int memoryLimit;
 
   private boolean timeLimitTestEnabled;
 
@@ -33,17 +25,23 @@ public class PATestSettings {
   private String inputFormatFile;
 
   private PATestSettings() {
-    this.timeLimitTestEnabled = DEFAULT_TIME_LIMIT_TEST_ENABLED;
-    this.timeLimitTestDuration = DEFAULT_TIME_LIMIT_TEST_DURATION;
-    this.timeLimit = DEFAULT_TIME_LIMIT;
-    this.stressTestEnabled = DEFAULT_STRESS_TEST_ENABLED;
-    this.stressTestDuration = DEFAULT_STRESS_TEST_DURATION;
-    this.compareTestEnabled = DEFAULT_COMPARE_TEST_ENABLED;
-    this.compareTestDuration = DEFAULT_COMPARE_TEST_DURATION;
+    this.memoryLimitTestEnabled = Defaults.MEMORY_USAGE_TEST_ENABLED;
+    this.memoryLimitTestDuration = Defaults.MEMORY_LIMIT_TEST_DURATION;
+    this.memoryLimit = Defaults.MEMORY_LIMIT;
+    this.timeLimitTestEnabled = Defaults.TIME_LIMIT_TEST_ENABLED;
+    this.timeLimitTestDuration = Defaults.TIME_LIMIT_TEST_DURATION;
+    this.timeLimit = Defaults.TIME_LIMIT;
+    this.stressTestEnabled = Defaults.STRESS_TEST_ENABLED;
+    this.stressTestDuration = Defaults.STRESS_TEST_DURATION;
+    this.compareTestEnabled = Defaults.COMPARE_TEST_ENABLED;
+    this.compareTestDuration = Defaults.COMPARE_TEST_DURATION;
     this.inputFormatFile = null;
   }
 
   private PATestSettings(PATestSettings settings) {
+    this.memoryLimitTestEnabled = settings.memoryLimitTestEnabled;
+    this.memoryLimitTestDuration = settings.memoryLimitTestDuration;
+    this.memoryLimit = settings.memoryLimit;
     this.timeLimitTestEnabled = settings.timeLimitTestEnabled;
     this.timeLimitTestDuration = settings.timeLimitTestDuration;
     this.timeLimit = settings.timeLimit;
@@ -52,6 +50,18 @@ public class PATestSettings {
     this.compareTestEnabled = settings.compareTestEnabled;
     this.compareTestDuration = settings.compareTestDuration;
     this.inputFormatFile = settings.inputFormatFile;
+  }
+
+  public boolean isMemoryLimitTestEnabled() {
+    return memoryLimitTestEnabled;
+  }
+
+  public long getMemoryLimitTestDuration() {
+    return memoryLimitTestDuration;
+  }
+
+  public int getMemoryLimit() {
+    return memoryLimit;
   }
 
   public boolean isTimeLimitTestEnabled() {
@@ -95,6 +105,21 @@ public class PATestSettings {
     private final PATestSettings settings = new PATestSettings();
 
     private Builder() { }
+
+    public Builder memoryLimitTestEnabled(boolean memoryLimitTestEnabled) {
+      this.settings.memoryLimitTestEnabled = memoryLimitTestEnabled;
+      return this;
+    }
+
+    public Builder memoryLimitTestDuration(long memoryLimitTestDuration) {
+      this.settings.memoryLimitTestDuration = memoryLimitTestDuration;
+      return this;
+    }
+
+    public Builder memoryLimit(int memoryLimit) {
+      this.settings.memoryLimit = memoryLimit;
+      return this;
+    }
 
     public Builder timeLimitTestEnabled(boolean timeLimitTestEnabled) {
       this.settings.timeLimitTestEnabled = timeLimitTestEnabled;

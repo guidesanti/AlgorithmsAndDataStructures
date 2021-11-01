@@ -2,7 +2,11 @@ package br.com.eventhorizon.common.pa.v2.input.format;
 
 public class Field {
 
+  private static final ValueOrReference DEFAULT_COUNT = new ValueOrReference(1);
+
   private String key;
+
+  private ValueOrReference count;
 
   private FieldType type;
 
@@ -16,10 +20,16 @@ public class Field {
 
   private char[] alphabet;
 
-  public Field() { }
+  public Field() {
+    this.count = DEFAULT_COUNT;
+  }
 
   public String getKey() {
     return key;
+  }
+
+  public ValueOrReference getCount() {
+    return count;
   }
 
   public FieldType getType() {

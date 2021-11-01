@@ -7,7 +7,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 public class P1215Test extends PATestBase {
 
-  private static final String SIMPLE_DATA_SET = "/datastructures/p1215.csv";
+  private static final String SIMPLE_DATA_SET = "/datastructures/p1215/p1215.csv";
 
   public P1215Test() {
     super(new P1215());

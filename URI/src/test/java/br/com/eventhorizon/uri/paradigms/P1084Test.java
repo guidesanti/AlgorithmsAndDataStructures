@@ -10,7 +10,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 public class P1084Test extends PATestBase {
 
-  private static final String SIMPLE_DATA_SET = "/paradigms/p1084.csv";
+  private static final String SIMPLE_DATA_SET = "/paradigms/p1084/p1084.csv";
 
   public P1084Test() {
     super(new P1084(), PATestSettings.builder()

@@ -3,12 +3,20 @@ package br.com.eventhorizon.common.pa.v2;
 import br.com.eventhorizon.common.pa.PATestType;
 import br.com.eventhorizon.common.pa.TimingExtension;
 import br.com.eventhorizon.common.pa.v2.input.format.*;
-import br.com.eventhorizon.common.utils.Utils;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
+import org.junit.platform.commons.JUnitException;
+import org.junit.platform.commons.util.ExceptionUtils;
+import org.opentest4j.AssertionFailedError;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
+import java.time.Duration;
 import java.util.*;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.logging.Logger;
 
 import static java.time.Duration.ofMillis;
@@ -19,7 +27,7 @@ public abstract class PATestBase {
 
   private static final Logger LOGGER = Logger.getLogger(PATestBase.class.getName());
 
-  protected final PA pa;
+  private final PA pa;
 
   private final PATestSettings settings;
 
@@ -28,9 +36,7 @@ public abstract class PATestBase {
   private OutputStream outputStream;
 
   protected PATestBase(PA pa) {
-    this.pa = pa;
-    this.settings = PATestSettings.Builder.defaultSettings();
-    this.inputFormat = null;
+    this(pa, PATestSettings.Builder.defaultSettings());
   }
 
   protected PATestBase(PA pa, PATestSettings settings) {
@@ -38,6 +44,42 @@ public abstract class PATestBase {
     this.settings = settings;
     this.inputFormat = settings.getInputFormatFile() != null
         ? InputFormat.parse(settings.getInputFormatFile()) : null;
+    PATestProperties.setTimeLimitTestEnabled(settings.isTimeLimitTestEnabled());
+    PATestProperties.setStressTestEnabled(settings.isStressTestEnabled());
+    PATestProperties.setCompareTestEnabled(settings.isCompareTestEnabled());
+  }
+
+  @Test
+  public void voidMemoryLimitTest() throws IOException {
+    if (!settings.isMemoryLimitTestEnabled()) {
+      LOGGER.warning("Memory usage test status: " + Status.DISABLED);
+      return;
+    }
+    outputStream = new ByteArrayOutputStream();
+    System.setOut(new PrintStream(outputStream));
+    double memoryLimit = (double) settings.getMemoryLimit() / 1000000;
+    Runtime runtime = Runtime.getRuntime();
+    runtime.gc();
+    long initialUsedMemory = runtime.totalMemory() - runtime.freeMemory();
+    long startTime = System.currentTimeMillis();
+    int count = 0;
+    while (System.currentTimeMillis() - startTime < settings.getMemoryLimitTestDuration()) {
+      // Generate input
+      String input = generateInput(PATestType.MEMORY_USAGE_TEST, null);
+      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      // Run and verify time consumed
+      pa.finalSolution();
+      long usedMemory = runtime.totalMemory() - runtime.freeMemory();
+      String message = String.format("""
+        Memory limit test status: %s
+        Memory limit: %.2f MB
+        Memory used: %.2f MB
+        """, Status.FAILED, memoryLimit, (double) usedMemory / 1000000);
+      assertTrue(usedMemory - initialUsedMemory < settings.getMemoryLimit(), message);
+      LOGGER.info(String.format("Memory limit test %d memory: %.2f", count, (double) usedMemory / 1000000));
+      count++;
+    }
+    LOGGER.warning("Memory limit test status: " + Status.SUCCESS);
   }
 
   /**
@@ -48,44 +90,24 @@ public abstract class PATestBase {
   @Test
   public void timeLimitTest() {
     if (!settings.isTimeLimitTestEnabled()) {
-      LOGGER.warning("Time limit test skipped");
+      LOGGER.warning("Time limit test status: " + Status.DISABLED);
       return;
     }
-    LOGGER.info("Time limit test duration: " + settings.getTimeLimitTestDuration());
-    long maxTime = 0;
-    long minTime = Integer.MAX_VALUE;
-    List<Long> times = new ArrayList<>();
-    long totalStartTime = System.currentTimeMillis();
-    for (long i = 0; true; i++) {
+    long startTime = System.currentTimeMillis();
+    int count = 0;
+    while (System.currentTimeMillis() - startTime < settings.getTimeLimitTestDuration()) {
       // Generate input
       String input = generateInput(PATestType.TIME_LIMIT_TEST, null);
-      LOGGER.info("Time limit test " + i + " input:\n" + input);
-
       // Run and verify time consumed
       reset(input);
-      long startTime = System.currentTimeMillis();
-      assertTimeoutPreemptively(ofMillis(settings.getTimeLimit()), pa::finalSolution);
-      long elapsedTime = System.currentTimeMillis() - startTime;
-      times.add(elapsedTime);
-      if (elapsedTime > maxTime) {
-        maxTime = elapsedTime;
-      }
-      if (elapsedTime < minTime) {
-        minTime = elapsedTime;
-      }
-      LOGGER.info("Time limit test " + i + " status: PASSED");
-
-      // Check elapsed time
-      long totalElapsedTime = System.currentTimeMillis() - totalStartTime;
-      if (totalElapsedTime > settings.getTimeLimitTestDuration()) {
-        LOGGER.info("Time limit test total tests executed: " + i + 1);
-        LOGGER.info("Time limit test min time: " + minTime);
-        LOGGER.info("Time limit test max time: " + maxTime);
-        Optional<Long> sum = times.stream().reduce(Long::sum);
-        LOGGER.info("Time limit test average time: " + (double) sum.get() / (i + 1));
-        return;
-      }
+      assertTimeoutPreemptively(ofMillis(
+          settings.getTimeLimit()),
+          pa::finalSolution,
+          String.format("Time limit test %d status: %s", count, Status.FAILED));
+      LOGGER.info(String.format("Time limit test %d status: %s", count, Status.SUCCESS));
+      count++;
     }
+    LOGGER.warning("Time limit test status: " + Status.SUCCESS);
   }
 
   /**
@@ -95,37 +117,28 @@ public abstract class PATestBase {
   @Test
   public void stressTest() {
     if (!settings.isStressTestEnabled()) {
-      LOGGER.warning("Stress test skipped");
+      LOGGER.warning("Stress test status: " + Status.DISABLED);
       return;
     }
-    LOGGER.info("Stress test duration: " + settings.getStressTestDuration());
     long startTime = System.currentTimeMillis();
-    for (long i = 0; true; i++) {
-      // Generate input
-      StringBuilder expectedOutputTemp = new StringBuilder();
-      String input = generateInput(PATestType.STRESS_TEST, expectedOutputTemp);
-      String expectedOutput = expectedOutputTemp.toString();
-      LOGGER.info("Stress test " + i + " input:\n" + input);
-
+    int count = 0;
+    while (System.currentTimeMillis() - startTime < settings.getStressTestDuration()) {
+      // Generate input and expected output
+      StringBuilder expectedOutput = new StringBuilder();
+      String input = generateInput(PATestType.STRESS_TEST, expectedOutput);
       // Run and verify result
       reset(input);
       pa.finalSolution();
-      String actualOutput = getActualOutput();
-      if (verify(input, expectedOutput, actualOutput)) {
-        LOGGER.info("Stress test " + i + " status: PASSED");
-      } else {
-        LOGGER.info("Stress test " + i + " status: FAILED");
-        LOGGER.info("Stress test " + i + " expected output:\n" + expectedOutput);
-        LOGGER.info("Stress test " + i + " actual output:\n" + actualOutput);
-        fail("Stress test failed");
-      }
-
-      // Check elapsed time
-      long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > settings.getStressTestDuration()) {
-        return;
-      }
+      String message = String.format("""
+        Stress test %d status: %s
+        Stress test failed for input:
+        %s
+        """, count, Status.FAILED, input);
+      verify(input, expectedOutput.toString(), getActualOutput(), message);
+      LOGGER.info(String.format("Stress test %d status: %s", count, Status.SUCCESS));
+      count++;
     }
+    LOGGER.warning("Stress test status: " + Status.SUCCESS);
   }
 
   /**
@@ -135,15 +148,14 @@ public abstract class PATestBase {
   @Test
   public void compareTest() {
     if (!settings.isCompareTestEnabled()) {
-      LOGGER.warning("Compare test skipped");
+      LOGGER.warning("Compare test status: " + Status.DISABLED);
       return;
     }
-    LOGGER.info("Compare test duration: " + settings.getStressTestDuration());
     long startTime = System.currentTimeMillis();
-    for (long i = 0; true; i++) {
+    int count = 0;
+    while (System.currentTimeMillis() - startTime < settings.getCompareTestDuration()) {
+      // Generate input
       String input = generateInput(PATestType.COMPARE_TEST, null);
-      LOGGER.info("Compare test " + i + " input:\n" + input);
-
       // Run and compare results
       reset(input);
       pa.trivialSolution();
@@ -151,21 +163,16 @@ public abstract class PATestBase {
       reset(input);
       pa.finalSolution();
       String finalSolutionOutput = getActualOutput();
-      if (trivialSolutionOutput.equals(finalSolutionOutput)) {
-        LOGGER.info("Compare test " + i + " status: PASSED");
-      } else {
-        LOGGER.info("Compare test " + i + " status: FAILED");
-        LOGGER.info("Compare test " + i + " trivial solution output:\n" + trivialSolutionOutput);
-        LOGGER.info("Compare test " + i + " final solution output:\n" + finalSolutionOutput);
-        fail("Compare test failed");
-      }
-
-      // Check elapsed time
-      long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > settings.getStressTestDuration()) {
-        return;
-      }
+      String message = String.format("""
+        Compare test %d status: %s
+        Compare test failed for input:
+        %s
+        """, count, Status.FAILED, input);
+      verify(input, trivialSolutionOutput, finalSolutionOutput, message);
+      LOGGER.info(String.format("Compare test %d status: %s", count, Status.SUCCESS));
+      count++;
     }
+    LOGGER.warning("Compare test status: " + Status.SUCCESS);
   }
 
   protected void testSolution(PASolution solution, String input, String expectedOutput) {
@@ -180,13 +187,7 @@ public abstract class PATestBase {
       pa.finalSolution();
     }
     // Verify output
-    verifyEquals(input, expectedOutput, getActualOutput());
-//    String actualOutput = getActualOutput();
-//    if (!verify(input, expectedOutput, actualOutput)) {
-//      LOGGER.info("Expected output:\n" + expectedOutput);
-//      LOGGER.info("Actual output:\n" + actualOutput);
-//      fail("Test failed");
-//    }
+    verify(input, expectedOutput, getActualOutput(), null);
   }
 
   protected void testSolutionFromFile(PASolution solution, String inputFile, String expectedOutputFile) throws IOException {
@@ -211,82 +212,14 @@ public abstract class PATestBase {
     if (inputFormat == null) {
       throw new RuntimeException("Input format specification file was not set");
     }
-
-    StringBuilder input = new StringBuilder();
-    Map<String, Object> references = new HashMap<>();
-    int lineNumber = 0;
-    for (Line line : inputFormat.getLines()) {
-      int count = line.getCount().isReference()
-          ? (int) references.get(line.getCount().asReference().substring(1))
-          : line.getCount().asValue();
-
-      for (int i = 0; i < count; i++) {
-        for (int fieldNumber = 0; fieldNumber < line.getFields().size(); fieldNumber++) {
-          Field field = line.getFields().get(fieldNumber);
-          String key = field.getKey() != null ? field.getKey() : "$line[" + lineNumber + "].field[" + i + "]";
-          switch (field.getType()) {
-            case BOOLEAN -> {
-              boolean value = field.getValue() != null
-                  ? field.getValue()
-                  : Utils.getRandomInteger(0, 9) < 5;
-              references.put(key, value);
-              input.append(value);
-            }
-            case INTEGER -> {
-              int value = field.getValue() != null
-                  ? field.getValue()
-                  : Utils.getRandomInteger((int) field.getMin(), (int) field.getMax());
-              references.put(key, value);
-              input.append(value);
-            }
-            case LONG -> {
-              long value = field.getValue() != null
-                  ? field.getValue()
-                  : Utils.getRandomLong((long) field.getMin(), (long) field.getMax());
-              references.put(key, value);
-              input.append(value);
-            }
-            case DOUBLE -> {
-              double value = field.getValue() != null
-                  ? field.getValue()
-                  : Utils.getRandomDouble((double) field.getMin(), (double) field.getMax());
-              references.put(key, value);
-              input.append(value);
-            }
-            case STRING -> {
-              String value = field.getValue() != null
-                  ? field.getValue()
-                  : field.getLength().isReference()
-                    ? Utils.getRandomString(field.getAlphabet(), (int) references.get(field.getLength().asReference().substring(1)))
-                    : field.getLength().asValue() > 0
-                      ? Utils.getRandomString(field.getAlphabet(), field.getLength().asValue())
-                      : Utils.getRandomString(field.getAlphabet(), (int) field.getMin(), (int) field.getMax());
-              references.put(key, value);
-              input.append(value);
-            }
-          }
-          input.append(" ");
-        }
-        input.replace(input.length() - 1, input.length(), "\n");
-        lineNumber++;
-      }
-    }
-
-    return input.toString();
+    return InputGenerator.generate(inputFormat);
   }
 
-  protected void verifyEquals(String input, String expectedOutput, String actualOutput) {
+  protected void verify(String input, String expectedOutput, String actualOutput, String message) {
     assertNotNull(input, "Input is null");
     assertNotNull(expectedOutput, "Expected output is null");
     assertNotNull(actualOutput, "Actual output is null");
-    assertEquals(expectedOutput, actualOutput);
-  }
-
-  protected boolean verify(String input, String expectedOutput, String actualOutput) {
-    assertNotNull(input, "Input is null");
-    assertNotNull(expectedOutput, "Expected output is null");
-    assertNotNull(actualOutput, "Actual output is null");
-    return expectedOutput.equals(actualOutput);
+    assertEquals(expectedOutput, actualOutput, message != null ? message : "Actual output doesn't match the expected output");
   }
 
   private void reset(String input) {
@@ -294,5 +227,70 @@ public abstract class PATestBase {
     outputStream = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStream));
     pa.reset();
+  }
+
+  private static void assertTimeoutPreemptively(Duration timeout, Executable executable, String message) {
+    AtomicReference<Thread> threadReference = new AtomicReference<>();
+    ExecutorService executorService = Executors.newSingleThreadExecutor(new TimeoutThreadFactory());
+
+    try {
+      Future<Void> future = executorService.submit(() -> {
+        try {
+          threadReference.set(Thread.currentThread());
+          executable.execute();
+          return null;
+        } catch (Throwable var3) {
+          throw ExceptionUtils.throwAsUncheckedException(var3);
+        }
+      });
+      long timeoutInMillis = timeout.toMillis();
+
+      try {
+        future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
+      } catch (TimeoutException var17) {
+//        String message = AssertionUtils.buildPrefix(AssertionUtils.nullSafeGet(messageOrSupplier)) + "execution timed out after " + timeoutInMillis + " ms";
+        LOGGER.info(message);
+        Thread thread = threadReference.get();
+        if (thread != null) {
+          thread.stop();
+          ExecutionTimeoutException exception = new ExecutionTimeoutException("Execution timed out in thread " + thread.getName());
+          exception.setStackTrace(thread.getStackTrace());
+          throw new AssertionFailedError(message, exception);
+        }
+        throw new AssertionFailedError(message);
+      } catch (ExecutionException var18) {
+        throw ExceptionUtils.throwAsUncheckedException(var18.getCause());
+      } catch (Throwable var19) {
+        throw ExceptionUtils.throwAsUncheckedException(var19);
+      }
+    } finally {
+      executorService.shutdownNow();
+    }
+  }
+
+  private static class TimeoutThreadFactory implements ThreadFactory {
+    private static final AtomicInteger threadNumber = new AtomicInteger(1);
+
+    private TimeoutThreadFactory() {
+    }
+
+    public Thread newThread(Runnable r) {
+      return new Thread(r, "junit-timeout-thread-" + threadNumber.getAndIncrement());
+    }
+  }
+
+  private static class ExecutionTimeoutException extends JUnitException {
+    private static final long serialVersionUID = 1L;
+
+    ExecutionTimeoutException(String message) {
+      super(message);
+    }
+  }
+
+  private enum Status {
+    DISABLED,
+    ABORTED,
+    FAILED,
+    SUCCESS;
   }
 }
