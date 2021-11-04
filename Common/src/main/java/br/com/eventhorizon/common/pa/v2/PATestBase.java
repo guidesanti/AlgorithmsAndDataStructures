@@ -78,6 +78,7 @@ public abstract class PATestBase {
       assertTrue(usedMemory - initialUsedMemory < settings.getMemoryLimit(), message);
       LOGGER.info(String.format("Memory limit test %d memory: %.2f", count, (double) usedMemory / 1000000));
       count++;
+      runtime.gc();
     }
     LOGGER.warning("Memory limit test status: " + Status.SUCCESS);
   }

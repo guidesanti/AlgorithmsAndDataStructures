@@ -18,7 +18,7 @@ public class P2559Test extends PATestBase {
         .memoryLimitTestEnabled(false)
         .memoryLimitTestDuration(120000)
         .timeLimitTestEnabled(true)
-        .timeLimit(6000)
+        .timeLimit(30000)
         .compareTestEnabled(true)
         .build());
   }
@@ -54,7 +54,7 @@ public class P2559Test extends PATestBase {
         input.append(generateOperation(type, Utils.getRandomInteger(1, 3), numberCount)).append("\n");
       }
     } else {
-      numberCount = Utils.getRandomInteger(1, 1000);
+      numberCount = Utils.getRandomInteger(1, 100);
       operationCount = Utils.getRandomInteger(1, 1000);
       input.append(numberCount).append("\n");
       for (int i = 0; i < numberCount; i++) {

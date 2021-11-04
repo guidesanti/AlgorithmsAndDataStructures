@@ -160,7 +160,7 @@ public class SplayTreeTest {
   }
 
   @Test
-  public void testSplitOnTreeWithMoreThanOneNode() {
+  public void testSplitOnTreeWithMoreThanOneNode1() {
     SplayTree<Integer> tree = createTestTree();
     SplayTree<Integer> higherTree = tree.split((Node<Integer>) null);
     assertNotNull(higherTree);
@@ -205,6 +205,113 @@ public class SplayTreeTest {
       assertFalse(tree.contains((int)higherKeys.get(i)));
       assertTrue(higherTree.contains((int)higherKeys.get(i)));
     }
+  }
+
+  @Test
+  public void testSplitOnTreeWithMoreThanOneNode2() {
+    Node<Integer> node1 = new Node<>(1);
+    Node<Integer> node3 = new Node<>(3);
+    Node<Integer> node7 = new Node<>(7);
+    Node<Integer> node10 = new Node<>(10);
+    Node<Integer> node11 = new Node<>(11);
+    Node<Integer> node12 = new Node<>(12);
+    Node<Integer> node15 = new Node<>(15);
+    Node<Integer> node20 = new Node<>(20);
+    Node<Integer> node40 = new Node<>(40);
+
+    node1.parent = node3;
+    node7.parent = node3;
+    node11.parent = node12;
+    node15.parent = node12;
+    node3.parent = node10;
+    node12.parent = node10;
+    node10.parent = node20;
+    node40.parent = node20;
+
+    node20.left = node10;
+    node20.right = node40;
+    node10.left = node3;
+    node10.right = node12;
+    node3.left = node1;
+    node3.right = node7;
+    node12.left = node11;
+    node12.right = node15;
+
+    SplayTree<Integer> tree = new SplayTree<>();
+    tree.root = node20;
+    SplayTree<Integer> higherTree = tree.split(11);
+
+    assertTrue(tree.contains(1));
+    assertTrue(tree.contains(3));
+    assertTrue(tree.contains(7));
+    assertTrue(tree.contains(10));
+    assertTrue(tree.contains(11));
+    assertFalse(tree.contains(12));
+    assertFalse(tree.contains(15));
+    assertFalse(tree.contains(20));
+    assertFalse(tree.contains(40));
+
+    assertFalse(higherTree.contains(1));
+    assertFalse(higherTree.contains(3));
+    assertFalse(higherTree.contains(7));
+    assertFalse(higherTree.contains(10));
+    assertFalse(higherTree.contains(11));
+    assertTrue(higherTree.contains(12));
+    assertTrue(higherTree.contains(15));
+    assertTrue(higherTree.contains(20));
+    assertTrue(higherTree.contains(40));
+  }
+
+  @Test
+  public void testSplitOnTreeWithMoreThanOneNode3() {
+    Node<Integer> node1 = new Node<>(1);
+    Node<Integer> node3 = new Node<>(3);
+    Node<Integer> node7 = new Node<>(7);
+    Node<Integer> node10 = new Node<>(10);
+    Node<Integer> node12 = new Node<>(12);
+    Node<Integer> node15 = new Node<>(15);
+    Node<Integer> node20 = new Node<>(20);
+    Node<Integer> node40 = new Node<>(40);
+
+    node1.parent = node3;
+    node7.parent = node3;
+    node15.parent = node12;
+    node3.parent = node10;
+    node12.parent = node10;
+    node10.parent = node20;
+    node40.parent = node20;
+
+    node20.left = node10;
+    node20.right = node40;
+    node10.left = node3;
+    node10.right = node12;
+    node3.left = node1;
+    node3.right = node7;
+    node12.right = node15;
+
+    SplayTree<Integer> tree = new SplayTree<>();
+    tree.root = node20;
+    SplayTree<Integer> higherTree = tree.split(11);
+
+    assertTrue(tree.contains(1));
+    assertTrue(tree.contains(3));
+    assertTrue(tree.contains(7));
+    assertTrue(tree.contains(10));
+    assertFalse(tree.contains(11));
+    assertFalse(tree.contains(12));
+    assertFalse(tree.contains(15));
+    assertFalse(tree.contains(20));
+    assertFalse(tree.contains(40));
+
+    assertFalse(higherTree.contains(1));
+    assertFalse(higherTree.contains(3));
+    assertFalse(higherTree.contains(7));
+    assertFalse(higherTree.contains(10));
+    assertFalse(higherTree.contains(11));
+    assertTrue(higherTree.contains(12));
+    assertTrue(higherTree.contains(15));
+    assertTrue(higherTree.contains(20));
+    assertTrue(higherTree.contains(40));
   }
 
   @Test

@@ -4,9 +4,11 @@ import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.*;
-import java.util.stream.Collectors;
+import java.util.logging.Logger;
 
 public class P2559 implements PA {
+
+  private static final Logger LOGGER = Logger.getLogger(P2559.class.getName());
 
   private FastScanner scanner;
 
@@ -87,10 +89,13 @@ public class P2559 implements PA {
     reset();
     resetTestCase();
     SegmentTree tree = readNumbers();
+    long[] time = new long[3];
+    long[] count = new long[3];
     while (tree != null) {
       operationCount = scanner.nextInt();
       for (int i = 0; i < operationCount; i++) {
         int opCode = scanner.nextInt();
+        long ini = System.currentTimeMillis();
         if (opCode == 1) {
           tree.replace(scanner.nextInt(), scanner.nextInt());
         } else if (opCode == 2) {
@@ -98,6 +103,11 @@ public class P2559 implements PA {
         } else {
           System.out.println(tree.sum(scanner.nextInt(), scanner.nextInt()));
         }
+        time[opCode - 1] += (System.currentTimeMillis() - ini);
+        count[opCode - 1] += 1;
+        LOGGER.info("Op 1: " + ((double) time[0] / count[0]) + " ms");
+        LOGGER.info("Op 2: " + ((double) time[1] / count[1]) + " ms");
+        LOGGER.info("Op 3: " + ((double) time[2] / count[2]) + " ms");
       }
       tree.clear();
       tree = readNumbers();
@@ -126,27 +136,116 @@ public class P2559 implements PA {
     operations = new ArrayList<>();
   }
 
-  private static class Node {
+  private interface Node {
+
+    int from();
+
+    int to();
+
+    int value();
+
+    void value(int value);
+
+    boolean update();
+
+    void update(boolean update);
+  }
+
+  private static class InternalNode implements Node {
 
     final int from;
 
     final int to;
 
-    // Values is a sum if intermediate node
-    // Or the number itself if a leaf
-    int value;
+    int sum;
     
     boolean update;
 
-    Node(int from, int to, int value) {
+    InternalNode(int from, int to, int sum) {
       this.from = from;
       this.to = to;
-      this.value = value;
+      this.sum = sum;
+    }
+
+    @Override
+    public int from() {
+      return from;
+    }
+
+    @Override
+    public int to() {
+      return to;
+    }
+
+    @Override
+    public int value() {
+      return sum;
+    }
+
+    @Override
+    public void value(int value) {
+      this.sum = value;
+    }
+
+    @Override
+    public boolean update() {
+      return update;
+    }
+
+    @Override
+    public void update(boolean update) {
+      this.update = update;
     }
 
     @Override
     public String toString() {
-      return "(" + from + "-" + to + ") -> " + value;
+      return "(" + from + "-" + to + ") -> " + sum;
+    }
+  }
+
+  private static class LeafNode implements Node {
+
+    final int number;
+
+    int value;
+
+    public LeafNode(int number, int value) {
+      this.number = number;
+      this.value = value;
+    }
+
+    @Override
+    public int from() {
+      return number;
+    }
+
+    @Override
+    public int to() {
+      return number;
+    }
+
+    @Override
+    public int value() {
+      return value;
+    }
+
+    @Override
+    public void value(int value) {
+      this.value = value;
+    }
+
+    @Override
+    public boolean update() {
+      return false;
+    }
+
+    @Override
+    public void update(boolean update) {
+    }
+
+    @Override
+    public String toString() {
+      return number + " -> " + value;
     }
   }
 
@@ -154,11 +253,7 @@ public class P2559 implements PA {
 
     final Node[] nodes;
 
-//    final SortedSet<Integer> sevens;
-
     final AVLTree<Integer> sevens;
-
-//    final SortedSet<Integer> thirteens;
 
     final AVLTree<Integer> thirteens;
 
@@ -182,7 +277,7 @@ public class P2559 implements PA {
 
     void add(int value) {
       int index = firstLeaf + leafCount;
-      nodes[index] = new Node(leafCount + 1, leafCount + 1, value);
+      nodes[index] = new LeafNode(leafCount + 1, value);
       if (value == 7) {
         sevens.add(index);
       } else if (value == 13) {
@@ -195,14 +290,14 @@ public class P2559 implements PA {
       // Fill remaining leaves
       int index = firstLeaf + leafCount;
       while (index < nodes.length) {
-        nodes[index++] = new Node(leafCount + 1, leafCount + 1, 0);
+        nodes[index++] = new LeafNode(leafCount + 1, 0);
         leafCount++;
       }
       // Fill internal nodes
       for (int i = firstLeaf - 1; i >= 0; i--) {
         Node left = nodes[leftChild(i)];
         Node right = nodes[rightChild(i)];
-        nodes[i] = new Node(left.from, right.to, left.value + right.value);
+        nodes[i] = new InternalNode(left.from(), right.to(), left.value() + right.value());
       }
     }
 
@@ -216,12 +311,12 @@ public class P2559 implements PA {
 
     void replace(int number, int value) {
       int nodeIndex = (nodes.length / 2) + number - 1;
-      if (value == nodes[nodeIndex].value) {
+      if (value == nodes[nodeIndex].value()) {
         return;
       }
-      if (nodes[nodeIndex].value == 7) {
+      if (nodes[nodeIndex].value() == 7) {
         sevens.remove(nodeIndex);
-      } else if (nodes[nodeIndex].value == 13) {
+      } else if (nodes[nodeIndex].value() == 13) {
         thirteens.remove(nodeIndex);
       }
       if (value == 7) {
@@ -229,10 +324,10 @@ public class P2559 implements PA {
       } else if (value == 13) {
         thirteens.add(nodeIndex);
       }
-      nodes[nodeIndex].value = value;
+      nodes[nodeIndex].value(value);
       int parent = parent(nodeIndex);
-      if (parent >= 0 && !nodes[parent].update) {
-        nodes[parent].update = true;
+      if (parent >= 0 && !nodes[parent].update()) {
+        nodes[parent].update(true);
         nodesToUpdate.add(parent);
       }
     }
@@ -241,38 +336,14 @@ public class P2559 implements PA {
       if (oldValue == newValue) {
         return;
       }
-//      int finalFrom = from - 1;
-//      int finalTo = to - 1;
-//      List<Integer> indexes;
       TreeTraverser<Integer> traverser;
       if (oldValue == 7) {
-//        indexes = sevens.stream()
-//            .filter(integer -> integer - firstLeaf >= finalFrom && integer - firstLeaf <= finalTo)
-//            .collect(Collectors.toList());
-//        indexes.forEach(sevens::remove);
         traverser = new TreeTraverser<>(sevens.findGreaterThanOrEqual(firstLeaf + from - 1));
       } else if (oldValue == 13) {
-//        indexes = thirteens.stream()
-//            .filter(integer -> integer - firstLeaf >= finalFrom && integer - firstLeaf <= finalTo)
-//            .collect(Collectors.toList());
-//        indexes.forEach(thirteens::remove);
         traverser = new TreeTraverser<>(thirteens.findGreaterThanOrEqual(firstLeaf + from - 1));
       } else {
         return;
       }
-//      for (int index : indexes) {
-//        nodes[index].value = newValue;
-//        if (newValue == 7) {
-//          sevens.add(index);
-//        } else if (newValue == 13) {
-//          thirteens.add(index);
-//        }
-//        int parent = parent(index);
-//        if (parent >= 0 && !nodes[parent].update) {
-//          nodes[parent].update = true;
-//          nodesToUpdate.add(parent);
-//        }
-//      }
       List<Integer> indexesToAdd = new ArrayList<>();
       List<AvlNode<Integer>> nodesToRemove = new ArrayList<>();
       while (traverser.hasNext()) {
@@ -282,13 +353,13 @@ public class P2559 implements PA {
           break;
         }
         nodesToRemove.add(node);
-        nodes[index].value = newValue;
+        nodes[index].value(newValue);
         if (newValue == 7 || newValue == 13) {
           indexesToAdd.add(index);
         }
         int parent = parent(index);
-        if (parent >= 0 && !nodes[parent].update) {
-          nodes[parent].update = true;
+        if (parent >= 0 && !nodes[parent].update()) {
+          nodes[parent].update(true);
           nodesToUpdate.add(parent);
         }
       }
@@ -311,11 +382,11 @@ public class P2559 implements PA {
     void update() {
       while (!nodesToUpdate.isEmpty()) {
         int nodeIndex = nodesToUpdate.remove();
-        nodes[nodeIndex].value = nodes[leftChild(nodeIndex)].value + nodes[rightChild(nodeIndex)].value;
-        nodes[nodeIndex].update = false;
+        nodes[nodeIndex].value(nodes[leftChild(nodeIndex)].value() + nodes[rightChild(nodeIndex)].value());
+        nodes[nodeIndex].update(false);
         int parent = parent(nodeIndex);
-        if (parent >= 0 && !nodes[parent].update) {
-          nodes[parent].update = true;
+        if (parent >= 0 && !nodes[parent].update()) {
+          nodes[parent].update(true);
           nodesToUpdate.add(parent);
         }
       }
@@ -334,24 +405,24 @@ public class P2559 implements PA {
       int right = (nodes.length / 2) + to - 1;
       Node leftNode = nodes[left];
       Node rightNode = nodes[right];
-      int leftSum = leftNode.value;
-      int rightSum = rightNode.value;
+      int leftSum = leftNode.value();
+      int rightSum = rightNode.value();
       while (true) {
         boolean stop = true;
         int leftParent = parent(left);
         int rightParent = parent(right);
         Node leftParentNode = leftParent >= 0 ? nodes[leftParent] : null;
         Node rightParentNode = rightParent >= 0 ? nodes[parent(right)] : null;
-        if (leftParentNode != null && leftParentNode.to < rightNode.from) {
+        if (leftParentNode != null && leftParentNode.to() < rightNode.from()) {
           if (left == leftChild(leftParent)) {
-            leftSum += nodes[rightChild(leftParent)].value;
+            leftSum += nodes[rightChild(leftParent)].value();
           }
           left = parent(left);
           stop = false;
         }
-        if (rightParentNode != null && rightParentNode.from > leftNode.to) {
+        if (rightParentNode != null && rightParentNode.from() > leftNode.to()) {
           if (right == rightChild(rightParent)) {
-            rightSum += nodes[leftChild(rightParent)].value;;
+            rightSum += nodes[leftChild(rightParent)].value();
           }
           right = parent(right);
           stop = false;
@@ -603,7 +674,7 @@ public class P2559 implements PA {
           return node;
         }
         if (((Comparable<? super T>)key).compareTo(node.key) < 0) {
-          if (node.left != null) {
+          if (node.left != null && ((Comparable<? super T>)key).compareTo(node.left.key) <= 0) {
             node = node.left;
           } else {
             return node;
@@ -612,7 +683,7 @@ public class P2559 implements PA {
           if (node.right != null) {
             node = node.right;
           } else {
-            return node;
+            return null;
           }
         }
       }
@@ -789,7 +860,7 @@ public class P2559 implements PA {
       if (startNode == null) {
         return;
       }
-      this.lastVisited = null;
+      this.lastVisited = startNode;
       Stack<AvlNode<T>> tempStack = new Stack<>();
       tempStack.push(startNode);
       AvlNode<T> child = startNode;
