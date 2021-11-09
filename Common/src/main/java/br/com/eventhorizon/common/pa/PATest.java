@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @deprecated
- * This class was replaced by PAv2TestBase.
- * <p>Use {@link PATestBase} instead.</p>
+ * This class was replaced by br.com.eventhorizon.common.pa.v2.PATestBase.
+ * <p>Use {@link br.com.eventhorizon.common.pa.v2.PATestBase} instead.</p>
  */
 @Deprecated
 @ExtendWith(TimingExtension.class)

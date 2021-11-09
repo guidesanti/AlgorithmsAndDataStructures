@@ -16,9 +16,8 @@ public class P2559Test extends PATestBase {
   public P2559Test() {
     super(new P2559(), PATestSettings.builder()
         .memoryLimitTestEnabled(false)
-        .memoryLimitTestDuration(120000)
         .timeLimitTestEnabled(true)
-        .timeLimit(30000)
+        .timeLimit(6000)
         .compareTestEnabled(true)
         .build());
   }
@@ -43,40 +42,28 @@ public class P2559Test extends PATestBase {
     if (type == PATestType.MEMORY_USAGE_TEST || type == PATestType.TIME_LIMIT_TEST) {
       numberCount = 200000;
       operationCount = 200000;
-      input.append(numberCount).append("\n");
-      for (int i = 0; i < numberCount; i++) {
-        int number = BooleanUtils.toInteger(Utils.getRandomBoolean(), 7, 13);
-        input.append(number).append(" ");
-      }
-      input.replace(input.length() - 1, input.length(), "\n");
-      input.append(operationCount).append("\n");
-      for (int i = 0; i < operationCount; i++) {
-        input.append(generateOperation(type, Utils.getRandomInteger(1, 3), numberCount)).append("\n");
-      }
     } else {
       numberCount = Utils.getRandomInteger(1, 100);
       operationCount = Utils.getRandomInteger(1, 1000);
-      input.append(numberCount).append("\n");
-      for (int i = 0; i < numberCount; i++) {
-        int number = Utils.getRandomInteger(0, 1000);
-        input.append(number).append(" ");
-      }
-      input.replace(input.length() - 1, input.length(), "\n");
-      input.append(operationCount).append("\n");
-      for (int i = 0; i < operationCount; i++) {
-        input.append(generateOperation(type, Utils.getRandomInteger(1, 3), numberCount)).append("\n");
-      }
+    }
+    input.append(numberCount).append("\n");
+    for (int i = 0; i < numberCount; i++) {
+      int number = Utils.getRandomInteger(0, 1000);
+      input.append(number).append(" ");
+    }
+    input.replace(input.length() - 1, input.length(), "\n");
+    input.append(operationCount).append("\n");
+    for (int i = 0; i < operationCount; i++) {
+      input.append(generateOperation(Utils.getRandomInteger(1, 3), numberCount)).append("\n");
     }
     return input.toString();
   }
 
-  private String generateOperation(PATestType type, int opCode, int numberCount) {
+  private String generateOperation(int opCode, int numberCount) {
     StringBuilder operation = new StringBuilder();
     if (opCode == 1) {
       int i = Utils.getRandomInteger(1, numberCount);
-      int v = type == PATestType.TIME_LIMIT_TEST
-          ? BooleanUtils.toInteger(Utils.getRandomBoolean(), 7, 13)
-          : Utils.getRandomInteger(0, 1000);
+      int v = Utils.getRandomInteger(0, 1000);
       operation.append("1 ")
           .append(i).append(" ")
           .append(v);
@@ -84,9 +71,7 @@ public class P2559Test extends PATestBase {
       int i = Utils.getRandomInteger(1, numberCount);
       int j = Utils.getRandomInteger(i, numberCount);
       int z = BooleanUtils.toInteger(Utils.getRandomBoolean(), 7, 13);
-      int v = type == PATestType.TIME_LIMIT_TEST
-          ? BooleanUtils.toInteger(Utils.getRandomBoolean(), 7, 13)
-          : Utils.getRandomInteger(0, 1000);
+      int v = Utils.getRandomInteger(0, 1000);
       operation.append("2 ")
           .append(i).append(" ")
           .append(j).append(" ")

@@ -11,7 +11,6 @@ import org.junit.platform.commons.util.ExceptionUtils;
 import org.opentest4j.AssertionFailedError;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
 import java.time.Duration;
 import java.util.*;
 import java.util.concurrent.*;
@@ -44,9 +43,6 @@ public abstract class PATestBase {
     this.settings = settings;
     this.inputFormat = settings.getInputFormatFile() != null
         ? InputFormat.parse(settings.getInputFormatFile()) : null;
-    PATestProperties.setTimeLimitTestEnabled(settings.isTimeLimitTestEnabled());
-    PATestProperties.setStressTestEnabled(settings.isStressTestEnabled());
-    PATestProperties.setCompareTestEnabled(settings.isCompareTestEnabled());
   }
 
   @Test

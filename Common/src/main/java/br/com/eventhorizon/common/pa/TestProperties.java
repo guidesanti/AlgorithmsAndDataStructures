@@ -1,5 +1,11 @@
 package br.com.eventhorizon.common.pa;
 
+/**
+ * @deprecated
+ * This class was replaced by br.com.eventhorizon.common.pa.v2.PATestSettings.
+ * <p>Use {@link br.com.eventhorizon.common.pa.v2.PATestSettings} instead.</p>
+ */
+@Deprecated
 public class TestProperties {
 
   public static final String TIME_LIMIT_TEST_DURATION_PROPERTY_KEY = "timeLimitTestDuration";
