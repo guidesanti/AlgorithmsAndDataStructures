@@ -2,7 +2,7 @@ package br.com.eventhorizon.common.pa.v2;
 
 public final class Defaults {
 
-  public static final boolean MEMORY_USAGE_TEST_ENABLED = true;
+  public static final boolean MEMORY_USAGE_TEST_ENABLED = false;
 
   public static final int MEMORY_LIMIT_TEST_DURATION = 15000;
 
