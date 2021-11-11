@@ -74,6 +74,8 @@ public class P1500 implements PA {
 
     final int treeSize;
 
+    final int firstLeaf;
+
     final long[] tree;
 
     long[] lazy;
@@ -81,6 +83,7 @@ public class P1500 implements PA {
     SegmentTree(int numberCount) {
       this.numberCount = numberCount;
       this.treeSize = computeMaxTreeSize(numberCount);
+      this.firstLeaf = treeSize / 2;
       this.tree = new long[this.treeSize];
       this.lazy = new long[this.treeSize];
     }
@@ -98,49 +101,35 @@ public class P1500 implements PA {
       nodes.push(new Node(0, 0, numberCount - 1));
       while (!nodes.isEmpty()) {
         Node node = nodes.pop();
-        if (node.to < from || node.from > to) {
-          continue;
-        }
 
         // Handle current node pending update
         long pendingUpdate = lazy[node.index];
         if (pendingUpdate > 0) {
           tree[node.index] += (node.to - node.from + 1) * pendingUpdate;
           lazy[node.index] = 0;
-          int left = left(node.index);
-          if (left < treeSize) {
-            lazy[left] += pendingUpdate;
+          if (node.index < firstLeaf) {
+            lazy[left(node.index)] += pendingUpdate;
+            lazy[right(node.index)] += pendingUpdate;
           }
-          int right = right(node.index);
-          if (right < treeSize) {
-            lazy[right] += pendingUpdate;
-          }
+        }
+
+        // Ignore node if out of range
+        if (node.to < from || node.from > to) {
+          continue;
         }
 
         if (node.from >= from && node.to <= to) {
           // Handle current node update if it lies completely in update range
-          int n = (node.to - node.from + 1);
-          tree[node.index] += ((long) n * value);
-          int left = left(node.index);
-          if (left < treeSize) {
-            lazy[left] += value;
-          }
-          int right = right(node.index);
-          if (right < treeSize) {
-            lazy[right] += value;
+          tree[node.index] += ((long) (node.to - node.from + 1) * value);
+          if (node.index < firstLeaf) {
+            lazy[left(node.index)] += value;
+            lazy[right(node.index)] += value;
           }
         } else {
           // Handle current node update if it overlaps with update range
-          int n = Math.min(node.to, to) - Math.max(node.from, from) + 1;
-          tree[node.index] += (long) n * value;
-          Node right = right(node);
-          if (right != null) {
-            nodes.push(right);
-          }
-          Node left = left(node);
-          if (left != null) {
-            nodes.push(left);
-          }
+          tree[node.index] += (long) (Math.min(node.to, to) - Math.max(node.from, from) + 1) * value;
+          nodes.push(right(node));
+          nodes.push(left(node));
         }
       }
     }
@@ -152,10 +141,6 @@ public class P1500 implements PA {
       while (!nodes.isEmpty()) {
         Node node = nodes.pop();
 
-        if (node.to < from || node.from > to) {
-          continue;
-        }
-
         // Handle current node pending update
         long pendingUpdate = lazy[node.index];
         if (pendingUpdate > 0) {
@@ -163,27 +148,22 @@ public class P1500 implements PA {
           lazy[node.index] = 0;
 
           // Postpone children updates
-          int left = left(node.index);
-          if (left < treeSize) {
-            lazy[left] += pendingUpdate;
+          if (node.index < firstLeaf) {
+            lazy[left(node.index)] += pendingUpdate;
+            lazy[right(node.index)] += pendingUpdate;
           }
-          int right = right(node.index);
-          if (right < treeSize) {
-            lazy[right] += pendingUpdate;
-          }
+        }
+
+        // Ignore node if out of range
+        if (node.to < from || node.from > to) {
+          continue;
         }
 
         if (node.from >= from && node.to <= to) {
           sum += tree[node.index];
         } else if (node.to >= from || node.from <= to) {
-          Node right = right(node);
-          if (right != null) {
-            nodes.push(right);
-          }
-          Node left = left(node);
-          if (left != null) {
-            nodes.push(left);
-          }
+          nodes.push(right(node));
+          nodes.push(left(node));
         }
       }
       return sum;
