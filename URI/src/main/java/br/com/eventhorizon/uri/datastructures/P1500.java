@@ -6,6 +6,11 @@ import br.com.eventhorizon.common.pa.v2.PA;
 import java.util.Stack;
 
 /**
+ * Problem: 1500
+ * Name: Horrible Queries
+ * Link: https://www.beecrowd.com.br/judge/en/problems/view/1500
+ *
+ * Solution:
  * To solve this problem it was used a segment tree with lazy propagation.
  * For details about this topic see:
  * - https://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range
