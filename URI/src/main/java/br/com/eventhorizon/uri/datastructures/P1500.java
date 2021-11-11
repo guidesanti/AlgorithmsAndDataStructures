@@ -5,6 +5,12 @@ import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.Stack;
 
+/**
+ * To solve this problem it was used a segment tree with lazy propagation.
+ * For details about this topic see:
+ * - https://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range
+ * - https://www.geeksforgeeks.org/lazy-propagation-in-segment-tree
+ */
 public class P1500 implements PA {
 
   private FastScanner scanner;
