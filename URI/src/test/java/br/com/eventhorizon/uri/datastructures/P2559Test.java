@@ -16,7 +16,7 @@ public class P2559Test extends PATestBase {
   public P2559Test() {
     super(new P2559(), PATestSettings.builder()
         .memoryLimitTestEnabled(false)
-        .timeLimitTestEnabled(true)
+        .timeLimitTestEnabled(false)
         .timeLimit(6000)
         .compareTestEnabled(true)
         .build());
