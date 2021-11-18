@@ -151,23 +151,30 @@ public abstract class PATestBase {
     long startTime = System.currentTimeMillis();
     int count = 0;
     while (System.currentTimeMillis() - startTime < settings.getCompareTestDuration()) {
-      // Generate input
-      String input = generateInput(PATestType.COMPARE_TEST, null);
-      // Run and compare results
-      reset(input);
-      pa.trivialSolution();
-      String trivialSolutionOutput = getActualOutput();
-      reset(input);
-      pa.finalSolution();
-      String finalSolutionOutput = getActualOutput();
-      String message = String.format("""
+      String message = null;
+      try {
+        // Generate input
+        String input = generateInput(PATestType.COMPARE_TEST, null);
+        message = String.format("""
         Compare test %d status: %s
         Compare test failed for input:
         %s
         """, count, Status.FAILED, input);
-      verify(input, trivialSolutionOutput, finalSolutionOutput, message);
-      LOGGER.info(String.format("Compare test %d status: %s", count, Status.SUCCESS));
-      count++;
+        // Run and compare results
+        reset(input);
+        pa.trivialSolution();
+        String trivialSolutionOutput = getActualOutput();
+        reset(input);
+        pa.finalSolution();
+        String finalSolutionOutput = getActualOutput();
+        verify(input, trivialSolutionOutput, finalSolutionOutput, message);
+        LOGGER.info(String.format("Compare test %d status: %s", count, Status.SUCCESS));
+        count++;
+      } catch (Exception ex) {
+        LOGGER.info(message);
+        ex.printStackTrace();
+        fail(message);
+      }
     }
     LOGGER.warning("Compare test status: " + Status.SUCCESS);
   }

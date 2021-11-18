@@ -16,7 +16,7 @@ public class P2559Test extends PATestBase {
   public P2559Test() {
     super(new P2559(), PATestSettings.builder()
         .memoryLimitTestEnabled(false)
-        .timeLimitTestEnabled(false)
+        .timeLimitTestEnabled(true)
         .timeLimit(6000)
         .compareTestEnabled(true)
         .build());
@@ -43,7 +43,7 @@ public class P2559Test extends PATestBase {
       numberCount = 200000;
       operationCount = 200000;
     } else {
-      numberCount = Utils.getRandomInteger(1, 100);
+      numberCount = Utils.getRandomInteger(1, 1000);
       operationCount = Utils.getRandomInteger(1, 1000);
     }
     input.append(numberCount).append("\n");

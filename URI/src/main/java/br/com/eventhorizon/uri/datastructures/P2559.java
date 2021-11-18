@@ -102,15 +102,12 @@ public class P2559 implements PA {
   @Override
   public void finalSolution() {
     reset();
-    SegmentTree segmentTree = new SegmentTree(MAX_NUMBER_COUNT);
     String str = scanner.next();
     while (str != null) {
       numberCount = Integer.parseInt(str);
 
-      // Reset segment tree
-      segmentTree.reset(numberCount);
-
       // Read numbers and add them to segment tree
+      SegmentTree segmentTree = new SegmentTree(numberCount);
       for (int i = 0; i < numberCount; i++) {
         segmentTree.add(scanner.nextInt());
       }
@@ -124,7 +121,7 @@ public class P2559 implements PA {
         } else if (op == 2) {
           segmentTree.replace(scanner.nextInt() - 1, scanner.nextInt() - 1, scanner.nextInt(), scanner.nextInt());
         } else if (op == 3) {
-          segmentTree.sum(scanner.nextInt() - 1, scanner.nextInt() - 1);
+          System.out.println(segmentTree.sum(scanner.nextInt() - 1, scanner.nextInt() - 1));
         } else {
           throw new RuntimeException("Invalid operation " + op);
         }
@@ -136,45 +133,43 @@ public class P2559 implements PA {
 
   private static class SegmentTree {
 
-    final int maxNumberCount;
+    final int numberCount;
 
     final int maxTreeSize;
 
-    final int[] tree;
+    final TreeNode[] tree;
 
-    final int[] lazy;
+    final int[] index;
 
-    final Stack<Node> stack = new Stack<>();
-
-    int numberCount;
+    final Stack<Node> stack;
 
     int count;
 
-    int firstLeaf;
-
-    SegmentTree(int maxNumberCount) {
-      this.maxNumberCount = maxNumberCount;
-      this.maxTreeSize = computeMaxTreeSize(maxNumberCount);
-      this.firstLeaf = maxTreeSize / 2;
-      this.tree = new int[this.maxTreeSize];
-      this.lazy = new int[this.maxTreeSize];
-    }
-
-    void reset(int numberCount) {
+    SegmentTree(int numberCount) {
       this.numberCount = numberCount;
-      this.count = 0;
-      // TODO: set first leaf
-      stack.clear();
+      this.maxTreeSize = computeMaxTreeSize(numberCount);
+      this.tree = new TreeNode[this.maxTreeSize];
+      for (int i = 0; i < this.maxTreeSize; i++) {
+        tree[i] = new TreeNode();
+      }
+      this.index = new int[this.numberCount];
+      stack = new Stack<>();
       stack.push(new Node(0, 0, numberCount - 1));
-      while (true) {
-        Node node = stack.peek();
-        node.marked = true;
-        Node left = left(node);
-        Node right = right(node);
-        stack.push(right);
-        stack.push(left);
-        if (left.isLeaf()) {
-          break;
+      if (numberCount > 1) {
+        while (true) {
+          Node node = stack.peek();
+          node.marked = true;
+          Node left = left(node);
+          Node right = right(node);
+          if (right.to < numberCount) {
+            stack.push(right);
+          }
+          if (right.to < numberCount) {
+            stack.push(left);
+          }
+          if (right.isLeaf() || left.isLeaf()) {
+            break;
+          }
         }
       }
     }
@@ -191,7 +186,9 @@ public class P2559 implements PA {
       Node node = stack.pop();
       while (!node.isLeaf()) {
         if (node.marked) {
-          tree[node.index] = tree[left(node.index)] + tree[right(node.index)];
+          tree[node.index].value = tree[left(node.index)].value + tree[right(node.index)].value;
+          tree[node.index].sevenCount = tree[left(node.index)].sevenCount + tree[right(node.index)].sevenCount;
+          tree[node.index].thirteenCount = tree[left(node.index)].thirteenCount + tree[right(node.index)].thirteenCount;
         } else {
           stack.push(node);
           while (true) {
@@ -199,66 +196,96 @@ public class P2559 implements PA {
             node.marked = true;
             Node left = left(node);
             Node right = right(node);
-            stack.push(right);
-            stack.push(left);
-            if (left.isLeaf()) {
+            if (right.to < numberCount) {
+              stack.push(right);
+            }
+            if (right.to < numberCount) {
+              stack.push(left);
+            }
+            if (right.isLeaf() || left.isLeaf()) {
               break;
             }
           }
         }
         node = stack.pop();
       }
-      tree[node.index] = value;
+      tree[node.index].value = value;
+      tree[node.index].sevenCount = value == 7 ? 1 : 0;
+      tree[node.index].thirteenCount = value == 13 ? 1 : 0;
+      index[count] = node.index;
       count++;
       if (count == numberCount) {
         // Finish building the tree
         while (!stack.isEmpty()) {
           node = stack.pop();
-          tree[node.index] = tree[left(node.index)] + tree[right(node.index)];
+          tree[node.index].value = tree[left(node.index)].value + tree[right(node.index)].value;
+          tree[node.index].sevenCount = tree[left(node.index)].sevenCount + tree[right(node.index)].sevenCount;
+          tree[node.index].thirteenCount = tree[left(node.index)].thirteenCount + tree[right(node.index)].thirteenCount;
         }
       }
     }
 
     void replace(int number, int value) {
-      // TODO
+      Node node = new Node(0, 0, numberCount - 1);
+      while (!node.isLeaf()) {
+        handlePendingOperation(node);
+        if (number <= middle(node.from, node.to)) {
+          node = left(node);
+        } else {
+          node = right(node);
+        }
+      }
+      handlePendingOperation(node);
+
+      int nodeIndex = index[number];
+      int oldValue = tree[nodeIndex].value;
+      if (oldValue == value) {
+        return;
+      }
+
+      int diff = value - oldValue;
+      int sevenDiff = oldValue == 7 ? -1 : value == 7 ? 1 : 0;
+      int thirteenDiff = oldValue == 13 ? -1 : value == 13 ? 1 : 0;
+      while (nodeIndex >= 0) {
+        tree[nodeIndex].value += diff;
+        tree[nodeIndex].sevenCount += sevenDiff;
+        tree[nodeIndex].thirteenCount += thirteenDiff;
+        nodeIndex = parent(nodeIndex);
+      }
     }
 
     void replace(int from, int to, int oldValue, int newValue) {
-      // TODO
-    }
-
-    void update(int from, int to, int value) {
+      if (oldValue == newValue) {
+        return;
+      }
       Stack<Node> nodes = new Stack<>();
-      nodes.push(new Node(0, 0, maxNumberCount - 1));
+      nodes.push(new Node(0, 0, numberCount - 1));
       while (!nodes.isEmpty()) {
         Node node = nodes.pop();
+        TreeNode treeNode = tree[node.index];
 
         // Handle current node pending update
-        long pendingUpdate = lazy[node.index];
-        if (pendingUpdate > 0) {
-          tree[node.index] += (node.to - node.from + 1) * pendingUpdate;
-          lazy[node.index] = 0;
-          if (node.index < firstLeaf) {
-            lazy[left(node.index)] += pendingUpdate;
-            lazy[right(node.index)] += pendingUpdate;
-          }
-        }
+        handlePendingOperation(node);
 
         // Ignore node if out of range
-        if (node.to < from || node.from > to) {
+        int oldValueCount = oldValue == 7 ? treeNode.sevenCount : treeNode.thirteenCount;
+        if (node.to < from || node.from > to || oldValueCount == 0) {
           continue;
         }
 
         if (node.from >= from && node.to <= to) {
           // Handle current node update if it lies completely in update range
-          tree[node.index] += ((long) (node.to - node.from + 1) * value);
-          if (node.index < firstLeaf) {
-            lazy[left(node.index)] += value;
-            lazy[right(node.index)] += value;
-          }
-        } else {
+          handleOperation(node, oldValue, newValue);
+        } else if (node.marked) {
           // Handle current node update if it overlaps with update range
-          tree[node.index] += (long) (Math.min(node.to, to) - Math.max(node.from, from) + 1) * value;
+          int left = left(node.index);
+          int right = right(node.index);
+          tree[node.index].value = tree[left].value + tree[right].value;
+          tree[node.index].sevenCount = tree[left].sevenCount + tree[right].sevenCount;
+          tree[node.index].thirteenCount = tree[left].thirteenCount + tree[right].thirteenCount;
+        } else {
+          node.marked = true;
+          nodes.push(node);
           nodes.push(right(node));
           nodes.push(left(node));
         }
@@ -268,22 +295,12 @@ public class P2559 implements PA {
     long sum(int from, int to) {
       long sum = 0;
       Stack<Node> nodes = new Stack<>();
-      nodes.push(new Node(0, 0, maxNumberCount - 1));
+      nodes.push(new Node(0, 0, numberCount - 1));
       while (!nodes.isEmpty()) {
         Node node = nodes.pop();
 
         // Handle current node pending update
-        long pendingUpdate = lazy[node.index];
-        if (pendingUpdate > 0) {
-          tree[node.index] += (node.to - node.from + 1) * pendingUpdate;
-          lazy[node.index] = 0;
-
-          // Postpone children updates
-          if (node.index < firstLeaf) {
-            lazy[left(node.index)] += pendingUpdate;
-            lazy[right(node.index)] += pendingUpdate;
-          }
-        }
+        handlePendingOperation(node);
 
         // Ignore node if out of range
         if (node.to < from || node.from > to) {
@@ -291,13 +308,50 @@ public class P2559 implements PA {
         }
 
         if (node.from >= from && node.to <= to) {
-          sum += tree[node.index];
-        } else if (node.to >= from || node.from <= to) {
+          sum += tree[node.index].value;
+        } else {
           nodes.push(right(node));
           nodes.push(left(node));
         }
       }
       return sum;
+    }
+
+    void handlePendingOperation(Node node) {
+      TreeNode treeNode = tree[node.index];
+      if (treeNode.pendingOperation != null) {
+        handleOperation(node, treeNode.pendingOperation.oldValue, treeNode.pendingOperation.newValue);
+        treeNode.pendingOperation = null;
+      }
+    }
+
+    void handleOperation(Node node, int oldValue, int newValue) {
+      TreeNode treeNode = tree[node.index];
+      if (oldValue == 7) {
+        treeNode.value -= 7 * treeNode.sevenCount;
+        treeNode.value += newValue * treeNode.sevenCount;
+        treeNode.thirteenCount += newValue == 13 ? treeNode.sevenCount : 0;
+        treeNode.sevenCount = 0;
+      } else if (oldValue == 13) {
+        treeNode.value -= 13 * treeNode.thirteenCount;
+        treeNode.value += newValue * treeNode.thirteenCount;
+        treeNode.sevenCount += newValue == 7 ? treeNode.thirteenCount : 0;
+        treeNode.thirteenCount = 0;
+      } else {
+        throw new RuntimeException("Invalid pending operation: " + treeNode.pendingOperation);
+      }
+      if (!node.isLeaf()) {
+        Node left = left(node);
+        handlePendingOperation(left);
+        tree[left.index].pendingOperation = new Operation(oldValue, newValue);
+        Node right = right(node);
+        handlePendingOperation(right);
+        tree[right.index].pendingOperation = new Operation(oldValue, newValue);
+      }
+    }
+
+    int parent(int i) {
+      return (i - 1) >> 1;
     }
 
     int middle(int from, int to) {
@@ -344,6 +398,47 @@ public class P2559 implements PA {
     @Override
     public String toString() {
       return "Node{" + "index=" + index + ", from=" + from + ", to=" + to + '}';
+    }
+  }
+
+  private static class TreeNode {
+
+    int value;
+
+    int sevenCount;
+
+    int thirteenCount;
+
+    Operation pendingOperation;
+
+    @Override
+    public String toString() {
+      return "TreeNode{" +
+              "value=" + value +
+              ", sevenCount=" + sevenCount +
+              ", thirteenCount=" + thirteenCount +
+              ", pendingOperation=" + pendingOperation +
+              '}';
+    }
+  }
+
+  private static class Operation {
+
+    final int oldValue;
+
+    final int newValue;
+
+    public Operation(int oldValue, int newValue) {
+      this.oldValue = oldValue;
+      this.newValue = newValue;
+    }
+
+    @Override
+    public String toString() {
+      return "PendingOperation{" +
+              "oldValue=" + oldValue +
+              ", newValue=" + newValue +
+              '}';
     }
   }
 }
