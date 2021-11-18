@@ -15,6 +15,7 @@ import java.util.*;
  * For details about this topic see:
  * - https://www.geeksforgeeks.org/segment-tree-set-1-sum-of-given-range
  * - https://www.geeksforgeeks.org/lazy-propagation-in-segment-tree
+ * 
  */
 public class P2559 implements PA {
 
