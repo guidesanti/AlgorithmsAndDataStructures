@@ -256,7 +256,6 @@ public abstract class PATestBase {
         LOGGER.info(message);
         Thread thread = threadReference.get();
         if (thread != null) {
-          thread.stop();
           ExecutionTimeoutException exception = new ExecutionTimeoutException("Execution timed out in thread " + thread.getName());
           exception.setStackTrace(thread.getStackTrace());
           throw new AssertionFailedError(message, exception);
