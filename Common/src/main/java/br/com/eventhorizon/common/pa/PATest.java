@@ -1,6 +1,5 @@
 package br.com.eventhorizon.common.pa;
 
-import br.com.eventhorizon.common.pa.v2.PATestBase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

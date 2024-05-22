@@ -34,7 +34,7 @@ public abstract class PATestBase {
   private OutputStream outputStream;
 
   protected PATestBase(PA pa) {
-    this(pa, PATestSettings.Builder.defaultSettings());
+    this(pa, PATestSettings.defaultPATestSettings());
   }
 
   protected PATestBase(PA pa, PATestSettings settings) {
@@ -45,7 +45,7 @@ public abstract class PATestBase {
   }
 
   @Test
-  public void voidMemoryLimitTest() throws IOException {
+  public void voidMemoryLimitTest() {
     if (!settings.isMemoryLimitTestEnabled()) {
       log.warn("Memory usage test status: {}", Status.DISABLED);
       return;
@@ -85,7 +85,7 @@ public abstract class PATestBase {
    */
   @Test
   public void timeLimitTest() throws InterruptedException {
-    if (!settings.isTimeLimitTestEnabled()) {
+    if (!PASystemSettings.isTimeLimitTestEnabled().orElse(settings.isTimeLimitTestEnabled())) {
       log.warn("Time limit test status: {}", Status.DISABLED);
       return;
     }
@@ -112,7 +112,7 @@ public abstract class PATestBase {
    */
   @Test
   public void stressTest() {
-    if (!settings.isStressTestEnabled()) {
+    if (!PASystemSettings.isStressTestEnabled().orElse(settings.isStressTestEnabled())) {
       log.warn("Stress test status: {}", Status.DISABLED);
       return;
     }
@@ -143,7 +143,7 @@ public abstract class PATestBase {
    */
   @Test
   public void compareTest() {
-    if (!settings.isCompareTestEnabled()) {
+    if (!PASystemSettings.isCompareTestEnabled().orElse(settings.isCompareTestEnabled())) {
       log.warn("Compare test status: {}", Status.DISABLED);
       return;
     }
@@ -224,7 +224,7 @@ public abstract class PATestBase {
     assertEquals(expectedOutput, actualOutput, message != null ? message : "Actual output doesn't match the expected output");
   }
 
-  private void reset(String input) {
+  protected void reset(String input) {
     System.setIn(new ByteArrayInputStream(input.getBytes()));
     outputStream = new ByteArrayOutputStream();
     System.setOut(new PrintStream(outputStream));
