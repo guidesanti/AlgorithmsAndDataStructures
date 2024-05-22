@@ -17,11 +17,6 @@
     <dependencies>
         <dependency>
             <groupId>br.com.eventhorizon</groupId>
-            <artifactId>algorithms</artifactId>
-            <version>1.0.0</version>
-        </dependency>
-        <dependency>
-            <groupId>br.com.eventhorizon</groupId>
             <artifactId>common</artifactId>
             <version>1.0.0</version>
         </dependency>

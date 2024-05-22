@@ -3,8 +3,6 @@ package br.com.eventhorizon.problems;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.v2.PA;
 
-import java.util.*;
-
 public class MaxProductOfThreeInArray implements PA {
 
   private static int n;

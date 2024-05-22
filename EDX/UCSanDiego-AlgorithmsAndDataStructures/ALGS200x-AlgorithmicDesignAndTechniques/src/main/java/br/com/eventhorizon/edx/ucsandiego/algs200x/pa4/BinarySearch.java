@@ -1,12 +1,12 @@
 package br.com.eventhorizon.edx.ucsandiego.algs200x.pa4;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 public class BinarySearch implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int n = scanner.nextInt();
     int[] a = new int[n];

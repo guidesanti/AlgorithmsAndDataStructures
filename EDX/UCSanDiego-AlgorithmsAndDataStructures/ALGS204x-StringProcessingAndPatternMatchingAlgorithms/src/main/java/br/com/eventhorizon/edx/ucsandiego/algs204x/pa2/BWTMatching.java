@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa2;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class BWTMatching implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String bwt = scanner.next();
     int numberOfPatterns = scanner.nextInt();

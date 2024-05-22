@@ -3,16 +3,11 @@ package br.com.eventhorizon.edx.ucsandiego.algs202x.pa1;
 import br.com.eventhorizon.common.datastructures.LinkedList;
 import br.com.eventhorizon.common.datastructures.Stack;
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.NoSuchElementException;
 
 public class AddingExitsToMaze implements PA {
-
-  @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
 
   @Override
   public void finalSolution() {

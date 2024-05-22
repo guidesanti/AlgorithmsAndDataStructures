@@ -2,13 +2,11 @@ package br.com.eventhorizon.array;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.v2.PA;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * Given an array arr[] of size N.
  * The task is to find the sum of the contiguous subarray within a arr[] with the largest sum.
  */
-@Slf4j
 public class MaxSubarraySum implements PA {
 
     private static int n;
