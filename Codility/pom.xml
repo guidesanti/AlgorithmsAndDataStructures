@@ -3,16 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>algorithms-and-data-structures</artifactId>
         <groupId>br.com.eventhorizon</groupId>
+        <artifactId>algorithms-and-data-structures</artifactId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>codility</artifactId>
-    <description>
-        Module containing problems to be solved
-    </description>
+    <version>1.0.0</version>
+    <description>Module containing problems to be solved</description>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -25,14 +25,5 @@
             <artifactId>common</artifactId>
             <version>1.0.0</version>
         </dependency>
-        <dependency>
-            <groupId>br.com.eventhorizon</groupId>
-            <artifactId>common</artifactId>
-            <version>1.0.0</version>
-            <classifier>tests</classifier>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
     </dependencies>
-
 </project>

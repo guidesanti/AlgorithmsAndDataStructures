@@ -116,6 +116,10 @@ public class Utils {
     return list;
   }
 
+  public static int getRandomInteger() {
+    return ThreadLocalRandom.current().nextInt();
+  }
+
   public static int getRandomInteger(int min, int max) {
     if (min == max) {
       return min;

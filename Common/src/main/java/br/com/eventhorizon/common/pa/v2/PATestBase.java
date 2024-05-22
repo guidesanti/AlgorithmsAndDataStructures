@@ -3,6 +3,7 @@ package br.com.eventhorizon.common.pa.v2;
 import br.com.eventhorizon.common.pa.PATestType;
 import br.com.eventhorizon.common.pa.TimingExtension;
 import br.com.eventhorizon.common.pa.v2.input.format.*;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.api.function.Executable;
@@ -16,15 +17,13 @@ import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.logging.Logger;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 @ExtendWith(TimingExtension.class)
 public abstract class PATestBase {
-
-  private static final Logger LOGGER = Logger.getLogger(PATestBase.class.getName());
 
   private final PA pa;
 
@@ -48,7 +47,7 @@ public abstract class PATestBase {
   @Test
   public void voidMemoryLimitTest() throws IOException {
     if (!settings.isMemoryLimitTestEnabled()) {
-      LOGGER.warning("Memory usage test status: " + Status.DISABLED);
+      log.warn("Memory usage test status: {}", Status.DISABLED);
       return;
     }
     outputStream = new ByteArrayOutputStream();
@@ -72,11 +71,11 @@ public abstract class PATestBase {
         Memory used: %.2f MB
         """, Status.FAILED, memoryLimit, (double) usedMemory / 1000000);
       assertTrue(usedMemory - initialUsedMemory < settings.getMemoryLimit(), message);
-      LOGGER.info(String.format("Memory limit test %d memory: %.2f", count, (double) usedMemory / 1000000));
+      log.info(String.format("Memory limit test %d memory: %.2f", count, (double) usedMemory / 1000000));
       count++;
       runtime.gc();
     }
-    LOGGER.warning("Memory limit test status: " + Status.SUCCESS);
+    log.warn("Memory limit test status: {}", Status.SUCCESS);
   }
 
   /**
@@ -85,9 +84,9 @@ public abstract class PATestBase {
    * This test does not verify if the output is correct, it does only verify the time consumed.
    */
   @Test
-  public void timeLimitTest() {
+  public void timeLimitTest() throws InterruptedException {
     if (!settings.isTimeLimitTestEnabled()) {
-      LOGGER.warning("Time limit test status: " + Status.DISABLED);
+      log.warn("Time limit test status: {}", Status.DISABLED);
       return;
     }
     long startTime = System.currentTimeMillis();
@@ -101,10 +100,10 @@ public abstract class PATestBase {
           settings.getTimeLimit()),
           pa::finalSolution,
           String.format("Time limit test %d status: %s", count, Status.FAILED));
-      LOGGER.info(String.format("Time limit test %d status: %s", count, Status.SUCCESS));
+      log.info("Time limit test {} status: {}", count, Status.SUCCESS);
       count++;
     }
-    LOGGER.warning("Time limit test status: " + Status.SUCCESS);
+    log.warn("Time limit test status: {}", Status.SUCCESS);
   }
 
   /**
@@ -114,7 +113,7 @@ public abstract class PATestBase {
   @Test
   public void stressTest() {
     if (!settings.isStressTestEnabled()) {
-      LOGGER.warning("Stress test status: " + Status.DISABLED);
+      log.warn("Stress test status: {}", Status.DISABLED);
       return;
     }
     long startTime = System.currentTimeMillis();
@@ -132,10 +131,10 @@ public abstract class PATestBase {
         %s
         """, count, Status.FAILED, input);
       verify(input, expectedOutput.toString(), getActualOutput(), message);
-      LOGGER.info(String.format("Stress test %d status: %s", count, Status.SUCCESS));
+      log.info("Stress test {} status: {}", count, Status.SUCCESS);
       count++;
     }
-    LOGGER.warning("Stress test status: " + Status.SUCCESS);
+    log.warn("Stress test status: {}", Status.SUCCESS);
   }
 
   /**
@@ -145,7 +144,7 @@ public abstract class PATestBase {
   @Test
   public void compareTest() {
     if (!settings.isCompareTestEnabled()) {
-      LOGGER.warning("Compare test status: " + Status.DISABLED);
+      log.warn("Compare test status: {}", Status.DISABLED);
       return;
     }
     long startTime = System.currentTimeMillis();
@@ -168,15 +167,14 @@ public abstract class PATestBase {
         pa.finalSolution();
         String finalSolutionOutput = getActualOutput();
         verify(input, trivialSolutionOutput, finalSolutionOutput, message);
-        LOGGER.info(String.format("Compare test %d status: %s", count, Status.SUCCESS));
+        log.info("Compare test {} status: {}}", count, Status.SUCCESS);
         count++;
       } catch (Exception ex) {
-        LOGGER.info(message);
-        ex.printStackTrace();
+        log.error(message, ex);
         fail(message);
       }
     }
-    LOGGER.warning("Compare test status: " + Status.SUCCESS);
+    log.warn("Compare test status: {}", Status.SUCCESS);
   }
 
   protected void testSolution(PASolution solution, String input, String expectedOutput) {
@@ -233,7 +231,7 @@ public abstract class PATestBase {
     pa.reset();
   }
 
-  private static void assertTimeoutPreemptively(Duration timeout, Executable executable, String message) {
+  private static void assertTimeoutPreemptively(Duration timeout, Executable executable, String message) throws InterruptedException {
     AtomicReference<Thread> threadReference = new AtomicReference<>();
     ExecutorService executorService = Executors.newSingleThreadExecutor(new TimeoutThreadFactory());
 
@@ -252,10 +250,10 @@ public abstract class PATestBase {
       try {
         future.get(timeoutInMillis, TimeUnit.MILLISECONDS);
       } catch (TimeoutException var17) {
-//        String message = AssertionUtils.buildPrefix(AssertionUtils.nullSafeGet(messageOrSupplier)) + "execution timed out after " + timeoutInMillis + " ms";
-        LOGGER.info(message);
+        log.error(message);
         Thread thread = threadReference.get();
         if (thread != null) {
+          thread.interrupt();
           ExecutionTimeoutException exception = new ExecutionTimeoutException("Execution timed out in thread " + thread.getName());
           exception.setStackTrace(thread.getStackTrace());
           throw new AssertionFailedError(message, exception);

@@ -15,18 +15,20 @@
         <module>EDX</module>
         <module>Algorithms</module>
         <module>URI</module>
+        <module>Codility</module>
     </modules>
 
     <properties>
         <!--General properties -->
-        <java.version>1.8</java.version>
         <java.home>/opt/java</java.home>
+        <java.version>20</java.version>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
+        <maven.compiler.release>20</maven.compiler.release>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <project.minimum.maven.version>3.3.9</project.minimum.maven.version>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-<!--        <maven.compiler.release>1.8</maven.compiler.release>-->
         <skipUnitTests>false</skipUnitTests>
 
         <!-- Plugin Versions -->
@@ -45,11 +47,16 @@
         <maven.site.version>3.9.1</maven.site.version>
 
         <!-- Dependency Versions -->
+        <org.projectlombok.lombok.version>1.18.32</org.projectlombok.lombok.version>
         <junit.jupiter.version>5.8.1</junit.jupiter.version>
         <mockito.version>4.0.0</mockito.version>
         <opencsv.version>5.4</opencsv.version>
         <jackson.version>2.13.0</jackson.version>
         <apache.commons.version>3.12.0</apache.commons.version>
+        <org.slf4j.slf4j-api.version>2.0.13</org.slf4j.slf4j-api.version>
+        <org.apache.logging.log4j.log4j-api.version>2.23.1</org.apache.logging.log4j.log4j-api.version>
+        <org.apache.logging.log4j.log4j-core.version>2.23.1</org.apache.logging.log4j.log4j-core.version>
+        <org.apache.logging.log4j.log4j-slf4j2-impl.version>2.23.1</org.apache.logging.log4j.log4j-slf4j2-impl.version>
     </properties>
 
     <build>
@@ -211,6 +218,15 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Lombok -->
+            <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${org.projectlombok.lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- JUnit -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
@@ -261,10 +277,47 @@
                 <artifactId>commons-lang3</artifactId>
                 <version>${apache.commons.version}</version>
             </dependency>
+
+            <!-- SLF4J -->
+            <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${org.slf4j.slf4j-api.version}</version>
+            </dependency>
+
+            <!-- Log4j -->
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-api</artifactId>
+                <version>${org.apache.logging.log4j.log4j-api.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-core -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-core</artifactId>
+                <version>${org.apache.logging.log4j.log4j-core.version}</version>
+            </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.apache.logging.log4j/log4j-slf4j2-impl -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-slf4j2-impl</artifactId>
+                <version>${org.apache.logging.log4j.log4j-slf4j2-impl.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+        <!-- Lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
+        <!-- JUnit -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -279,6 +332,33 @@
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- SLF4J -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <!-- Log4j -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
         </dependency>
     </dependencies>
 </project>
