@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa4;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +19,7 @@ public class BinaryTreeTraversals implements PA {
   private static int[] rightChildren;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     print(recursiveInOrder(new ArrayList<>(),0));
     print(recursivePreOrder(new ArrayList<>(), 0));

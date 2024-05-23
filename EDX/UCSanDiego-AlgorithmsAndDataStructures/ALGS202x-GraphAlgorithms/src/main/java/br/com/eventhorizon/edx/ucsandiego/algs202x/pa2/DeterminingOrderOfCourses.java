@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs202x.pa2;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.Stack;
 public class DeterminingOrderOfCourses implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     DirectedGraph graph = readGraph();
     naiveDepthFirstReversePostorder(graph).forEach(vertex -> System.out.println(vertex + 1));
   }

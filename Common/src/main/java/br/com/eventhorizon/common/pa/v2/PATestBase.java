@@ -25,13 +25,13 @@ import static org.junit.jupiter.api.Assertions.*;
 @ExtendWith(TimingExtension.class)
 public abstract class PATestBase {
 
-  private final PA pa;
+  protected final PA pa;
 
-  private final PATestSettings settings;
+  protected final PATestSettings settings;
 
-  private final InputFormat inputFormat;
+  protected final InputFormat inputFormat;
 
-  private OutputStream outputStream;
+  protected OutputStream outputStream;
 
   protected PATestBase(PA pa) {
     this(pa, PATestSettings.defaultPATestSettings());

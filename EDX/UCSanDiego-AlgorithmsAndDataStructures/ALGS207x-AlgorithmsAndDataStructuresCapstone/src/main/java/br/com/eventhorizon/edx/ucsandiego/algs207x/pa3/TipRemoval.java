@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa3;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.ArrayList;
 import java.util.HashMap;

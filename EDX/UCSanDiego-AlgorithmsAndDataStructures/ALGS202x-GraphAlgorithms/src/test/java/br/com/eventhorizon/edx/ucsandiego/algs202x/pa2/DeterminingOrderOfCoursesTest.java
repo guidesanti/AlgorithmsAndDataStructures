@@ -1,11 +1,11 @@
 package br.com.eventhorizon.edx.ucsandiego.algs202x.pa2;
 
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.common.pa.v2.PASolution;
+import br.com.eventhorizon.common.pa.v2.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class DeterminingOrderOfCoursesTest extends PATest {
+public class DeterminingOrderOfCoursesTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/determining-order-of-courses.csv";
 
@@ -13,20 +13,15 @@ public class DeterminingOrderOfCoursesTest extends PATest {
     super(new DeterminingOrderOfCourses());
   }
 
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
-  }
+    @ParameterizedTest
+    @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+    public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+        super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
+    }
 
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
-  }
-
-  @Override
-  protected String generateInput(PATestType type) {
-    return null;
-  }
+    @ParameterizedTest
+    @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
+    public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
+        super.testSolution(PASolution.FINAL, input, expectedOutput);
+    }
 }

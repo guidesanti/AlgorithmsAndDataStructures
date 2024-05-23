@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa3;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.pa.v2.PA;
 
 import java.util.*;
 
@@ -10,7 +10,7 @@ public class PhoneBook implements PA {
   private static FastScanner in;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     in = new FastScanner(System.in);
     List<Contact> contacts = new ArrayList<>();
     int numberOfQueries = in.nextInt();
