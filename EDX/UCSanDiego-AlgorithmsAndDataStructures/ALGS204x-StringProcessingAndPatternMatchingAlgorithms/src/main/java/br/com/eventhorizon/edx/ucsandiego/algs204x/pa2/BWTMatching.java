@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa2;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.v2.PA;
+import br.com.eventhorizon.common.pa.PA;
 
 import java.util.*;
 import java.util.stream.Collectors;

@@ -17,7 +17,7 @@ public class CheckingBipartiteGraph implements PA {
   private static final byte WHITE = 2;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     finalSolution();
   }
 

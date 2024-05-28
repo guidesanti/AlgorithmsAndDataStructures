@@ -8,7 +8,7 @@ import java.util.Stack;
 public class IsBinarySearchTree2 implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     System.out.println(recursivePreOrder(readInput()) ? "CORRECT" : "INCORRECT");
   }
 

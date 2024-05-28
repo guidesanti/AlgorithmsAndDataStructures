@@ -12,7 +12,7 @@ public class SchoolBus implements PA {
   private static Graph graph;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     graph = readGraph();
     output(naiveSearch(0, new Path()));
   }

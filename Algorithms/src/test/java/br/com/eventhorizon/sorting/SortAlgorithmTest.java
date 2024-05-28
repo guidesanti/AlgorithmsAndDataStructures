@@ -1,8 +1,8 @@
 package br.com.eventhorizon.sorting;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
@@ -40,7 +40,7 @@ public abstract class SortAlgorithmTest {
 
   @Test
   public void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     long startTime = System.currentTimeMillis();
     for (int test = 0; true; test++) {
       long[] a = generateInput();
@@ -52,7 +52,7 @@ public abstract class SortAlgorithmTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

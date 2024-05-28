@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa1;
 
-import br.com.eventhorizon.common.pa.v2.PASolution;
-import br.com.eventhorizon.common.pa.v2.PATestBase;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 

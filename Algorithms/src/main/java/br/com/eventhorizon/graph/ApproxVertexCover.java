@@ -1,6 +1,6 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.graphs.UndirectedGraphV2;
+import br.com.eventhorizon.datastructures.graphs.UndirectedGraphV2;
 
 import java.util.ArrayList;
 import java.util.List;

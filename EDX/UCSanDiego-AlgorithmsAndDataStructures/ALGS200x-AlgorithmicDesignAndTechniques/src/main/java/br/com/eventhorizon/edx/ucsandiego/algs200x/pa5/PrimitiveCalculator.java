@@ -9,7 +9,7 @@ import java.util.List;
 public class PrimitiveCalculator implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     finalSolution();
   }
 

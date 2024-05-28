@@ -8,7 +8,7 @@ import java.util.Stack;
 public class CheckBracketsInTheCode implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String text = scanner.next();
 
@@ -42,7 +42,7 @@ public class CheckBracketsInTheCode implements PA {
 
   @Override
   public void finalSolution() {
-    naiveSolution();
+    trivialSolution();
   }
 
   private static class Bracket {

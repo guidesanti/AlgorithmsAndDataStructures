@@ -9,7 +9,7 @@ import java.util.List;
 public class MaximumSalary implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int n = scanner.nextInt();
     List<String> a = new ArrayList<>();

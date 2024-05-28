@@ -1,7 +1,7 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.graphs.GraphUtils;
-import br.com.eventhorizon.common.datastructures.graphs.VertexWeightedUndirectedGraph;
+import br.com.eventhorizon.datastructures.graphs.GraphUtils;
+import br.com.eventhorizon.datastructures.graphs.VertexWeightedUndirectedGraph;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 

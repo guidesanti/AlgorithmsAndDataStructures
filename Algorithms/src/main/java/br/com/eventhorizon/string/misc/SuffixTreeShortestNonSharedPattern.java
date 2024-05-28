@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.misc;
 
-import br.com.eventhorizon.common.datastructures.strings.Alphabet;
-import br.com.eventhorizon.common.datastructures.strings.SuffixTree;
+import br.com.eventhorizon.common.utils.Alphabet;
+import br.com.eventhorizon.datastructures.strings.SuffixTree;
 
 import java.util.HashMap;
 import java.util.LinkedList;

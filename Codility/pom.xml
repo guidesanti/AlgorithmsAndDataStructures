@@ -16,9 +16,15 @@
 
     <dependencies>
         <dependency>
-            <groupId>br.com.eventhorizon</groupId>
-            <artifactId>common</artifactId>
+            <groupId>br.com.eventhorizon.common</groupId>
+            <artifactId>pa</artifactId>
             <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>br.com.eventhorizon.common</groupId>
+            <artifactId>pa-test</artifactId>
+            <version>1.0.0</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

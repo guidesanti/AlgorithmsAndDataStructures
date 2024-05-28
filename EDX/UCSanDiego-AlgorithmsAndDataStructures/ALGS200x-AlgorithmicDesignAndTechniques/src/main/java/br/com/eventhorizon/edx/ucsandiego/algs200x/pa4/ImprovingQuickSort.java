@@ -10,7 +10,7 @@ public class ImprovingQuickSort implements PA {
   private static Random random = new Random();
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int n = scanner.nextInt();
     int[] a = new int[n];

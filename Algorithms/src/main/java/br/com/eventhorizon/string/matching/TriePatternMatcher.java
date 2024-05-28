@@ -1,6 +1,6 @@
 package br.com.eventhorizon.string.matching;
 
-import br.com.eventhorizon.common.datastructures.tries.Trie;
+import br.com.eventhorizon.datastructures.tries.Trie;
 
 import java.util.ArrayList;
 import java.util.Collection;

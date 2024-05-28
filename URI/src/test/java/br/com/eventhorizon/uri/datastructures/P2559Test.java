@@ -1,9 +1,9 @@
 package br.com.eventhorizon.uri.datastructures;
 
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.v2.PASolution;
-import br.com.eventhorizon.common.pa.v2.PATestBase;
-import br.com.eventhorizon.common.pa.v2.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
 import br.com.eventhorizon.common.utils.Utils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.params.ParameterizedTest;

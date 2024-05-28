@@ -1,32 +1,29 @@
 package br.com.eventhorizon.edx.ucsandiego.algs202x.pa4;
 
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class DetectingAnomaliesTest extends PATest {
+public class DetectingAnomaliesTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa4/detecting-anomalies.csv";
 
   public DetectingAnomaliesTest() {
-    super(new DetectingAnomalies(), true, true);
+    super(new DetectingAnomalies());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+  @Disabled("Trivial solution is not implemented")
+  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
-  }
-
-  @Override
-  protected String generateInput(PATestType type) {
-    return null;
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 }

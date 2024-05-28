@@ -1,16 +1,13 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa3;
 
-import br.com.eventhorizon.common.pa.v2.PASolution;
-import br.com.eventhorizon.common.pa.v2.PATestBase;
-import br.com.eventhorizon.common.pa.v2.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
-import java.io.ByteArrayInputStream;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
@@ -44,7 +41,7 @@ public class PhoneBookTest extends PATestBase {
   public void testFinalSolutionWorstCase() {
     String input = generateWorstCaseInput();
     reset(input);
-    assertTimeoutPreemptively(ofMillis(settings.getTimeLimit()), pa::finalSolution);
+    assertTimeoutPreemptively(ofMillis(getSettings().getTimeLimit()), pa::finalSolution);
   }
 
   protected String generateWorstCaseInput() {

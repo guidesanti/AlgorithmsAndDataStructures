@@ -1,8 +1,8 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.graphs.GraphUtils;
-import br.com.eventhorizon.common.datastructures.graphs.UndirectedGraph;
-import br.com.eventhorizon.common.datastructures.sets.ArraySet;
+import br.com.eventhorizon.datastructures.graphs.GraphUtils;
+import br.com.eventhorizon.datastructures.graphs.UndirectedGraph;
+import br.com.eventhorizon.datastructures.sets.ArraySet;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Collectors;

@@ -1,7 +1,7 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.LinkedList;
-import br.com.eventhorizon.common.datastructures.graphs.DirectedGraph;
+import br.com.eventhorizon.datastructures.LinkedList;
+import br.com.eventhorizon.datastructures.graphs.DirectedGraph;
 
 import java.util.ArrayList;
 import java.util.HashMap;

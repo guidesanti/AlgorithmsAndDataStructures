@@ -13,7 +13,7 @@ public class MaximizingArithmeticExpression implements PA {
   private static Map<String, Long[]> cache;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String expression = scanner.next();
     List<Long> values = new ArrayList<>();

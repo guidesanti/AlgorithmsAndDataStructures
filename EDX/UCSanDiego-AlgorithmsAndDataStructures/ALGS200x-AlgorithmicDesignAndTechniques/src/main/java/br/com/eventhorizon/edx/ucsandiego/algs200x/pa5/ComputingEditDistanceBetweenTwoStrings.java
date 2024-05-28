@@ -6,7 +6,7 @@ import br.com.eventhorizon.common.pa.PA;
 public class ComputingEditDistanceBetweenTwoStrings implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scan = new FastScanner(System.in);
     String s = scan.next();
     String t = scan.next();

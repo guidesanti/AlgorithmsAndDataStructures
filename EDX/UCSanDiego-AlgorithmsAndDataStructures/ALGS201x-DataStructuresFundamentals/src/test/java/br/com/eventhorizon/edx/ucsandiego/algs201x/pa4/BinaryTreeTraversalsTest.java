@@ -1,10 +1,10 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa4;
 
-import br.com.eventhorizon.common.pa.v2.PASolution;
-import br.com.eventhorizon.common.pa.v2.PATestBase;
-import br.com.eventhorizon.common.pa.v2.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -17,6 +17,7 @@ public class BinaryTreeTraversalsTest extends PATestBase {
     public BinaryTreeTraversalsTest() {
         super(new BinaryTreeTraversals(), PATestSettings.builder()
                 .timeLimitTestEnabled(true)
+                .compareTestEnabled(true)
                 .build());
     }
 

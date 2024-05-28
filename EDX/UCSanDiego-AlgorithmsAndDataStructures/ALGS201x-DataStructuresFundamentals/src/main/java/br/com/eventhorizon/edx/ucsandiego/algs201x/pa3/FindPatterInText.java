@@ -13,7 +13,7 @@ public class FindPatterInText implements PA {
   private static long X = 73;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner in = new FastScanner(System.in);
     String pattern = in.next();
     String text = in.next();

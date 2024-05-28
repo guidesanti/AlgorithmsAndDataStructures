@@ -7,28 +7,11 @@ import br.com.eventhorizon.common.pa.PA;
 public class SmallFibonacciNumber implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner in = new FastScanner(System.in);
     int n = in.nextInt();
 
     System.out.println(fibonacci(n));
-  }
-
-  @Override
-  public void intermediateSolution1() {
-    FastScanner in = new FastScanner(System.in);
-    int n = in.nextInt();
-    long[] fibonacci = new long[n + 1];
-    fibonacci[0] = 0;
-
-    if (n >= 1) {
-      fibonacci[1] = 1;
-      for (int i = 2; i <= n; i++) {
-        fibonacci[i] = fibonacci[i-1] + fibonacci[i-2];
-      }
-    }
-
-    System.out.println(fibonacci[n]);
   }
 
   @Override

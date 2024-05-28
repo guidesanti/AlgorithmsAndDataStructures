@@ -18,7 +18,7 @@ public class IsBinarySearchTree implements PA {
   private static int lastVisited;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     lastVisited = Integer.MIN_VALUE;
     System.out.println(recursiveInOrder(0) ? "CORRECT" : "INCORRECT");

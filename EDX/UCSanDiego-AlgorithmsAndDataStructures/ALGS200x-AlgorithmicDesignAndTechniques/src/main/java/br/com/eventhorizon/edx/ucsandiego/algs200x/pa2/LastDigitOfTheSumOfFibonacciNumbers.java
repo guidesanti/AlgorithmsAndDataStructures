@@ -6,30 +6,10 @@ import br.com.eventhorizon.common.pa.PA;
 public class LastDigitOfTheSumOfFibonacciNumbers implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     System.out.println(fibonacciSumNaive(n));
-  }
-
-  /**
-   * Solution based on continuous sum of every Fibonacci element, but storing only the last digit
-   * of the sum to avoid overflow of long
-   */
-  @Override
-  public void intermediateSolution1() {
-    FastScanner scanner = new FastScanner(System.in);
-    long n = scanner.nextLong();
-    System.out.println(fibonacciSum1(n));
-  }
-
-  /**
-   * Solution based on matrix multiplication to calculate the nth Fibonacci number
-   */
-  public void intermediateSolution2() {
-    FastScanner scanner = new FastScanner(System.in);
-    long n = scanner.nextLong();
-    System.out.println(fibonacciSum2(n));
   }
 
   /**
@@ -60,32 +40,6 @@ public class LastDigitOfTheSumOfFibonacciNumbers implements PA {
     }
 
     return sum % 10;
-  }
-
-  private static long fibonacciSum1(long n) {
-    if (n <= 1) {
-      return n;
-    }
-
-    long previous = 0;
-    long current = 1;
-    long sumMod = 1;
-
-    for (long i = 2; i <= n; ++i) {
-      long temp = previous;
-      previous = current;
-      current = (temp + current) % 10;
-      sumMod = (sumMod + current) % 10;
-    }
-
-    return sumMod;
-  }
-
-  private static long fibonacciSum2(long n) {
-    if (n <= 1) {
-      return n;
-    }
-    return (fibonacci(n + 2) - 1) % 10;
   }
 
   private static long fibonacciSum3(long n) {

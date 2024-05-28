@@ -6,31 +6,9 @@ import br.com.eventhorizon.common.pa.PA;
 public class LastDigitOfLargeFibonacciNumber implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner in = new FastScanner(System.in);
     long n = in.nextInt();
-    long fibonacci = 0;
-
-    if (n <= 1) {
-      fibonacci = n;
-    } else {
-      long previous = 0;
-      long current = 1;
-      for (int i = 2; i <= n; i++) {
-        fibonacci = current + previous;
-        previous = current;
-        current = fibonacci;
-      }
-    }
-    long lastFibonacciDigit = fibonacci % 10;
-
-    System.out.println(lastFibonacciDigit);
-  }
-
-  @Override
-  public void intermediateSolution1() {
-    FastScanner in = new FastScanner(System.in);
-    int n = in.nextInt();
     long fibonacci = 0;
 
     if (n <= 1) {

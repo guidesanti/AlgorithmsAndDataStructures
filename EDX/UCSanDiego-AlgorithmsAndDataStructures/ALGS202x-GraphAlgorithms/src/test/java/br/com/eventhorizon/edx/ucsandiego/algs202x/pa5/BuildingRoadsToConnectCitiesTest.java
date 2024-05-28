@@ -1,13 +1,14 @@
 package br.com.eventhorizon.edx.ucsandiego.algs202x.pa5;
 
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.datastructures.sets.ArraySet;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.datastructures.sets.ArraySet;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-public class BuildingRoadsToConnectCitiesTest extends PATest {
+public class BuildingRoadsToConnectCitiesTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa5/building-roads-to-connect-cities.csv";
 
@@ -17,18 +18,18 @@ public class BuildingRoadsToConnectCitiesTest extends PATest {
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     int n = Utils.getRandomInteger(1, 200);
     ArraySet<Point> points = new ArraySet<>();
     int[] x = new int[n];

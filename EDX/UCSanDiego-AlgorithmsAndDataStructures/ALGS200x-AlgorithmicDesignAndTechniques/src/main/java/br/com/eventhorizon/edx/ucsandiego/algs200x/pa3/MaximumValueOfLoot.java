@@ -6,7 +6,7 @@ import br.com.eventhorizon.common.pa.PA;
 public class MaximumValueOfLoot implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int n = scanner.nextInt();
     int capacity = scanner.nextInt();

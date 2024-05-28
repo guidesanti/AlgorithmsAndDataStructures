@@ -1,8 +1,8 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.ArrayList;
-import br.com.eventhorizon.common.datastructures.graphs.UndirectedGraph;
-import br.com.eventhorizon.common.datastructures.graphs.UndirectedGraphTraverseOrder;
+import br.com.eventhorizon.datastructures.ArrayList;
+import br.com.eventhorizon.datastructures.graphs.UndirectedGraph;
+import br.com.eventhorizon.datastructures.graphs.UndirectedGraphTraverseOrder;
 
 /**
  * This graph processing class finds the maximum independent set within a tree represented

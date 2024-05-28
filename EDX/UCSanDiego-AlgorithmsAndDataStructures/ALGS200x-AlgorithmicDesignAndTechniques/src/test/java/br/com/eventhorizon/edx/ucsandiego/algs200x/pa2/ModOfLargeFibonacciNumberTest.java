@@ -1,29 +1,36 @@
 package br.com.eventhorizon.edx.ucsandiego.algs200x.pa2;
 
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
-public class ModOfLargeFibonacciNumberTest extends PATest {
+import static br.com.eventhorizon.common.utils.Utils.getRandomInteger;
+
+public class ModOfLargeFibonacciNumberTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/mod-of-large-fibonacci-number.csv";
 
   public ModOfLargeFibonacciNumberTest() {
-    super(new ModOfLargeFibonacciNumber());
+    super(new ModOfLargeFibonacciNumber(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .compareTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput);
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput);
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @ParameterizedTest
@@ -32,11 +39,11 @@ public class ModOfLargeFibonacciNumberTest extends PATest {
     "2816213588 239,151"
   })
   public void testFinalSolutionWithBigDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput);
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     int a;
     int b;
     switch (type) {

@@ -1,7 +1,7 @@
 package br.com.eventhorizon.array;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.v2.PA;
+import br.com.eventhorizon.common.pa.PA;
 
 /**
  * Given an array arr[] of size N-1 with integers in the range of [1, N], the task is to find the missing number from the first N integers.

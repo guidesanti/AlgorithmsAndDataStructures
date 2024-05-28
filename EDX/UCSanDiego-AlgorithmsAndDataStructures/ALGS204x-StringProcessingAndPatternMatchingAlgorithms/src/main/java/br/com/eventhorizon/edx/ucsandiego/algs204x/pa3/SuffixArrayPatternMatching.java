@@ -11,7 +11,7 @@ public class SuffixArrayPatternMatching implements PA {
   private static final char EOF = '$';
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String text = scanner.next();
     int numberOfPatterns = scanner.nextInt();

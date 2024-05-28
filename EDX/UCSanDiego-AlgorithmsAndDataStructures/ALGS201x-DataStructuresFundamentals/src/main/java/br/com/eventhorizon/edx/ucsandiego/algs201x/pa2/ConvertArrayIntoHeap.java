@@ -15,14 +15,14 @@ public class ConvertArrayIntoHeap implements PA {
   private static int heapSize;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     generateSwaps();
     writeOutput();
   }
 
   private static void generateSwaps() {
-    swaps = new ArrayList<Swap>();
+    swaps = new ArrayList<>();
     for (int i = 0; i < data.length; ++i) {
       for (int j = i + 1; j < data.length; ++j) {
         if (data[i] > data[j]) {

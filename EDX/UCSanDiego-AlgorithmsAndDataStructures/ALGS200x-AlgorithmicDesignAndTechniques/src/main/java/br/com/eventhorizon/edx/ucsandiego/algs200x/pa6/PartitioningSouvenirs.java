@@ -11,7 +11,7 @@ public class PartitioningSouvenirs implements PA {
   private static Map<String, Boolean> cache;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int n = scanner.nextInt();
     int[] values = new int[n];

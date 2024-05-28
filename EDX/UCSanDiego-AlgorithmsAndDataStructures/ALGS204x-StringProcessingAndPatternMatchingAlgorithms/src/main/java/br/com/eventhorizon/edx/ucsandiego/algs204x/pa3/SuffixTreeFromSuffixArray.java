@@ -1,8 +1,8 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa3;
 
-import br.com.eventhorizon.common.datastructures.strings.Alphabet;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
+import br.com.eventhorizon.common.utils.Alphabet;
 
 import java.util.Stack;
 
@@ -21,7 +21,7 @@ public class SuffixTreeFromSuffixArray implements PA {
   private static SuffixTreeNode root;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     naiveBuildSuffixTree();
     writeOutput();

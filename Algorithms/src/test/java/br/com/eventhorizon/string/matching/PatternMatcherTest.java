@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.matching;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.TestProperties;
 import br.com.eventhorizon.common.utils.converters.StringToListOfIntegersConverter;
 import br.com.eventhorizon.common.utils.converters.StringToListOfStringConverter;
 import org.junit.jupiter.api.Test;
@@ -49,7 +49,7 @@ abstract class PatternMatcherTest {
 
   @Test
   void patternMatchingStressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     if (patternMatcher instanceof NaivePatternMatcher) {
       LOGGER.info("Skipping pattern match stress test for NaivePatterMather to avoid compare it to itself");
       return;
@@ -73,7 +73,7 @@ abstract class PatternMatcherTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

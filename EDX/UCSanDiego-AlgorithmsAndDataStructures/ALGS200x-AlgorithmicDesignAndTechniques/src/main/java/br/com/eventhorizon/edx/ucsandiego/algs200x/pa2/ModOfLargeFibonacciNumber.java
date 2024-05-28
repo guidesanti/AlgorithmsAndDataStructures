@@ -10,7 +10,7 @@ import java.util.List;
 public class ModOfLargeFibonacciNumber implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long n = scanner.nextLong();
     long m = scanner.nextLong();

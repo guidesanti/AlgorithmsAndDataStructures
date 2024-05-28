@@ -10,7 +10,7 @@ import java.util.Stack;
 public class ComputeTreeHeight implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     int[] tree = readInput();
     System.out.println(naiveComputeHeight(tree));
   }

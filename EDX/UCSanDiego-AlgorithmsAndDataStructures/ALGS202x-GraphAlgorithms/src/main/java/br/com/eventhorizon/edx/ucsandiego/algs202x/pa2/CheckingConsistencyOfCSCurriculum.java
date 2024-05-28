@@ -10,7 +10,7 @@ import java.util.Stack;
 public class CheckingConsistencyOfCSCurriculum implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     finalSolution();
   }
 

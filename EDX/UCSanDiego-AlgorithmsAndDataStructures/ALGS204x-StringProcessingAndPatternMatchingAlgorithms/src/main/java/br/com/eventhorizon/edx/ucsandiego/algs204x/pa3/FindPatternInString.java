@@ -11,7 +11,7 @@ public class FindPatternInString implements PA {
   private static final char EOF = '$';
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String pattern = scanner.next();
     String text = scanner.next();

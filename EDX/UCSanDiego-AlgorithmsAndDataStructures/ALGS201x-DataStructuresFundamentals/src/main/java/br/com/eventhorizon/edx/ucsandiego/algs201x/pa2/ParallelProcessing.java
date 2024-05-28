@@ -22,7 +22,7 @@ public class ParallelProcessing implements PA {
   private static PriorityQueue<Worker> queue;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     naiveAssignJobs();
     writeOutput();

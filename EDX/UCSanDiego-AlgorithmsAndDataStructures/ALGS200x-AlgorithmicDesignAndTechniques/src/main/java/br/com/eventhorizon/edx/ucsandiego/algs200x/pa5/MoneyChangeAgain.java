@@ -8,7 +8,7 @@ public class MoneyChangeAgain implements PA {
   private static final int[] COINS = { 1, 3, 4 };
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     System.out.println(naiveMoneyChange(m));

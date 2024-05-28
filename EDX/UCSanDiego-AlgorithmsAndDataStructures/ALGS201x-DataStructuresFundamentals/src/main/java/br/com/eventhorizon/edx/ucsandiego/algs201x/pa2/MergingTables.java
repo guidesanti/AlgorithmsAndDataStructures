@@ -6,7 +6,7 @@ import br.com.eventhorizon.common.pa.PA;
 public class MergingTables implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     finalSolution();
   }
 

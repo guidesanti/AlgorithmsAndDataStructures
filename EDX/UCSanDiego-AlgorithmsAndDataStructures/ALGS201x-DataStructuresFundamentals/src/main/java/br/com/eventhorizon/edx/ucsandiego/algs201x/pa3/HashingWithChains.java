@@ -22,7 +22,7 @@ public class HashingWithChains implements PA {
   private static int bucketCount;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     in = new FastScanner(System.in);
     out = new PrintWriter(new BufferedOutputStream(System.out));
     bucketCount = in.nextInt();

@@ -16,6 +16,7 @@
         <module>Algorithms</module>
         <module>URI</module>
         <module>Codility</module>
+        <module>data-structures</module>
     </modules>
 
     <properties>

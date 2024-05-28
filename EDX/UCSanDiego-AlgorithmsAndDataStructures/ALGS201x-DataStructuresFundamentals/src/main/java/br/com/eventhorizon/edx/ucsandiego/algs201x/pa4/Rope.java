@@ -1,6 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa4;
 
-import br.com.eventhorizon.common.datastructures.Stack;
+import br.com.eventhorizon.datastructures.Stack;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
@@ -9,7 +9,7 @@ import java.util.NoSuchElementException;
 public class Rope implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner in = new FastScanner(System.in);
     String text = in.next();
     int numberOfQueries = in.nextInt();

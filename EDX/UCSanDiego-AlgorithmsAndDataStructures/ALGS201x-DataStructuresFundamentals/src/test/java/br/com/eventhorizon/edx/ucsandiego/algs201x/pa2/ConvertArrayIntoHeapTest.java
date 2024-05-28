@@ -1,10 +1,11 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa2;
 
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -12,45 +13,47 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 import java.io.ByteArrayInputStream;
 import java.util.logging.Logger;
 
+import static br.com.eventhorizon.common.utils.Utils.getRandomInteger;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConvertArrayIntoHeapTest extends PATest {
+public class ConvertArrayIntoHeapTest extends PATestBase {
 
   private static final Logger LOGGER = Logger.getLogger(ConvertArrayIntoHeapTest.class.getName());
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/convert-array-into-heap.csv";
 
   public ConvertArrayIntoHeapTest() {
-    super(new ConvertArrayIntoHeap());
+    super(new ConvertArrayIntoHeap(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .build());
   }
 
   // This test is commented because the naive solution always creates a lot of swaps
   // and will always fail
 //  @ParameterizedTest
 //  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-//  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-//    super.testNaiveSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+//  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+//    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
 //  }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Test
   @Override
   public void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + getSettings().getStressTestDuration());
     long startTime = System.currentTimeMillis();
     for (long i = 0; true; i++) {
-      String input = generateInput(PATestType.STRESS_TEST);
+      String input = generateInput(PATestType.STRESS_TEST, null);
       LOGGER.info("Stress test " + i + " input: " + input);
 
       // Naive solution
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      pa.naiveSolution();
+      reset(input);
+      pa.trivialSolution();
       String result1 = getActualOutput();
 
       FastScanner scanner = new FastScanner(new ByteArrayInputStream(input.getBytes()));
@@ -75,8 +78,7 @@ public class ConvertArrayIntoHeapTest extends PATest {
       assertTrue(isMinHeap(values1), "Solution 1 output is not a heap");
 
       // Final solution
-      resetOutput();
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      reset(input);
       pa.finalSolution();
       String result2 = getActualOutput();
 
@@ -104,7 +106,7 @@ public class ConvertArrayIntoHeapTest extends PATest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > getSettings().getStressTestDuration()) {
         return;
       }
     }
@@ -121,13 +123,13 @@ public class ConvertArrayIntoHeapTest extends PATest {
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     StringBuilder input = new StringBuilder();
     int n;
     if (type == PATestType.TIME_LIMIT_TEST) {
-      n = Utils.getRandomInteger(1, 100000);
+      n = getRandomInteger(1, 100000);
     } else {
-      n = Utils.getRandomInteger(1, 100);
+      n = getRandomInteger(1, 100);
     }
     input.append(n);
     for (int i = 0; i < n; i++) {

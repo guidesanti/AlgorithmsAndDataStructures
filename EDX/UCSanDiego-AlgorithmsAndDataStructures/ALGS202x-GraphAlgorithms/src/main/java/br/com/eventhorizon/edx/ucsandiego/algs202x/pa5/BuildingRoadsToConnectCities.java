@@ -8,11 +8,11 @@ import java.util.*;
 public class BuildingRoadsToConnectCities implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     WeightedUndirectedGraph graph = readGraph(scanner);
     WeightedUndirectedGraphKruskalMinimumSpanningTree mst = new WeightedUndirectedGraphKruskalMinimumSpanningTree(graph);
-    System.out.printf("%.9f", mst.weight());
+    System.out.print(String.format("%.9f", mst.weight()).replace(",", "."));
   }
 
   @Override
@@ -20,7 +20,7 @@ public class BuildingRoadsToConnectCities implements PA {
     FastScanner scanner = new FastScanner(System.in);
     WeightedUndirectedGraph graph = readGraph(scanner);
     WeightedUndirectedGraphPrimMinimumSpanningTree mst = new WeightedUndirectedGraphPrimMinimumSpanningTree(graph);
-    System.out.printf("%.9f", mst.weight());
+    System.out.print(String.format("%.9f", mst.weight()).replace(",", "."));
   }
 
   private static WeightedUndirectedGraph readGraph(FastScanner scanner) {

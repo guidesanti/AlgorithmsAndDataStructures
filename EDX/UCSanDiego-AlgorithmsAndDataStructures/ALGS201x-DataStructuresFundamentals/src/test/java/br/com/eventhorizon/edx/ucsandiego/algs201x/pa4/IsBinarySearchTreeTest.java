@@ -1,35 +1,40 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa4;
 
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.*;
 
-public class IsBinarySearchTreeTest extends PATest {
+public class IsBinarySearchTreeTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa4/is-binary-search-tree.csv";
 
   public IsBinarySearchTreeTest() {
-    super(new IsBinarySearchTree());
+    super(new IsBinarySearchTree(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .compareTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n").replace("!", ""));
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     StringBuilder input = new StringBuilder();
     int n;
     switch (type) {

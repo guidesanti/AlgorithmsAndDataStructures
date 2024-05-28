@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.suffixarray;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.TestProperties;
 import br.com.eventhorizon.common.utils.converters.StringToIntegerArrayConverter;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +37,7 @@ public abstract class SuffixArrayBuilderTest {
 
   @Test
   void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     if (suffixArrayBuilder instanceof NaiveSuffixArrayBuilder) {
       LOGGER.info("Skipping stress test for NaiveSuffixArrayBuilder to avoid compare it to itself");
       return;
@@ -59,7 +59,7 @@ public abstract class SuffixArrayBuilderTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

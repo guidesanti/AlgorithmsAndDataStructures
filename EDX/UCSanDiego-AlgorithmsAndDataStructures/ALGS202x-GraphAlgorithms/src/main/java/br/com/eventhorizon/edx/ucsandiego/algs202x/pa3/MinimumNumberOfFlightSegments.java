@@ -11,11 +11,6 @@ import java.util.Queue;
 public class MinimumNumberOfFlightSegments implements PA {
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     UndirectedGraph graph = readGraph(scanner);

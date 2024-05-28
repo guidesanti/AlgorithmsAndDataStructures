@@ -1,28 +1,29 @@
 package br.com.eventhorizon.edx.ucsandiego.algs204x.pa1;
 
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
-import java.io.ByteArrayInputStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-public class ShortestNonSharedSubstringTest extends PATest {
+public class ShortestNonSharedSubstringTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/shortest-non-shared-substring.csv";
 
   public ShortestNonSharedSubstringTest() {
-    super(new ShortestNonSharedSubstring(), false, true);
+    super(new ShortestNonSharedSubstring(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, int expectedShortestNonSharedSubstringLength) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
     String actualOutput = getActualOutput();
     if (expectedShortestNonSharedSubstringLength == 0) {
@@ -36,7 +37,7 @@ public class ShortestNonSharedSubstringTest extends PATest {
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     return Utils.getRandomString(Utils.CharType.UPPERCASE_ALPHABETICAL_CHARS, 1, 2000) + " "
         + Utils.getRandomString(Utils.CharType.UPPERCASE_ALPHABETICAL_CHARS, 1, 2000);
   }

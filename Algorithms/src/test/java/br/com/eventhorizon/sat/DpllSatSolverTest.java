@@ -1,6 +1,6 @@
 package br.com.eventhorizon.sat;
 
-import br.com.eventhorizon.common.pa.TestProperties;
+import br.com.eventhorizon.common.pa.test.Defaults;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -37,7 +37,7 @@ public class DpllSatSolverTest {
 
   @Test
   public void timeLimitTest() {
-    LOGGER.info("Time limit test duration: " + TestProperties.getTimeLimitTestDuration());
+    LOGGER.info("Time limit test duration: " + Defaults.TIME_LIMIT_TEST_DURATION);
     long maxTime = 0;
     long minTime = Integer.MAX_VALUE;
     List<Long> times = new ArrayList<>();
@@ -48,7 +48,7 @@ public class DpllSatSolverTest {
 
       DpllSatSolver satSolver = new DpllSatSolver();
       long startTime = System.currentTimeMillis();
-      assertTimeoutPreemptively(ofMillis(TestProperties.getTimeLimit()), () -> satSolver.solve(cnf));
+      assertTimeoutPreemptively(ofMillis(Defaults.TIME_LIMIT_TEST_DURATION), () -> satSolver.solve(cnf));
       long elapsedTime = System.currentTimeMillis() - startTime;
       times.add(elapsedTime);
       if (elapsedTime > maxTime) {
@@ -61,7 +61,7 @@ public class DpllSatSolverTest {
 
       // Check elapsed time
       long totalElapsedTime = System.currentTimeMillis() - totalStartTime;
-      if (totalElapsedTime > TestProperties.getTimeLimitTestDuration()) {
+      if (totalElapsedTime > Defaults.TIME_LIMIT_TEST_DURATION) {
         LOGGER.info("Time limit test total tests executed: " + i + 1);
         LOGGER.info("Time limit test min time: " + minTime);
         LOGGER.info("Time limit test max time: " + maxTime);
@@ -76,7 +76,7 @@ public class DpllSatSolverTest {
 
   @Test
   public void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     long startTime = System.currentTimeMillis();
     NaiveSatSolver naiveSatSolver = new NaiveSatSolver();
     DpllSatSolver satSolver = new DpllSatSolver();
@@ -98,7 +98,7 @@ public class DpllSatSolverTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

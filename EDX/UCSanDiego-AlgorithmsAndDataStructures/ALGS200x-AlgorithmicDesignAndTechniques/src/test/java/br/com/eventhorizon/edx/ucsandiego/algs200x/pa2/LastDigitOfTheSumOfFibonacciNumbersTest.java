@@ -1,45 +1,36 @@
 package br.com.eventhorizon.edx.ucsandiego.algs200x.pa2;
 
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import javax.naming.OperationNotSupportedException;
+import static br.com.eventhorizon.common.utils.Utils.getRandomLong;
 
-public class LastDigitOfTheSumOfFibonacciNumbersTest extends PATest {
+public class LastDigitOfTheSumOfFibonacciNumbersTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa2/last-digit-of-the-sum-of-fibonacci-numbers.csv";
 
   public LastDigitOfTheSumOfFibonacciNumbersTest() {
-    super(new LastDigitOfTheSumOfFibonacciNumbers());
+    super(new LastDigitOfTheSumOfFibonacciNumbers(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .compareTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput);
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testIntermediateSolution1WithSimpleDataSet(String input, String expectedOutput)
-      throws OperationNotSupportedException {
-    super.testIntermediateSolution1(input, expectedOutput);
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testIntermediateSolution2WithSimpleDataSet(String input, String expectedOutput)
-      throws OperationNotSupportedException {
-    super.testIntermediateSolution2(input, expectedOutput);
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput);
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @ParameterizedTest
@@ -47,11 +38,11 @@ public class LastDigitOfTheSumOfFibonacciNumbersTest extends PATest {
     "100,5"
   })
   public void testFinalSolutionWithComplexDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput);
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     long a;
     switch (type) {
       case TIME_LIMIT_TEST:

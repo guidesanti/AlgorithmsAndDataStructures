@@ -9,11 +9,6 @@ import java.util.List;
 public class AssignFrequenciesToGsmNetwork implements PA {
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int numberOfVertices = scanner.nextInt();

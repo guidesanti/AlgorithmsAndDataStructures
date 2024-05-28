@@ -3,21 +3,17 @@ package br.com.eventhorizon.edx.ucsandiego.algs202x.pa5;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
+import java.text.NumberFormat;
 import java.util.*;
 
 public class Clustering implements PA {
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     WeightedUndirectedGraph graph = readGraph(scanner);
-    int numberOfClusters = scanner.nextInt();;
-    System.out.printf("%.9f", clustering(graph, numberOfClusters));
+    int numberOfClusters = scanner.nextInt();
+    System.out.print(String.format("%.9f", clustering(graph, numberOfClusters)).replace(",", "."));
   }
 
   private static double clustering(WeightedUndirectedGraph graph, int numberOfClusters) {

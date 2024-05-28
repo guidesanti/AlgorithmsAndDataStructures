@@ -6,7 +6,7 @@ import br.com.eventhorizon.common.pa.PA;
 public class LastDigitOfThePartialSumOfFibonacciNumbers implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     long from = scanner.nextLong();
     long to = scanner.nextLong();

@@ -8,11 +8,6 @@ import java.util.*;
 public class ExchangingMoneyOptimally implements PA {
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     WeightedDirectedGraph graph = readGraph(scanner);

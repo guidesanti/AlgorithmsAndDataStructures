@@ -1,9 +1,10 @@
 package br.com.eventhorizon.edx.ucsandiego.algs201x.pa1;
 
+import br.com.eventhorizon.common.pa.test.PASolution;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -14,24 +15,27 @@ import java.util.*;
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.assertTimeoutPreemptively;
 
-public class ComputeTreeHeightTest extends PATest {
+public class ComputeTreeHeightTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/compute-tree-height.csv";
 
   public ComputeTreeHeightTest() {
-    super(new ComputeTreeHeight());
+    super(new ComputeTreeHeight(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .compareTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testNaiveSolution(input, expectedOutput.replace("%", "\n"));
+  public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
+    super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    super.testFinalSolution(input, expectedOutput.replace("%", "\n"));
+    super.testSolution(PASolution.FINAL, input, expectedOutput);
   }
 
   @Test
@@ -42,13 +46,13 @@ public class ComputeTreeHeightTest extends PATest {
       input.append(i + 1).append(" ");
     }
     input.append(-1);
-    super.testFinalSolution(input.toString(), "100000");
+    super.testSolution(PASolution.FINAL, input.toString(), "100000");
     System.setIn(new ByteArrayInputStream(input.toString().getBytes()));
-    assertTimeoutPreemptively(ofMillis(TestProperties.getTimeLimit()), pa::finalSolution);
+    assertTimeoutPreemptively(ofMillis(getSettings().getTimeLimit()), pa::finalSolution);
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     StringBuilder input = new StringBuilder();
     int n;
 

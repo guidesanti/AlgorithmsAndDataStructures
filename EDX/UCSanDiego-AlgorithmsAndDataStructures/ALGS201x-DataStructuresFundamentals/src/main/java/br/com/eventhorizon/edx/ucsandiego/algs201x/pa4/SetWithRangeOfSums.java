@@ -8,7 +8,7 @@ public class SetWithRangeOfSums implements PA {
   private static final int MODULO = 1000000001;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     finalSolution();
   }
 

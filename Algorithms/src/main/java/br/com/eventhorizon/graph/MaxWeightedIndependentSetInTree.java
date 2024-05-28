@@ -1,7 +1,7 @@
 package br.com.eventhorizon.graph;
 
-import br.com.eventhorizon.common.datastructures.graphs.UndirectedGraphTraverseOrder;
-import br.com.eventhorizon.common.datastructures.graphs.VertexWeightedUndirectedGraph;
+import br.com.eventhorizon.datastructures.graphs.UndirectedGraphTraverseOrder;
+import br.com.eventhorizon.datastructures.graphs.VertexWeightedUndirectedGraph;
 
 import java.util.*;
 

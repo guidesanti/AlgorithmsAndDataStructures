@@ -9,7 +9,7 @@ import java.util.List;
 public class LongestCommonSubsequenceOfThreeSequences implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     List<Integer> s1 = new ArrayList<>();

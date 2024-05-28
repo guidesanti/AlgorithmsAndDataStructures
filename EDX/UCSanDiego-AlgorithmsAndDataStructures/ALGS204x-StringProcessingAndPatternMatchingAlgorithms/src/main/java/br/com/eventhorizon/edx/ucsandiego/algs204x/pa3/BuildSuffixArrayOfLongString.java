@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class BuildSuffixArrayOfLongString implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     String text = scanner.next();
     List<String> suffixes = new ArrayList<>();

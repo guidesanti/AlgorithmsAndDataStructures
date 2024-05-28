@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.bwt;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -31,7 +31,7 @@ public abstract class BurrowsWheelerTransformTest {
 
   @Test
   void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     if (burrowsWheelerTransform instanceof NaiveBurrowsWheelerTransform) {
       LOGGER.info("Skipping stress test for NaiveBurrowsWheelerTransform to avoid compare it to itself");
       return;
@@ -53,7 +53,7 @@ public abstract class BurrowsWheelerTransformTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

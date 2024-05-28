@@ -6,17 +6,10 @@ import br.com.eventhorizon.common.pa.PA;
 public class MoneyChange implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int m = scanner.nextInt();
     System.out.println(naiveMoneyChange(m));
-  }
-
-  @Override
-  public void intermediateSolution1() {
-    FastScanner scanner = new FastScanner(System.in);
-    int m = scanner.nextInt();
-    System.out.println(greedyMoneyChange1(m));
   }
 
   @Override

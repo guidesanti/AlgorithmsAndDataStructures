@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 public class BudgetAllocation implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     FastScanner scanner = new FastScanner(System.in);
     int numberOfInequalities = scanner.nextInt();
     int numberOfVariables = scanner.nextInt();

@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.misc;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -32,7 +32,7 @@ abstract class LongestCommonSubsequenceOfTwoStringsTest {
 
   @Test
   void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     if (longestCommonSubsequenceOfTwoStrings instanceof NaiveLongestCommonSubsequenceOfTwoStrings) {
       LOGGER.info("Skipping stress test for NaiveLongestCommonSubsequenceOfTwoStrings to avoid compare it to itself");
       return;
@@ -62,7 +62,7 @@ abstract class LongestCommonSubsequenceOfTwoStringsTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

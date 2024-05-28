@@ -9,7 +9,7 @@ import java.util.*;
 public class IntegratedCircuitDesign implements PA {
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     Cnf cnf = readCnf(new FastScanner(System.in));
     List<Integer> solution = naiveSolve(cnf);
     output(solution);

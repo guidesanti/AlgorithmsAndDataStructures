@@ -11,11 +11,6 @@ import java.util.Stack;
 public class MaximumWeightedIndependentSetInTree implements PA {
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     Graph graph = readGraph();
     System.out.println(findMaximumWeightedIndependentSet(graph));

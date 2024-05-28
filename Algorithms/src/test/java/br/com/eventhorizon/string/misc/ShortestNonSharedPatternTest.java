@@ -1,7 +1,7 @@
 package br.com.eventhorizon.string.misc;
 
+import br.com.eventhorizon.common.pa.test.Defaults;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -37,7 +37,7 @@ abstract class ShortestNonSharedPatternTest {
 
   @Test
   void testFind() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     long startTime = System.currentTimeMillis();
     for (int test = 0; true; test++) {
       String text1 = Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 2000);
@@ -64,7 +64,7 @@ abstract class ShortestNonSharedPatternTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }
@@ -72,7 +72,7 @@ abstract class ShortestNonSharedPatternTest {
 
   @Test
   void stressTest() {
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
+    LOGGER.info("Stress test duration: " + Defaults.STRESS_TEST_DURATION);
     if (shortestNonSharedPattern instanceof NaiveShortestNonSharedPattern) {
       LOGGER.info("Skipping stress test for NaiveShortestNonSharedSubstring to avoid compare it to itself");
       return;
@@ -98,7 +98,7 @@ abstract class ShortestNonSharedPatternTest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > Defaults.STRESS_TEST_DURATION) {
         return;
       }
     }

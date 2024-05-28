@@ -13,11 +13,6 @@ public class CleaningTheApartment implements PA {
   private static boolean[][] adjacencyMatrix;
 
   @Override
-  public void naiveSolution() {
-    finalSolution();
-  }
-
-  @Override
   public void finalSolution() {
     FastScanner scanner = new FastScanner(System.in);
     numberOfVertices = scanner.nextInt();
