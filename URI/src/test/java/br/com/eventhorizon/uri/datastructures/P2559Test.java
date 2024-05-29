@@ -39,7 +39,7 @@ public class P2559Test extends PATestBase {
     StringBuilder input = new StringBuilder();
     int numberCount;
     int operationCount;
-    if (type == PATestType.MEMORY_USAGE_TEST || type == PATestType.TIME_LIMIT_TEST) {
+    if (type == PATestType.MEMORY_LIMIT_TEST || type == PATestType.TIME_LIMIT_TEST) {
       numberCount = 200000;
       operationCount = 200000;
     } else {

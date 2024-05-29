@@ -26,6 +26,10 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>com.opencsv</groupId>
+            <artifactId>opencsv</artifactId>
+        </dependency>
+        <dependency>
             <groupId>br.com.eventhorizon.common</groupId>
             <artifactId>pa</artifactId>
             <version>1.0.0</version>

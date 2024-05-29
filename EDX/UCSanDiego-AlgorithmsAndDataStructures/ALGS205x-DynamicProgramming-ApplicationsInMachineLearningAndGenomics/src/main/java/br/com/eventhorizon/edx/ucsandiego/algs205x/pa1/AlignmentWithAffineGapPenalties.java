@@ -27,7 +27,7 @@ public class AlignmentWithAffineGapPenalties implements PA {
   private static String alignment2;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     init();
     readInput();
     naiveGlobalAlignment();

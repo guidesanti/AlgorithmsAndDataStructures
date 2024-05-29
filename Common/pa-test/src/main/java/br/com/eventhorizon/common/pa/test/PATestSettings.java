@@ -7,6 +7,8 @@ import lombok.Getter;
 @Builder
 public class PATestSettings {
 
+  private String simpleDataSetCsvFilePath;
+
   @Builder.Default
   private boolean memoryLimitTestEnabled = Defaults.MEMORY_USAGE_TEST_ENABLED;
 
@@ -14,7 +16,7 @@ public class PATestSettings {
   private long memoryLimitTestDuration = Defaults.MEMORY_LIMIT_TEST_DURATION;
 
   @Builder.Default
-  private int memoryLimit = Defaults.MEMORY_LIMIT;
+  private long memoryLimit = Defaults.MEMORY_LIMIT;
 
   @Builder.Default
   private boolean timeLimitTestEnabled = Defaults.TIME_LIMIT_TEST_ENABLED;

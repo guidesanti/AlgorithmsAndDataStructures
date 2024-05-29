@@ -69,7 +69,7 @@ public class IntegratedCircuitDesignTest extends PATestBase {
     @Override
     public void compareTest() {
         if (!PASystemSettings.isCompareTestEnabled().orElse(settings.isCompareTestEnabled())) {
-            log.warn("Compare test status: {}", Status.DISABLED);
+            log.warn("Compare test status: {}", Status.SKIPPED);
             return;
         }
         long startTime = System.currentTimeMillis();

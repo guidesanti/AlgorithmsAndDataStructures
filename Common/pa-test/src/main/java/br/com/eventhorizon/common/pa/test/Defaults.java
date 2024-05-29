@@ -6,7 +6,7 @@ public final class Defaults {
 
   public static final int MEMORY_LIMIT_TEST_DURATION = 15000;
 
-  public static final int MEMORY_LIMIT = 200*1000*1000;
+  public static final long MEMORY_LIMIT = 200_000_000L;
 
   public static final boolean TIME_LIMIT_TEST_ENABLED = false;
 
