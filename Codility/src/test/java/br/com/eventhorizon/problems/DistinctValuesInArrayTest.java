@@ -8,7 +8,7 @@ import static br.com.eventhorizon.common.utils.Utils.getRandomInteger;
 
 public class DistinctValuesInArrayTest extends PATestBase {
 
-    private static final String SIMPLE_DATA_SET = "/test-dataset/distinct-values-in-array.csv";
+    private static final String SIMPLE_DATA_SET = "src/test/resources//test-dataset/distinct-values-in-array.csv";
 
     public DistinctValuesInArrayTest() {
         super(new DistinctValuesInArray(), PATestSettings.builder()

@@ -1,17 +1,14 @@
 package br.com.eventhorizon.problems;
 
 import br.com.eventhorizon.common.pa.test.PATestType;
-import br.com.eventhorizon.common.pa.test.PASolution;
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 
 import static br.com.eventhorizon.common.utils.Utils.getRandomInteger;
 
 public class CyclicRotationTest extends PATestBase {
 
-    private static final String SIMPLE_DATA_SET = "/test-dataset/cyclic-rotation.csv";
+    private static final String SIMPLE_DATA_SET = "src/test/resources/test-dataset/cyclic-rotation.csv";
 
     public CyclicRotationTest() {
         super(new CyclicRotation(), PATestSettings.builder()
@@ -19,18 +16,6 @@ public class CyclicRotationTest extends PATestBase {
                 .timeLimitTestEnabled(true)
                 .compareTestEnabled(true)
                 .build());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-    public void testTrivialSolutionWithSimpleDataSet(String input, String expectedOutput) {
-        super.testSolution(PASolution.TRIVIAL, input, expectedOutput);
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-    public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-        super.testSolution(PASolution.FINAL, input, expectedOutput);
     }
 
     @Override

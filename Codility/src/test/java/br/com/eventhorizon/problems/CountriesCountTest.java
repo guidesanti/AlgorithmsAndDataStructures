@@ -8,7 +8,7 @@ import static br.com.eventhorizon.common.utils.Utils.getRandomInteger;
 
 public class CountriesCountTest extends PATestBase {
 
-    private static final String SIMPLE_DATA_SET = "/test-dataset/countries-count.csv";
+    private static final String SIMPLE_DATA_SET = "src/test/resources/test-dataset/countries-count.csv";
 
     public CountriesCountTest() {
         super(new CountriesCount(), PATestSettings.builder()
