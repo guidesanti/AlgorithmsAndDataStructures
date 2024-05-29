@@ -2,24 +2,20 @@ package br.com.eventhorizon.uri.datastructures;
 
 import br.com.eventhorizon.common.pa.test.PASolution;
 import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
 import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.io.*;
 
 public class P1405Test extends PATestBase {
 
-  private static final String SIMPLE_DATA_SET = "/datastructures/p1405/p1405.csv";
+  private static final String SIMPLE_DATA_SET = "src/test/resources/datastructures/p1405/p1405.csv";
 
   public P1405Test() {
-    super(new P1405());
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1, maxCharsPerColumn = 10000)
-  public void testFinalSolutionWithSimpleDataSet1(String input, String expectedOutput) {
-    super.testSolution(PASolution.FINAL, input, expectedOutput);
+    super(new P1405(), PATestSettings.builder()
+            .simpleDataSetCsvFilePath(SIMPLE_DATA_SET)
+            .build());
   }
 
   @ParameterizedTest
