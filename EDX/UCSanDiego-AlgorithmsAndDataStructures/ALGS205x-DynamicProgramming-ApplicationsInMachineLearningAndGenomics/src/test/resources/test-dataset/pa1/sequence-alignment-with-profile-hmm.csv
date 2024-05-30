@@ -1,8 +1,8 @@
 input,expectedOutput
-AEFDFDC -------- 0.4 0.01 -------- A B C D E F -------- ACDEFACADF AFDA---CCF A--EFD-FDC ACAEF--A-C ADDEFAAADF,M1 D2 D3 M4 M5 I5 M6 M7 M8
-AB -------- 0.4 0.01 -------- A B -------- AA AA,M1 M2
-AB -------- 0.4 0.01 -------- A B C D E -------- AA AA,M1 M2
-AB -------- 0.4 0.01 -------- A B -------- A- A-,M1 I1
-AAAAAB -------- 0.4 0.01 -------- A B -------- -B -B,I0 I0 I0 I0 I0 M1
-AB -------- 0.4 0.01 -------- A B -------- AAAAB AAAAB,M1 D2 D3 D4 M5
-B -------- 0.4 0.01 -------- A B -------- AAAB AAAB ---B,D1 D2 D3 M4
+AEFDFDC%--------%0.4%0.01%--------%A%B%C%D%E%F%--------%ACDEFACADF%AFDA---CCF%A--EFD-FDC%ACAEF--A-C%ADDEFAAADF,M1 D2 D3 M4 M5 I5 M6 M7 M8
+AB%--------%0.4%0.01%--------%A%B%--------%AA%AA,M1 M2
+AB%--------%0.4%0.01%--------%A%B%C%D%E%--------%AA%AA,M1 M2
+AB%--------%0.4%0.01%--------%A%B%--------%A-%A-,M1 I1
+AAAAAB%--------%0.4%0.01%--------%A%B%--------%-B%-B,I0 I0 I0 I0 I0 M1
+AB%--------%0.4%0.01%--------%A%B%--------%AAAAB%AAAAB,M1 D2 D3 D4 M5
+B%--------%0.4%0.01%--------%A%B%--------%AAAB%AAAB%---B,D1 D2 D3 M4

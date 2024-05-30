@@ -27,7 +27,7 @@ public class MiddleEdgeInAlignmentGraph implements PA {
   private static int toJ;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     naiveGlobalAlignment();
     writeOutput();

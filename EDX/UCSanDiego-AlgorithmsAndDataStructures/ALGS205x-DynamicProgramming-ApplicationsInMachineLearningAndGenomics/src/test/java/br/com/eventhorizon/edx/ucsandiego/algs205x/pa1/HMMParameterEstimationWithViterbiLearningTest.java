@@ -1,16 +1,15 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class HMMParameterEstimationWithViterbiLearningTest extends PATest {
+public class HMMParameterEstimationWithViterbiLearningTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/hmm-parameter-estimation-with-viterbi-learning.csv";
 
@@ -19,14 +18,14 @@ public class HMMParameterEstimationWithViterbiLearningTest extends PATest {
   private static final String DELIMITER = "--------";
 
   public HMMParameterEstimationWithViterbiLearningTest() {
-    super(new HMMParameterEstimationWithViterbiLearning(), true, true);
+    super(new HMMParameterEstimationWithViterbiLearning());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     input = input.replace(" ", "\n");
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     // Read expected values

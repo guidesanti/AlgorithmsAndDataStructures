@@ -1,14 +1,12 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class GlobalAlignmentTest extends PATest {
+public class GlobalAlignmentTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/global-alignment.csv";
 
@@ -19,7 +17,7 @@ public class GlobalAlignmentTest extends PATest {
   private static int gapScore;
 
   public GlobalAlignmentTest() {
-    super(new GlobalAlignment(), true, true);
+    super(new GlobalAlignment());
   }
 
   @ParameterizedTest
@@ -35,7 +33,7 @@ public class GlobalAlignmentTest extends PATest {
     String expectedAlignment1 = values[1];
     String expectedAlignment2 = values[2];
 
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     values = getActualOutput().split("\n");

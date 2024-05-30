@@ -60,6 +60,7 @@ public abstract class PATestBase {
         this.settings = settings;
         this.inputFormat = settings.getInputFormatFile() != null
                 ? InputFormat.parse(settings.getInputFormatFile()) : null;
+        Locale.setDefault(Locale.US);
     }
 
     @Test

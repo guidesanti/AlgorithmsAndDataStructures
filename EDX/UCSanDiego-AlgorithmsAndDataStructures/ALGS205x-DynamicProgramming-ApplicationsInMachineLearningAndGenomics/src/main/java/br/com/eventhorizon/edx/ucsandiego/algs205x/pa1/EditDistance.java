@@ -12,7 +12,7 @@ public class EditDistance implements PA {
   private static int editDistance;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     init();
     readInput();
     naiveEditDistance();

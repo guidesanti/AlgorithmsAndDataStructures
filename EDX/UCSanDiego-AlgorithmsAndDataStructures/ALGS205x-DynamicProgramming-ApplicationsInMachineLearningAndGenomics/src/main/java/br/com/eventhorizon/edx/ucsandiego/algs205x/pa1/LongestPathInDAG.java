@@ -22,7 +22,7 @@ public class LongestPathInDAG implements PA {
   private static Map<Integer, List<Integer>> pathCache;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     if (source == sink) {
       longestPathLength = 0;
@@ -65,7 +65,6 @@ public class LongestPathInDAG implements PA {
     return maxDistance;
   }
 
-  @Override
   public void intermediateSolution1() {
     readInput();
     if (source == sink) {

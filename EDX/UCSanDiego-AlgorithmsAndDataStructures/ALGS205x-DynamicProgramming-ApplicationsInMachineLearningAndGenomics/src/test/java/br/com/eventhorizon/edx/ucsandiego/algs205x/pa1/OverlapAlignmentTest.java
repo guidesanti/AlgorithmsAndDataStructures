@@ -1,14 +1,12 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OverlapAlignmentTest extends PATest {
+public class OverlapAlignmentTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/overlap-alignment.csv";
 
@@ -19,7 +17,7 @@ public class OverlapAlignmentTest extends PATest {
   private static int gapScore;
 
   public OverlapAlignmentTest() {
-    super(new OverlapAlignment(), true, true);
+    super(new OverlapAlignment());
   }
 
   @ParameterizedTest
@@ -35,7 +33,7 @@ public class OverlapAlignmentTest extends PATest {
     String expectedAlignment1 = values[1];
     String expectedAlignment2 = values[2];
 
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     values = getActualOutput().split("\n");

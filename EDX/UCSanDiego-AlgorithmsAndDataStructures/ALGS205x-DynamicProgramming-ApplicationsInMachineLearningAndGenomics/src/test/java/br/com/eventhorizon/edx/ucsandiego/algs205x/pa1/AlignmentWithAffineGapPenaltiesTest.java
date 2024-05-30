@@ -7,15 +7,14 @@ import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+import org.opentest4j.AssertionFailedError;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 public class AlignmentWithAffineGapPenaltiesTest extends PATestBase {
 
-  private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/alignment-with-affine-gap-penalties.csv";
+  private static final String SIMPLE_DATA_SET = "src/test/resources/test-dataset/pa1/alignment-with-affine-gap-penalties.csv";
 
   private static int matchScore;
 
@@ -27,69 +26,15 @@ public class AlignmentWithAffineGapPenaltiesTest extends PATestBase {
 
   public AlignmentWithAffineGapPenaltiesTest() {
     super(new AlignmentWithAffineGapPenalties(), PATestSettings.builder()
+            .simpleDataSetCsvFilePath(SIMPLE_DATA_SET)
             .timeLimitTestEnabled(true)
             .timeLimit(2500)
             .compareTestEnabled(true)
             .build());
   }
 
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    String[] values = input.split(" ");
-    matchScore = Integer.parseInt(values[0]);
-    mismatchScore = -Integer.parseInt(values[1]);
-    gapOpeningScore = -Integer.parseInt(values[2]);
-    gapExtensionScore = -Integer.parseInt(values[3]);
-
-    values = expectedOutput.split("%");
-    int expectedScore = Integer.parseInt(values[0]);
-    String expectedAlignment1 = values[1];
-    String expectedAlignment2 = values[2];
-
-    reset(input);
-    pa.trivialSolution();
-
-    values = getActualOutput().split("\n");
-    int actualScore = Integer.parseInt(values[0]);
-    String actualAlignment1 = values[1];
-    String actualAlignment2 = values[2];
-
-    assertEquals(expectedScore, actualScore);
-    assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2));
-    assertEquals(expectedScore, score(actualAlignment1, actualAlignment2));
-  }
-
-  @ParameterizedTest
-  @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-  public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    String[] values = input.split(" ");
-    matchScore = Integer.parseInt(values[0]);
-    mismatchScore = -Integer.parseInt(values[1]);
-    gapOpeningScore = -Integer.parseInt(values[2]);
-    gapExtensionScore = -Integer.parseInt(values[3]);
-
-    values = expectedOutput.split("%");
-    int expectedScore = Integer.parseInt(values[0]);
-    String expectedAlignment1 = values[1];
-    String expectedAlignment2 = values[2];
-
-    reset(input);
-    pa.finalSolution();
-
-    values = getActualOutput().split("\n");
-    int actualScore = Integer.parseInt(values[0]);
-    String actualAlignment1 = values[1];
-    String actualAlignment2 = values[2];
-
-    assertEquals(expectedScore, actualScore);
-    assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2));
-    assertEquals(expectedScore, score(actualAlignment1, actualAlignment2));
-  }
-
   @Test
-  @Override
-  public void compareTest() {
+  public void compareTest2() {
     if (!PASystemSettings.isCompareTestEnabled().orElse(settings.isCompareTestEnabled())) {
       log.warn("Compare test status: {}", Status.SKIPPED);
       return;
@@ -170,19 +115,48 @@ public class AlignmentWithAffineGapPenaltiesTest extends PATestBase {
 
   @Override
   protected String generateInput(PATestType type, StringBuilder expectedOutput) {
+    var input = new StringBuilder();
+    input
+            .append(Utils.getRandomInteger(1, 10)).append(" ")
+            .append(Utils.getRandomInteger(1, 10)).append(" ")
+            .append(Utils.getRandomInteger(1, 10)).append(" ")
+            .append(Utils.getRandomInteger(1, 10)).append(" ");
     if (type == PATestType.TIME_LIMIT_TEST) {
-      return Utils.getRandomInteger(1, 10) + " "
-              + Utils.getRandomInteger(1, 10) + " "
-              + Utils.getRandomInteger(1, 10) + " "
-              + Utils.getRandomInteger(1, 10) + " "
-              + Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000) + " "
-              + Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000);
+      input
+              .append(Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000))
+              .append(" ")
+              .append(Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 1000));
+    } else {
+      input
+              .append(Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 3))
+              .append(" ")
+              .append(Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 2));
     }
-    return Utils.getRandomInteger(1, 10) + " "
-            + Utils.getRandomInteger(1, 10) + " "
-            + Utils.getRandomInteger(1, 10) + " "
-            + Utils.getRandomInteger(1, 10) + " "
-            + Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 3) + " "
-            + Utils.getRandomString(Utils.CharType.ALPHABETICAL_CHARS, 2);
+    return input.toString();
+  }
+
+  @Override
+  protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    var values = input.split(" ");
+    matchScore = Integer.parseInt(values[0]);
+    mismatchScore = -Integer.parseInt(values[1]);
+    gapOpeningScore = -Integer.parseInt(values[2]);
+    gapExtensionScore = -Integer.parseInt(values[3]);
+
+    values = expectedOutput.split("\n");
+    int expectedScore = Integer.parseInt(values[0]);
+    String expectedAlignment1 = values[1];
+    String expectedAlignment2 = values[2];
+
+    values = actualOutput.split("\n");
+    int actualScore = Integer.parseInt(values[0]);
+    String actualAlignment1 = values[1];
+    String actualAlignment2 = values[2];
+
+    assertEquals(expectedScore, actualScore);
+    assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2));
+    assertEquals(expectedScore, score(actualAlignment1, actualAlignment2));
+
+    return null;
   }
 }

@@ -1,16 +1,15 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConstructingProfileHMMTest extends PATest {
+public class ConstructingProfileHMMTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/constructing-profile-hmm.csv";
 
@@ -19,13 +18,13 @@ public class ConstructingProfileHMMTest extends PATest {
   private static final String DELIMITER = "--------";
 
   public ConstructingProfileHMMTest() {
-    super(new ConstructingProfileHMM(), true, true);
+    super(new ConstructingProfileHMM());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     // Read expected values

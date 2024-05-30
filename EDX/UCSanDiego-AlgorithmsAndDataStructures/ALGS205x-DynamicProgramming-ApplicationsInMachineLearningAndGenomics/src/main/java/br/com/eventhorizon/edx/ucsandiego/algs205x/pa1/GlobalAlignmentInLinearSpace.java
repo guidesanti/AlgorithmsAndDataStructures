@@ -48,7 +48,7 @@ public class GlobalAlignmentInLinearSpace implements PA {
   }
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     init();
     readInput();
     naiveGlobalAlignment();

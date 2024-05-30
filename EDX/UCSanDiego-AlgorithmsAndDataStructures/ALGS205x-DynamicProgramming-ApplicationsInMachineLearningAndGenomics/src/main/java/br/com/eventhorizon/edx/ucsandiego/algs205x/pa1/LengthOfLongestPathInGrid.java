@@ -14,7 +14,7 @@ public class LengthOfLongestPathInGrid implements PA {
   private static int[][] right;
 
   @Override
-  public void naiveSolution() {
+  public void trivialSolution() {
     readInput();
     System.out.println(naive(numberOfRows, numberOfColumns));
   }

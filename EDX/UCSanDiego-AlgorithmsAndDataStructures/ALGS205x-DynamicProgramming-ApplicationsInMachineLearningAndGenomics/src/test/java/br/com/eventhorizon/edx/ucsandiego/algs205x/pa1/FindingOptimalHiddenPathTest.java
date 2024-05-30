@@ -1,7 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
 import br.com.eventhorizon.common.pa.FastScanner;
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
@@ -14,7 +14,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class FindingOptimalHiddenPathTest extends PATest {
+public class FindingOptimalHiddenPathTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/finding-optimal-hidden-path.csv";
 
@@ -31,7 +31,7 @@ public class FindingOptimalHiddenPathTest extends PATest {
   private static Map<String, Double> emissionProbabilities;
 
   public FindingOptimalHiddenPathTest() {
-    super(new FindingOptimalHiddenPath(), true, true);
+    super(new FindingOptimalHiddenPath());
   }
 
   @ParameterizedTest
@@ -39,7 +39,7 @@ public class FindingOptimalHiddenPathTest extends PATest {
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     init();
     readInput(input);
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
     String actualOutput = getActualOutput();
     assertNotNull(expectedOutput);

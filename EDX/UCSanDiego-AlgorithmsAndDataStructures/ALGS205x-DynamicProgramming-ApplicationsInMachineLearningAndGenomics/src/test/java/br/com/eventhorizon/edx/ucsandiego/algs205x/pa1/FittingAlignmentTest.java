@@ -1,20 +1,18 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.TestProperties;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
 import java.util.function.Function;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FittingAlignmentTest extends PATest {
+public class FittingAlignmentTest extends PATestBase {
 
   private static final Logger LOGGER = Logger.getLogger(FittingAlignmentTest.class.getName());
 
@@ -34,7 +32,7 @@ public class FittingAlignmentTest extends PATest {
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testNaiveSolutionWithSimpleDataSet(String input, String expectedOutput) {
     test(input, expectedOutput, unused -> {
-      pa.naiveSolution();
+      pa.trivialSolution();
       return null;
     });
   }
@@ -50,29 +48,25 @@ public class FittingAlignmentTest extends PATest {
 
   @Test
   @Override
-  public void stressTest() {
-    if (skipStressTest) {
+  public void compareTest() {
+    if (!settings.isCompareTestEnabled()) {
       LOGGER.warning("Stress limit test skipped");
       return;
     }
-    LOGGER.info("Stress test duration: " + TestProperties.getStressTestDuration());
     long startTime = System.currentTimeMillis();
     for (long i = 0; true; i++) {
-      String input = generateInput(PATestType.STRESS_TEST);
-      LOGGER.info("Stress test " + i + " input: " + input);
+      String input = generateInput(PATestType.COMPARE_TEST, null);
 
       // Run and compare results
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
-      resetOutput();
-      pa.naiveSolution();
+      reset(input);
+      pa.trivialSolution();
       String result1 = getActualOutput();
       String[] result1Values = result1.split("\n");
       int result1Score = Integer.parseInt(result1Values[0]);
       String result1Alignment1 = result1Values[1];
       String result1Alignment2 = result1Values[2];
 
-      resetOutput();
-      System.setIn(new ByteArrayInputStream(input.getBytes()));
+      reset(input);
       pa.finalSolution();
       String result2 = getActualOutput();
       String[] result2Values = result2.split("\n");
@@ -83,6 +77,7 @@ public class FittingAlignmentTest extends PATest {
       if (result1Score != result2Score ||
           score(result1Alignment1, result1Alignment2) != score(result2Alignment1, result2Alignment2)) {
         LOGGER.info("Stress test " + i + " status: FAILED");
+        LOGGER.info("Stress test " + i + " input: " + input);
         LOGGER.info("Stress test " + i + " result 1:  " + result1);
         LOGGER.info("Stress test " + i + " result 2:  " + result2);
         throw new RuntimeException("Stress test failed");
@@ -91,7 +86,7 @@ public class FittingAlignmentTest extends PATest {
 
       // Check elapsed time
       long elapsedTime = System.currentTimeMillis() - startTime;
-      if (elapsedTime > TestProperties.getStressTestDuration()) {
+      if (elapsedTime > settings.getCompareTestDuration()) {
         return;
       }
     }
@@ -108,7 +103,7 @@ public class FittingAlignmentTest extends PATest {
     String expectedAlignment1 = values[1];
     String expectedAlignment2 = values[2];
 
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     f.apply(null);
 
     values = getActualOutput().split("\n");
@@ -135,7 +130,7 @@ public class FittingAlignmentTest extends PATest {
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     StringBuilder input = new StringBuilder();
     input.append(Utils.getRandomInteger(1, 10))
         .append(" ")
@@ -148,7 +143,6 @@ public class FittingAlignmentTest extends PATest {
         input.append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 1000))
             .append(" ")
             .append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 1000));
-      case STRESS_TEST:
       default:
         input.append(Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 1, 10))
             .append(" ")

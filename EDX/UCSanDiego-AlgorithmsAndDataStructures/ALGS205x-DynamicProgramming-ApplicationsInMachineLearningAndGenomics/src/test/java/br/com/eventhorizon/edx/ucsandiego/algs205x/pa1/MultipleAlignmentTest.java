@@ -1,21 +1,22 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import br.com.eventhorizon.common.pa.PATest;
-import br.com.eventhorizon.common.pa.PATestType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MultipleAlignmentTest extends PATest {
+public class MultipleAlignmentTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/multiple-alignment.csv";
 
   public MultipleAlignmentTest() {
-    super(new MultipleAlignment(), false, true);
+    super(new MultipleAlignment(), PATestSettings.builder()
+            .timeLimitTestEnabled(true)
+            .build());
   }
 
   @ParameterizedTest
@@ -27,7 +28,7 @@ public class MultipleAlignmentTest extends PATest {
     String expectedAlignment2 = values[2];
     String expectedAlignment3 = values[3];
 
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     values = getActualOutput().split("\n");
@@ -52,7 +53,7 @@ public class MultipleAlignmentTest extends PATest {
   }
 
   @Override
-  protected String generateInput(PATestType type) {
+  protected String generateInput(PATestType type, StringBuilder expectedOutput) {
     return Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 10) + " " +
         Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 10) + " " +
         Utils.getRandomString(Utils.CharType.ALPHA_NUMERICAL_CHARS, 10);

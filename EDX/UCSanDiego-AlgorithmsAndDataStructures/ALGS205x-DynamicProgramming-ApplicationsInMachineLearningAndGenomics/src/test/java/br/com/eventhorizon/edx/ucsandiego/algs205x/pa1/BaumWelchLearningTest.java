@@ -1,16 +1,15 @@
 package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
-import br.com.eventhorizon.common.pa.PATest;
+import br.com.eventhorizon.common.pa.test.PATestBase;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 
-import java.io.ByteArrayInputStream;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class BaumWelchLearningTest extends PATest {
+public class BaumWelchLearningTest extends PATestBase {
 
   private static final String SIMPLE_DATA_SET = "/test-dataset/pa1/baum-welch-learning.csv";
 
@@ -19,14 +18,14 @@ public class BaumWelchLearningTest extends PATest {
   private static final String DELIMITER = "--------";
 
   public BaumWelchLearningTest() {
-    super(new BaumWelchLearning(), true, true);
+    super(new BaumWelchLearning());
   }
 
   @ParameterizedTest
   @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
   public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
     input = input.replace(" ", "\n");
-    System.setIn(new ByteArrayInputStream(input.getBytes()));
+    reset(input);
     pa.finalSolution();
 
     // Read expected values
