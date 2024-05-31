@@ -1,35 +1,26 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa3;
 
-import br.com.eventhorizon.common.pa.PATestType;
-import br.com.eventhorizon.common.pa.v2.PASolution;
-import br.com.eventhorizon.common.pa.v2.PATestBase;
-import br.com.eventhorizon.common.pa.v2.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestBase;
+import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
+@Slf4j
 public class BubbleDetectionTest extends PATestBase {
 
-    private static final Logger LOGGER = Logger.getLogger(BubbleDetectionTest.class.getName());
-
-    private static final String SIMPLE_DATA_SET = "/test-dataset/pa3/bubble-detection.csv";
+    private static final String SIMPLE_DATA_SET = "src/test/resources/test-dataset/pa3/bubble-detection.csv";
 
     private static final char[] ALPHABET = {'A', 'C', 'G', 'T'};
 
     public BubbleDetectionTest() {
         super(new BubbleDetection(), PATestSettings.builder()
+                .simpleDataSetCsvFilePath(SIMPLE_DATA_SET)
                 .timeLimitTestEnabled(true)
                 .build());
-    }
-
-    @ParameterizedTest
-    @CsvFileSource(resources = SIMPLE_DATA_SET, numLinesToSkip = 1)
-    public void testFinalSolutionWithSimpleDataSet(String input, String expectedOutput) {
-        super.testSolution(PASolution.FINAL, input, expectedOutput);
     }
 
     @Override
@@ -38,7 +29,7 @@ public class BubbleDetectionTest extends PATestBase {
         List<String> reads = generateReads(text, 50);
         StringBuilder str = new StringBuilder();
         reads.forEach(read -> str.append(read).append("\n"));
-        return 5 + " " + 5 + "\n" + str.toString();
+        return 5 + " " + 5 + "\n" + str;
     }
 
     private List<String> generateReads(String text, int readLength) {
@@ -77,7 +68,7 @@ public class BubbleDetectionTest extends PATestBase {
             count++;
         }
         //    Collections.shuffle(reads);
-        readInfo.forEach(LOGGER::info);
+        readInfo.forEach(log::info);
         return reads;
     }
 }

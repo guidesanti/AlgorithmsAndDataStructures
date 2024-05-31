@@ -4,7 +4,6 @@ import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
 import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
-import org.opentest4j.AssertionFailedError;
 
 import java.util.*;
 
@@ -71,7 +70,7 @@ public class FindEulerianPathInGraphTest extends PATestBase {
     }
 
     @Override
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    protected void verify(String input, String expectedOutput, String actualOutput) {
         // Process input
         input = input.replace(" ", "").replace("%", "\n").replace(";", ",");
         String[] line = input.split("\n");
@@ -106,7 +105,5 @@ public class FindEulerianPathInGraphTest extends PATestBase {
             from = to;
         }
         assertTrue(adjacencies.isEmpty());
-
-        return null;
     }
 }

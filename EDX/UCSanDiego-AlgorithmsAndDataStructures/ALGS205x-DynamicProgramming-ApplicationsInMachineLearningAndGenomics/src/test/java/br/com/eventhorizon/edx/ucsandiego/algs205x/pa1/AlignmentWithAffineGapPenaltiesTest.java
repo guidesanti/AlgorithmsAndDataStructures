@@ -7,7 +7,6 @@ import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.AssertionFailedError;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -136,7 +135,7 @@ public class AlignmentWithAffineGapPenaltiesTest extends PATestBase {
   }
 
   @Override
-  protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+  protected void verify(String input, String expectedOutput, String actualOutput) {
     var values = input.split(" ");
     matchScore = Integer.parseInt(values[0]);
     mismatchScore = -Integer.parseInt(values[1]);
@@ -156,7 +155,5 @@ public class AlignmentWithAffineGapPenaltiesTest extends PATestBase {
     assertEquals(expectedScore, actualScore);
     assertEquals(expectedScore, score(expectedAlignment1, expectedAlignment2));
     assertEquals(expectedScore, score(actualAlignment1, actualAlignment2));
-
-    return null;
   }
 }

@@ -60,7 +60,7 @@ public class PuzzleAssembly implements PA {
 
   private static void writeOutput() {
     for (int i = 0; i < n; i++) {
-      StringJoiner output = new StringJoiner(";");
+      StringJoiner output = new StringJoiner(",");
       for (int j = 0; j < n; j++) {
         output.add(grid[i][j].toString());
       }

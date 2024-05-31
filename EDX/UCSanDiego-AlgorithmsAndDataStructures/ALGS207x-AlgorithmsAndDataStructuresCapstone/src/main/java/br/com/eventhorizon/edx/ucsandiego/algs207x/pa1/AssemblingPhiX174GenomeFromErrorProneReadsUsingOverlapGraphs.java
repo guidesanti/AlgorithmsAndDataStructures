@@ -1,7 +1,6 @@
 package br.com.eventhorizon.edx.ucsandiego.algs207x.pa1;
 
-import br.com.eventhorizon.common.datastructures.strings.Alphabet;
-import br.com.eventhorizon.common.datastructures.strings.UkkonenSuffixTree;
+import br.com.eventhorizon.common.utils.Alphabet;
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 

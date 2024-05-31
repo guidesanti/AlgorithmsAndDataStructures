@@ -76,7 +76,7 @@ public class SelectingOptimalKMerSize implements PA {
     computeOverlaps();
     optimalK = 2;
     while (optimalK < readLength) {
-      reset();
+      reset1();
       generateKMers();
       buildDeBruijnGraph();
       if (isPath()) {
@@ -228,7 +228,7 @@ public class SelectingOptimalKMerSize implements PA {
     return count == edgeCount;
   }
 
-  private static void reset() {
+  private static void reset1() {
     edgeCount = 0;
     adjacencies.clear();
     inDegrees.clear();

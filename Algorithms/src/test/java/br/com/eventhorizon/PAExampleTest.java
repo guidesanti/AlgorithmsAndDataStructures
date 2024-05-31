@@ -3,8 +3,8 @@ package br.com.eventhorizon;
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
 import br.com.eventhorizon.common.pa.test.PATestType;
-import org.junit.jupiter.api.AssertionFailureBuilder;
-import org.opentest4j.AssertionFailedError;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PAExampleTest extends PATestBase {
 
@@ -35,14 +35,7 @@ public class PAExampleTest extends PATestBase {
     }
 
     @Override
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
-        if (!expectedOutput.equals(actualOutput)) {
-            return AssertionFailureBuilder.assertionFailure()
-                    .message("Expected output and actual output are not equivalent")
-                    .expected(expectedOutput)
-                    .actual(actualOutput)
-                    .build();
-        }
-        return null;
+    protected void verify(String input, String expectedOutput, String actualOutput) {
+        assertEquals(expectedOutput, actualOutput, "Expected output and actual output are not equivalent");
     }
 }

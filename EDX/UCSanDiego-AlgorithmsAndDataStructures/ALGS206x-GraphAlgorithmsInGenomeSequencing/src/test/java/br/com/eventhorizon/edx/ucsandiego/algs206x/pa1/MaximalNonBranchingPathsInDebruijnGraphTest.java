@@ -2,7 +2,6 @@ package br.com.eventhorizon.edx.ucsandiego.algs206x.pa1;
 
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
-import org.opentest4j.AssertionFailedError;
 
 import java.util.*;
 
@@ -20,7 +19,7 @@ public class MaximalNonBranchingPathsInDebruijnGraphTest extends PATestBase {
     }
 
     @Override
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    protected void verify(String input, String expectedOutput, String actualOutput) {
         // Process expected output
         List<String> expectedContigs = new ArrayList<>(Arrays.asList(expectedOutput.split(" ")));
 
@@ -44,7 +43,5 @@ public class MaximalNonBranchingPathsInDebruijnGraphTest extends PATestBase {
                 assert(expectedContigs.contains(actualContig));
             }
         }
-
-        return null;
     }
 }

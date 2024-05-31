@@ -1,11 +1,7 @@
 package br.com.eventhorizon.edx.ucsandiego.algs206x.pa1;
 
-import br.com.eventhorizon.common.pa.test.PASolution;
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvFileSource;
-import org.opentest4j.AssertionFailedError;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +23,7 @@ public class ConstructDeBruijnGraphOfACollectionOfKMersTest extends PATestBase {
     }
 
     @Override
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    protected void verify(String input, String expectedOutput, String actualOutput) {
         String[] values1 = expectedOutput.replace(";", ",").split("\n");
         List<String> values1List = new ArrayList<>(Arrays.asList(values1));
         Collections.sort(values1List);
@@ -49,7 +45,5 @@ public class ConstructDeBruijnGraphOfACollectionOfKMersTest extends PATestBase {
             Collections.sort(v2List);
             assertEquals(v1List, v2List);
         }
-
-        return null;
     }
 }

@@ -2,10 +2,11 @@ package br.com.eventhorizon.edx.ucsandiego.algs205x.pa1;
 
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
-import org.junit.jupiter.api.AssertionFailureBuilder;
-import org.opentest4j.AssertionFailedError;
 
 import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SoftDecodingTest extends PATestBase {
 
@@ -22,7 +23,7 @@ public class SoftDecodingTest extends PATestBase {
     }
 
     @Override
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    protected void verify(String input, String expectedOutput, String actualOutput) {
         // Read expected values
         String[] rows = expectedOutput.split("\n");
         List<String> expectedStates = new ArrayList<>(Arrays.asList(rows[0].trim().split("[ \\t]+")));
@@ -51,29 +52,17 @@ public class SoftDecodingTest extends PATestBase {
             }
         }
 
-        if (!expectedStates.equals(actualStates)) {
-            return AssertionFailureBuilder.assertionFailure()
-                    .message("Expected states does not match actual states")
-                    .expected(expectedStates)
-                    .actual(actualStates)
-                    .build();
-        }
+        assertEquals(expectedStates, actualStates, "Expected states does not match actual states");
 
         for (int i = 0; i < expectedProbabilities.length; i++) {
             for (int j = 0; j < expectedProbabilities[0].length; j++) {
                 double expectedProbability = expectedProbabilities[i][j];
                 double actualProbability = actualProbabilities[i][j];
-                if (!(actualProbability >= expectedProbability - DELTA  &&
-                        actualProbability <= expectedProbability + DELTA)) {
-                    return AssertionFailureBuilder.assertionFailure()
-                            .message("Actual probability not in expected range")
-                            .expected(String.format("[%.2f,%.2f]", expectedProbability - DELTA, expectedProbability + DELTA))
-                            .actual(actualProbabilities[i][j])
-                            .build();
-                }
+                assertTrue((actualProbability >= expectedProbability - DELTA
+                        && actualProbability <= expectedProbability + DELTA),
+                        String.format("Actual probability not in expected range: [%.2f,%.2f]",
+                                expectedProbability - DELTA, expectedProbability + DELTA));
             }
         }
-
-        return null;
     }
 }

@@ -26,7 +26,6 @@ import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import static java.time.Duration.ofMillis;
 import static org.junit.jupiter.api.Assertions.*;
@@ -322,26 +321,11 @@ public abstract class PATestBase {
         return InputGenerator.generate(Objects.requireNonNull(inputFormat));
     }
 
-    protected final AssertionFailedError buildAssertionFailedError(String expectedOutput, String actualOutput) {
-        return AssertionFailureBuilder.assertionFailure()
-                .message("Expected output does not match actual output")
-                .expected(expectedOutput)
-                .actual(actualOutput)
-                .build();
-    }
-
-    protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
+    protected void verify(String input, String expectedOutput, String actualOutput) {
         assertNotNull(input, "Input is null");
         assertNotNull(expectedOutput, "Expected output is null");
         assertNotNull(actualOutput, "Actual output is null");
-        if (!expectedOutput.equals(actualOutput)) {
-            return AssertionFailureBuilder.assertionFailure()
-                    .message("Expected output does not match actual output")
-                    .expected(expectedOutput)
-                    .actual(actualOutput)
-                    .build();
-        }
-        return null;
+        assertEquals(expectedOutput, actualOutput, "Expected output does not match actual output");
     }
 
     private void verify(String input, String expectedOutput, String actualOutput, String message) {
@@ -349,10 +333,11 @@ public abstract class PATestBase {
         assertNotNull(input, "Input is null");
         assertNotNull(expectedOutput, "Expected output is null");
         assertNotNull(actualOutput, "Actual output is null");
-        var verificationResult = verify(input, expectedOutput, actualOutput);
-        if (verificationResult != null) {
+        try {
+            verify(input, expectedOutput, actualOutput);
+        } catch (AssertionFailedError ex) {
             log.error(message);
-            throw verificationResult;
+            throw ex;
         }
     }
 
