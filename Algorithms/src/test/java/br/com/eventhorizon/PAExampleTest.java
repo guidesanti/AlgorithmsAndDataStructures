@@ -4,7 +4,6 @@ import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
 import br.com.eventhorizon.common.pa.test.PATestType;
 import org.junit.jupiter.api.AssertionFailureBuilder;
-import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
 public class PAExampleTest extends PATestBase {
@@ -30,7 +29,7 @@ public class PAExampleTest extends PATestBase {
     @Override
     protected String generateInput(PATestType type, StringBuilder expectedOutput) {
         if (expectedOutput != null) {
-            expectedOutput.append("OK");
+            expectedOutput.append("OK-");
         }
         return "Some input here";
     }

@@ -169,17 +169,13 @@ public abstract class PATestBase {
             var actualOutput = getActualOutput();
 
             // Verify result
-            var verificationResult = verify(input, expectedOutput, getActualOutput());
-            if (verificationResult != null) {
-                var message = String.format("""
+            var message = String.format("""
                         Stress test %d status: %s
                         Input: %s
                         Expected output: %s
                         Actual output: %s""",
-                        count, Status.FAILED.getPrintableString(), input, expectedOutput, actualOutput);
-                log.error(message);
-                throw verificationResult;
-            }
+                    count, Status.FAILED.getPrintableString(), input, expectedOutput, actualOutput);
+            verify(input, expectedOutput, actualOutput, message);
 
             log.info("Stress test {} status: {}", count, Status.SUCCESS.getPrintableString());
             count++;
@@ -215,17 +211,13 @@ public abstract class PATestBase {
             var finalSolutionOutput = getActualOutput();
 
             // Compare results
-            var verificationResult = verify(input, trivialSolutionOutput, finalSolutionOutput);
-            if (verificationResult != null) {
-                var message = String.format("""
+            var message = String.format("""
                         Compare test %d status: %s
                         Input: %s
                         Trivial solution output: %s
                         Final solution output: %s""",
-                        count, Status.FAILED.getPrintableString(), input, trivialSolutionOutput, finalSolutionOutput);
-                log.error(message);
-                throw verificationResult;
-            }
+                    count, Status.FAILED.getPrintableString(), input, trivialSolutionOutput, finalSolutionOutput);
+            verify(input, trivialSolutionOutput, finalSolutionOutput, message);
 
             log.info("Compare test {} status: {}", count, Status.SUCCESS.getPrintableString());
             count++;
@@ -274,17 +266,13 @@ public abstract class PATestBase {
             var actualOutput = getActualOutput();
 
             // Verify output
-            var verificationResult = verify(input, expectedOutput, getActualOutput());
-            if (verificationResult != null) {
-                var message = String.format("""
+            var message = String.format("""
                         %s solution with simple dataset test %d status: %s
                         Input: %s
                         Expected output: %s
                         Actual output: %s""",
-                        solution, count.get(), Status.FAILED.getPrintableString(), input, expectedOutput, actualOutput);
-                log.error(message);
-                throw verificationResult;
-            }
+                    solution, count.get(), Status.FAILED.getPrintableString(), input, expectedOutput, actualOutput);
+            verify(input, expectedOutput, getActualOutput(), message);
 
             log.info("{} solution with simple dataset test {} status: {}",
                     solution, count, Status.SUCCESS.getPrintableString());
@@ -292,7 +280,6 @@ public abstract class PATestBase {
         });
     }
 
-    @Deprecated
     protected final void testSolution(PASolution solution, String input, String expectedOutput) {
         // Normalize input and output
         input = input.replace(";", ",").replace("%", "\n");
@@ -308,10 +295,7 @@ public abstract class PATestBase {
         var actualOutput = getActualOutput();
 
         // Verify output
-        assertNotNull(input, "Input is null");
-        assertNotNull(expectedOutput, "Expected output is null");
-        assertNotNull(actualOutput, "Actual output is null");
-        assertEquals(expectedOutput, actualOutput, "Actual output doesn't match the expected output");
+        verify(input, expectedOutput, actualOutput, null);
     }
 
     protected final void testSolutionFromFile(PASolution solution, String inputFile, String expectedOutputFile) throws IOException {
@@ -338,6 +322,14 @@ public abstract class PATestBase {
         return InputGenerator.generate(Objects.requireNonNull(inputFormat));
     }
 
+    protected final AssertionFailedError buildAssertionFailedError(String expectedOutput, String actualOutput) {
+        return AssertionFailureBuilder.assertionFailure()
+                .message("Expected output does not match actual output")
+                .expected(expectedOutput)
+                .actual(actualOutput)
+                .build();
+    }
+
     protected AssertionFailedError verify(String input, String expectedOutput, String actualOutput) {
         assertNotNull(input, "Input is null");
         assertNotNull(expectedOutput, "Expected output is null");
@@ -350,6 +342,18 @@ public abstract class PATestBase {
                     .build();
         }
         return null;
+    }
+
+    private void verify(String input, String expectedOutput, String actualOutput, String message) {
+        message = StringUtils.isNotBlank(message) ? message : "Expected output does not match actual output";
+        assertNotNull(input, "Input is null");
+        assertNotNull(expectedOutput, "Expected output is null");
+        assertNotNull(actualOutput, "Actual output is null");
+        var verificationResult = verify(input, expectedOutput, actualOutput);
+        if (verificationResult != null) {
+            log.error(message);
+            throw verificationResult;
+        }
     }
 
     protected final void reset(String input) {
