@@ -1,11 +1,9 @@
-package br.com.eventhorizon.array;
+package br.com.eventhorizon.geeksforgeeks.array;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**

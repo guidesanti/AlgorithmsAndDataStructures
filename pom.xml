@@ -17,6 +17,7 @@
         <module>URI</module>
         <module>Codility</module>
         <module>data-structures</module>
+        <module>GeeksForGeeks</module>
     </modules>
 
     <properties>

@@ -1,4 +1,4 @@
-package br.com.eventhorizon.array;
+package br.com.eventhorizon.geeksforgeeks.array;
 
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;

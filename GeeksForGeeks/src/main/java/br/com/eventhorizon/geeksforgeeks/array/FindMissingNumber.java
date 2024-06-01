@@ -1,4 +1,4 @@
-package br.com.eventhorizon.array;
+package br.com.eventhorizon.geeksforgeeks.array;
 
 import br.com.eventhorizon.common.pa.FastScanner;
 import br.com.eventhorizon.common.pa.PA;

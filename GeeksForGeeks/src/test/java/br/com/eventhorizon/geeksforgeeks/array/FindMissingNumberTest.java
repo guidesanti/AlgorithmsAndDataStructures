@@ -1,9 +1,9 @@
-package br.com.eventhorizon.array;
+package br.com.eventhorizon.geeksforgeeks.array;
 
-import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.pa.test.PASolution;
 import br.com.eventhorizon.common.pa.test.PATestBase;
 import br.com.eventhorizon.common.pa.test.PATestSettings;
+import br.com.eventhorizon.common.pa.test.PATestType;
 import br.com.eventhorizon.common.utils.Utils;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
