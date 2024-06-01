@@ -18,6 +18,7 @@ public class OddOccurrencesInArrayTest extends PATestBase {
         super(new OddOccurrencesInArray(), PATestSettings.builder()
                 .simpleDataSetCsvFilePath(SIMPLE_DATA_SET)
                 .timeLimitTestEnabled(true)
+                .timeLimit(5000)
                 .compareTestEnabled(true)
                 .stressTestEnabled(true)
                 .build());

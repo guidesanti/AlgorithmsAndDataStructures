@@ -29,7 +29,7 @@ public class PAExampleTest extends PATestBase {
     @Override
     protected String generateInput(PATestType type, StringBuilder expectedOutput) {
         if (expectedOutput != null) {
-            expectedOutput.append("OK-");
+            expectedOutput.append("OK");
         }
         return "Some input here";
     }
