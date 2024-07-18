@@ -1,0 +1,5 @@
+input,expectedOutput
+ABC ACD,2
+AGGTAB GXTXAYB,4
+ABC CBA,1
+XYZW XYWZ,3
