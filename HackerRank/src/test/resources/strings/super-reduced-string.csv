@@ -1,0 +1,6 @@
+input,expectedOutput
+aab,b
+abba,Empty String
+aaabccddd,abd
+aa,Empty String
+baab,Empty String

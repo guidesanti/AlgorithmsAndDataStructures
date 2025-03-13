@@ -18,6 +18,7 @@
         <module>Codility</module>
         <module>data-structures</module>
         <module>GeeksForGeeks</module>
+        <module>HackerRank</module>
     </modules>
 
     <properties>
